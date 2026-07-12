@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>F-Prix</title>
+<meta name="theme-color" content="#000000">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="F-Prix">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000'/%3E%3Crect y='42' width='100' height='16' fill='%23E10600'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+html{
+    background:var(--black);
+    font-size:16px;
+    height: 100%;
+}
+
+:root{
+    --black:#000000;
+    --surface:#0A0A0B;
+    --surface2:#151517;
+    --line:rgba(255,255,255,.10);
+    --red:#E10600;
+    --red-dim:rgba(225,6,0,.35);
+    --text:#F5F5F7;
+    --dim:#8B8B93;
+    --gold:#D4AF37;
+    --silver:#C7CBD1;
+    --bronze:#B87333;
+    --f-display:'Titillium Web',sans-serif;
+    --f-mono:'Space Mono',monospace;
+}
+
+html[data-theme="light"]{
+    --black:#FFFFFF;
+    --surface:#F4F4F5;
+    --surface2:#E9E9EB;
+    --line:rgba(0,0,0,.10);
+    --text:#0A0A0B;
+    --dim:#6B6B72;
+}
+
+body{
+    background:var(--black);
+    color:var(--text);
+    font-family:var(--f-display);
+    min-height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(9rem + env(safe-area-inset-bottom));
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    transition:background .25s ease, color .25s ease, padding 0.3s ease;
+}
+
+.app{
+    max-width:34rem;
+    margin:auto;
+    padding: 0 1rem;
+    transition: max-width 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+}
+
+button{font-family:inherit;cursor:pointer;transition:background 0.2s, transform 0.1s, border-color 0.2s;}
+button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);outline-offset:2px;}
+
+@media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+}
+
+.icon{width:1.375rem;height:1.375rem;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;display:block;}
+
+/* ============ HEADER ============ */
+.header-glass{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:1.1rem;
+    padding: calc(env(safe-area-inset-top) + 12px) .1rem .25rem; 
+    flex-wrap:wrap;
+    row-gap:.5rem;
+}
+.logo{font-size:1.3rem;font-weight:900;letter-spacing:.2rem;text-transform:uppercase;}
+.logo .bar{display:inline-block;width:1.6rem;height:.55rem;background:var(--red);margin-left:.4rem;vertical-align:middle;}
+.header-actions{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+
+.icon-btn{width:2.5rem;height:2.5rem;border:1px solid var(--line);border-radius:.65rem;color:var(--text);
+    background:var(--surface);display:flex;align-items:center;justify-content:center;position:relative;}
+.icon-btn:hover{border-color:var(--red-dim);color:var(--red);}
+.icon-btn:active{background:var(--surface2);transform:scale(0.97);}
+
+.badge-dot {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 4px var(--red);
+}
+
+.font-control{display:flex;border:1px solid var(--line);border-radius:.65rem;overflow:hidden;background:var(--surface);}
+.font-control button{
+    width:2.2rem;height:2.5rem;border:none;background:transparent;color:var(--text);
+    font-family:var(--f-mono);font-weight:700;font-size:.85rem;
+}
+.font-control button:first-child{border-right:1px solid var(--line);font-size:.7rem;}
+.font-control button:last-child{font-size:1rem;}
+.font-control button:hover{background:var(--surface2);color:var(--red);}
+.font-control button:active{background:var(--surface2);}
+
+/* ============ VISTAS ============ */
+.view{display:none;}
+.view.active{display:block;}
+.view.slide-fwd{animation:slideFwd .3s ease;}
+.view.slide-back{animation:slideBack .3s ease;}
+@keyframes slideFwd{from{opacity:0;transform:translateX(28px);}to{opacity:1;transform:translateX(0);}}
+@keyframes slideBack{from{opacity:0;transform:translateX(-28px);}to{opacity:1;transform:translateX(0);}}
+
+/* ============ HOME ============ */
+.home-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:1.15rem;
+    overflow:hidden;margin-bottom:1rem;
+    transition: display 0.3s ease, grid-template-columns 0.3s ease;
+}
+.hero-top{height:.2rem;background:linear-gradient(90deg, var(--red), transparent 85%);}
+.block{padding:1.35rem 1.25rem;}
+.divider{height:1px;background:var(--line);margin:0 1.25rem;}
+
+.race-tag{
+    display:inline-flex;align-items:center;gap:.45rem;font-family:var(--f-mono);
+    font-size:.75rem;letter-spacing:.1rem;color:var(--red);text-transform:uppercase;margin-bottom:.9rem;
+}
+.race-tag::before{content:'';width:.45rem;height:.45rem;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red);}
+
+.hero-block h1{font-size:1.9rem;font-weight:900;text-transform:uppercase;letter-spacing:.02rem;line-height:1.12;margin-bottom:.4rem;}
+.session{color:var(--dim);font-size:.95rem;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.06rem;margin-bottom:1.3rem;}
+
+.start-lights{display:flex;gap:.5rem;margin-bottom:1rem;align-items:center;flex-wrap:wrap;}
+.light{width:1rem;height:1rem;border-radius:50%;background:var(--surface2);border:1px solid var(--line);transition:background .3s, box-shadow .3s;}
+.light.on{background:var(--red);box-shadow:0 0 10px var(--red-dim), 0 0 3px var(--red);}
+.lights-label{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.05rem;color:var(--dim);text-transform:uppercase;margin-left:.25rem;}
+
+.countdown{display:flex;gap:.65rem;margin-bottom:1.2rem;}
+.countdown div{flex:1;background:var(--black);border:1px solid var(--line);border-radius:.65rem;text-align:center;padding:.8rem .4rem;}
+.countdown span{display:block;font-family:var(--f-mono);font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums;}
+.countdown small{color:var(--dim);font-size:.65rem;letter-spacing:.1rem;}
+
+.primary-button{
+    border:none;background:var(--red);color:white;font-size:.9rem;font-weight:700;letter-spacing:.1rem;
+    text-transform:uppercase;padding:.95rem;border-radius:.65rem;cursor:pointer;width:100%;font-family:var(--f-display);
+}
+.primary-button:hover{background:#FF1E18;transform:translateY(-1px);box-shadow:0 4px 12px var(--red-dim);}
+.primary-button:active{background:#B80500;transform:translateY(0);}
+
+.driver-block{display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background 0.2s;}
+.driver-block:hover{background:var(--surface2);}
+.driver-block .eyebrow{font-size:.75rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;display:block;}
+.driver h3{margin-bottom:.2rem;font-size:1.15rem;font-weight:700;}
+.driver p{color:var(--dim);font-size:.8rem;letter-spacing:.03rem;text-transform:uppercase;}
+.position{font-family:var(--f-mono);font-size:1.7rem;font-weight:700;color:var(--red);flex-shrink:0;}
+
+/* Bloque En Vivo (Top 4) Clickable en el Inicio */
+.home-live-clickable {
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.home-live-clickable:hover {
+    background: var(--surface2);
+}
+.watch-race-link{
+    display:inline-flex;align-items:center;justify-content:center;margin-top:1rem;padding:.65rem .85rem;
+    border:1px solid var(--red-dim);border-radius:.5rem;background:rgba(225,6,0,.12);color:var(--text);
+    font-size:.72rem;font-weight:700;letter-spacing:.07rem;text-decoration:none;text-transform:uppercase;
+}
+.watch-race-link:hover{background:var(--red);border-color:var(--red);color:white;}
+.app-disclaimer{color:var(--dim);font-size:.68rem;line-height:1.5;text-align:center;padding:.5rem .75rem 1rem;}
+.app-disclaimer a{color:var(--dim);text-decoration:underline;text-underline-offset:2px;}
+
+/* Fila de accesos */
+.actions-row{display:flex;padding:0;}
+.action-item{
+    flex:1;border:none;background:transparent;color:var(--text);display:flex;flex-direction:column;
+    align-items:center;gap:.5rem;padding:1.1rem .3rem;cursor:pointer;border-right:1px solid var(--line);
+    transition: background 0.2s, color 0.2s;
+}
+.action-item:last-child{border-right:none;}
+.action-item:hover{background:var(--surface2);color:var(--red);}
+.action-item:active{background:var(--surface2);}
+.action-item .icon{color:var(--red);width:1.3rem;height:1.3rem;transition:transform 0.2s;}
+.action-item:hover .icon{transform:scale(1.1);}
+.action-item span{font-size:.72rem;font-weight:600;letter-spacing:.02rem;text-transform:uppercase;text-align:center;}
+
+/* Panel visual del fin de semana */
+.weekend-panel{
+    position:relative;overflow:hidden;padding:1.35rem 1.25rem;background:var(--surface);
+    border-bottom:1px solid var(--line);
+}
+.weekend-panel::before{
+    content:'';position:absolute;inset:0;opacity:.28;pointer-events:none;
+    background:
+        linear-gradient(135deg, transparent 0 57%, rgba(225,6,0,.45) 57% 58%, transparent 58%),
+        linear-gradient(45deg, transparent 0 72%, rgba(255,255,255,.08) 72% 73%, transparent 73%);
+}
+.weekend-kicker{position:relative;color:var(--red);font-family:var(--f-mono);font-size:.68rem;font-weight:700;letter-spacing:.12rem;text-transform:uppercase;}
+.weekend-circuit{position:relative;margin:.65rem 0 .2rem;font-size:1.5rem;font-weight:900;letter-spacing:.02rem;line-height:1.05;text-transform:uppercase;}
+.weekend-location{position:relative;color:var(--dim);font-size:.82rem;letter-spacing:.05rem;text-transform:uppercase;}
+.weekend-schedule{position:relative;display:grid;gap:.48rem;margin-top:1.05rem;}
+.weekend-day{display:flex;align-items:baseline;gap:.55rem;}
+.weekend-day-name{min-width:5.8rem;color:var(--text);font-size:.7rem;font-weight:700;letter-spacing:.04rem;text-transform:capitalize;}
+.weekend-sessions{color:var(--dim);font-family:var(--f-mono);font-size:.64rem;line-height:1.45;}
+.weekend-sessions b{color:#FF5A55;font-weight:700;}
+.weekend-footer{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:.75rem;margin-top:1.25rem;}
+.weekend-time{color:var(--text);font-family:var(--f-mono);font-size:.9rem;font-weight:700;}
+.weekend-time small{display:block;margin-top:.18rem;color:var(--red);font-family:var(--f-display);font-size:.62rem;letter-spacing:.08rem;}
+.weekend-link{border:1px solid var(--red-dim);border-radius:.45rem;background:rgba(225,6,0,.1);color:var(--text);padding:.48rem .6rem;font-size:.67rem;font-weight:700;letter-spacing:.06rem;text-transform:uppercase;}
+.weekend-link:hover{background:var(--red);border-color:var(--red);}
+
+.block h2{
+    font-size:.8rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--dim);margin-bottom:1rem;
+    display:flex;justify-content:space-between;align-items:center;
+}
+
+/* ============ OTRAS CAJAS ============ */
+.glass-card{background:var(--surface);border:1px solid var(--line);border-radius:1.15rem;padding:1.25rem;margin-bottom:1rem;}
+.glass-card h2{margin-bottom:1rem;font-size:.8rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--dim);}
+
+/* ============ STANDINGS ============ */
+.standing{display:flex;align-items:center;gap:.85rem;padding:.75rem 0;border-bottom:1px solid var(--line);transition:background 0.2s, padding-left 0.2s;}
+.standing:hover{background:rgba(255,255,255,0.02);padding-left:0.3rem;}
+.standing:last-child{border:none;}
+.standing .pos{color:var(--dim);width:1.4rem;font-family:var(--f-mono);font-size:.9rem;flex-shrink:0;}
+.standing.p1 .pos{color:var(--gold);font-weight:700;}
+.standing.p2 .pos{color:var(--silver);font-weight:700;}
+.standing.p3 .pos{color:var(--bronze);font-weight:700;}
+.standing span:nth-child(2){flex:1;font-size:1rem;font-weight:600;}
+.standing .pts{color:var(--red);font-weight:700;font-family:var(--f-mono);font-size:.9rem;}
+
+/* ============ BOTTOM NAV - LIQUID GLASS ============ */
+.bottom-nav{
+    position:fixed;left:1rem;right:1rem;bottom:calc(1.1rem + env(safe-area-inset-bottom));
+    display:flex;justify-content:space-around;align-items:center;padding:.5rem;
+    border-radius:1.6rem;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(34px) saturate(180%);
+    -webkit-backdrop-filter:blur(34px) saturate(180%);
+    box-shadow:
+        0 12px 36px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.22),
+        inset 0 -1px 0 rgba(255,255,255,.04);
+    z-index:50;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-item{
+    flex: 1;
+    max-width: 4.5rem;
+    height: 2.9rem;border:none;color:rgba(255,255,255,.55);background:transparent;
+    border-radius:1rem;display:flex;align-items:center;justify-content:center;
+    transition:background .25s ease, color .25s ease, transform .2s ease, width 0.3s;
+}
+.nav-item.active{
+    background:rgba(255,255,255,.16);
+    color:var(--red);
+    transform:scale(1.06);
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,.5),
+        0 4px 14px rgba(225,6,0,.3);
+}
+
+html[data-theme="light"] .bottom-nav{
+    background:rgba(255,255,255,.55);
+    border-color:rgba(0,0,0,.12);
+    box-shadow:
+        0 12px 36px rgba(0,0,0,.14),
+        inset 0 1px 0 rgba(255,255,255,.8),
+        inset 0 -1px 0 rgba(0,0,0,.04);
+}
+html[data-theme="light"] .nav-item{color:rgba(0,0,0,.5);}
+html[data-theme="light"] .nav-item.active{
+    background:rgba(0,0,0,.07);
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,.8),
+        0 4px 14px rgba(225,6,0,.22);
+}
+
+/* Label de navegación, visible en modo PC */
+.nav-label {
+    display: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+}
+
+/* ============ TABS / LISTAS ============ */
+.tabs{display:flex;gap:.6rem;margin-bottom:1.1rem;}
+.tab-btn{flex:1;border:1px solid var(--line);padding:.7rem;border-radius:.65rem;background:var(--black);
+    color:var(--dim);font-size:.78rem;font-weight:700;letter-spacing:.05rem;text-transform:uppercase;}
+.tab-btn:hover{color:var(--text);border-color:var(--dim);}
+.tab-btn.active{background:var(--red);color:white;border-color:var(--red);}
+
+.race-item{display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--line);transition:background 0.2s;}
+.race-item:hover{background:rgba(255,255,255,0.01);}
+.race-item:last-child{border:none;}
+.race-item .name{font-size:.95rem;font-weight:600;}
+.race-item .date{color:var(--dim);font-size:.75rem;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.03rem;text-align:right;}
+.race-schedule{min-width:8.7rem;text-align:right;line-height:1.2;}
+.race-date{color:var(--text);font-size:.9rem;font-weight:700;letter-spacing:.04rem;}
+.race-time{display:inline-flex;align-items:center;gap:.35rem;margin-top:.38rem;padding:.32rem .5rem;border:1px solid var(--red-dim);border-radius:.4rem;background:rgba(225,6,0,.12);color:#FF5A55;font-family:var(--f-mono);font-size:.82rem;font-weight:700;letter-spacing:.04rem;}
+.race-time small{color:var(--text);font-family:var(--f-display);font-size:.6rem;font-weight:700;letter-spacing:.06rem;}
+.race-item.next{background:linear-gradient(90deg, rgba(225,6,0,.1), transparent);margin:0 -1.25rem;padding:.85rem 1.25rem;border-radius:.5rem;}
+.race-item.next .name{color:var(--red);}
+
+.driver-row{display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:1rem;transition:background 0.2s, padding-left 0.2s;}
+.driver-row:hover{background:rgba(255,255,255,0.02);padding-left:0.5rem;}
+.driver-row:last-child{border:none;}
+.driver-row.fav{background:rgba(225,6,0,.09);border-radius:.65rem;padding-left:.75rem;padding-right:.75rem;margin:0 -.75rem;border-bottom-color:transparent;}
+.star{color:var(--red);font-family:var(--f-mono);font-size:1.05rem;}
+
+.live-dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--red);display:inline-block;margin-right:.45rem;box-shadow:0 0 8px var(--red);animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+.empty-state{text-align:center;color:var(--dim);padding:1.6rem .6rem;font-size:.9rem;line-height:1.55;}
+.loading{text-align:center;color:var(--dim);padding:1.25rem;font-family:var(--f-mono);font-size:.8rem;letter-spacing:.05rem;text-transform:uppercase;}
+
+/* ============ ELEMENTOS EXTRA EN VIVO ============ */
+.weather-panel{
+    display:grid;grid-template-columns:repeat(3, 1fr);gap:.5rem;margin-bottom:1rem;
+    background:var(--black);border:1px solid var(--line);border-radius:.65rem;padding:.75rem;
+}
+.weather-panel div{text-align:center;}
+.weather-panel div span{display:block;font-size:1.15rem;font-weight:700;font-family:var(--f-mono);color:var(--text);}
+.weather-panel div small{color:var(--dim);font-size:.6rem;text-transform:uppercase;}
+
+.tyre-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:1.2rem;height:1.2rem;border-radius:50%;font-size:.65rem;font-weight:900;
+    color:black;font-family:var(--f-mono);box-shadow:0 0 4px rgba(0,0,0,0.5);
+}
+.tyre-S{background:#ff1e18;color:white;} /* Soft */
+.tyre-M{background:#ffd400;color:black;} /* Medium */
+.tyre-H{background:#f5f5f7;color:black;} /* Hard */
+.tyre-I{background:#00d200;color:white;} /* Inter */
+.tyre-W{background:#0082ff;color:white;} /* Wet */
+
+.sim-control{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;
+    padding:.6rem .8rem;border-radius:.65rem;background:rgba(225,6,0,0.1);border:1px solid var(--red-dim);
+}
+.sim-control span{font-size:.8rem;font-weight:600;}
+.sim-control button{
+    border:none;background:var(--red);color:white;font-size:.7rem;font-weight:700;
+    padding:.35rem .75rem;border-radius:.4rem;text-transform:uppercase;letter-spacing:0.02rem;
+}
+.sim-control button.active{background:#00d200;}
+
+/* ============ REGLAS DE DISEÑO COMPARTIDAS EN MODO PC ============ */
+@media (min-width: 768px) {
+    html:not(.force-mobile) body {
+        padding-bottom: 2rem;
+        padding-left: 17.5rem; 
+    }
+    html:not(.force-mobile) .app {
+        max-width: 64rem;
+        margin: 0;
+        padding: 2.5rem 2rem 0;
+    }
+    html:not(.force-mobile) .bottom-nav {
+        left: 1.5rem; top: 1.5rem; bottom: 1.5rem; right: auto;
+        width: 14.5rem; height: auto;
+        flex-direction: column; justify-content: flex-start;
+        align-items: stretch; padding: 1.5rem 1rem;
+        border-radius: 1.35rem; gap: 0.5rem;
+    }
+    html:not(.force-mobile) .nav-item {
+        width: 100%; height: 3.2rem;
+        max-width: none;
+        justify-content: flex-start; padding-left: 1.25rem;
+        gap: 0.85rem;
+    }
+    html:not(.force-mobile) .nav-label {
+        display: inline-block;
+    }
+    html:not(.force-mobile) .nav-item.active {
+        transform: scale(1.02);
+    }
+    html:not(.force-mobile) .home-card {
+        display: grid; grid-template-columns: 1fr 1fr;
+        gap: 0; border-radius: 1.35rem;
+    }
+    html:not(.force-mobile) .hero-top {
+        grid-column: span 2;
+    }
+    html:not(.force-mobile) .home-card .divider {
+        display: none;
+    }
+    html:not(.force-mobile) #homeLiveDivider {
+        display: none !important;
+    }
+    html:not(.force-mobile) .hero-block {
+        grid-column: 1; grid-row: 1;
+        border-right: 1px solid var(--line);
+        display: flex; flex-direction: column;
+        justify-content: space-between;
+    }
+    html:not(.force-mobile) .driver-block {
+        grid-column: 2; grid-row: 2;
+        border-top: 1px solid var(--line);
+        padding: .9rem 1.25rem;
+        min-height: 7.5rem;
+    }
+    
+    /* Apartado En Vivo en el panel izquierdo del Dashboard de PC */
+    html:not(.force-mobile) #homeLiveBlock {
+        grid-column: 1;
+        grid-row: 2;
+        border-right: 1px solid var(--line);
+        border-top: 1px solid var(--line);
+        padding: 1.5rem 1.25rem;
+    }
+
+    html:not(.force-mobile) .actions-row {
+        grid-column: 2; grid-row: 1;
+        display: grid; grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--line); height: 100%;
+    }
+    html:not(.force-mobile) .weekend-panel {
+        grid-column: 2; grid-row: 1;
+        min-height: 100%; border-bottom: 1px solid var(--line);
+        display:flex; flex-direction:column; justify-content:center;
+    }
+    html:not(.force-mobile) .action-item {
+        border-right: 1px solid var(--line) !important;
+        border-bottom: 1px solid var(--line) !important;
+        padding: 2.2rem 1rem !important; justify-content: center;
+    }
+    html:not(.force-mobile) .action-item:nth-child(2n) {
+        border-right: none !important;
+    }
+    html:not(.force-mobile) .action-item:nth-child(3), 
+    html:not(.force-mobile) .action-item:nth-child(4) {
+        border-bottom: none !important;
+    }
+    html:not(.force-mobile) .home-card .block:last-child {
+        grid-column: 1 / span 2; grid-row: 3;
+        padding: 1.5rem 1.25rem;
+    }
+}
+
+/* Modo PC FORZADO (independientemente del ancho de pantalla) */
+html.force-pc body {
+    padding-bottom: 2rem !important;
+    padding-left: 17.5rem !important; 
+}
+html.force-pc .app {
+    max-width: 64rem !important;
+    margin: 0 !important;
+    padding: 2.5rem 2rem 0 !important;
+}
+html.force-pc .bottom-nav {
+    position: fixed !important;
+    left: 1.5rem !important; top: 1.5rem !important; bottom: 1.5rem !important; right: auto !important;
+    width: 14.5rem !important; height: auto !important;
+    flex-direction: column !important; justify-content: flex-start !important;
+    align-items: stretch !important; padding: 1.5rem 1rem !important;
+    border-radius: 1.35rem !important; gap: 0.5rem !important;
+}
+html.force-pc .nav-item {
+    width: 100% !important; height: 3.2rem !important;
+    max-width: none !important;
+    justify-content: flex-start !important; padding-left: 1.25rem !important;
+    gap: 0.85rem !important;
+}
+html.force-pc .nav-label {
+    display: inline-block !important;
+}
+html.force-pc .nav-item.active {
+    transform: scale(1.02) !important;
+}
+html.force-pc .home-card {
+    display: grid !important; grid-template-columns: 1fr 1fr !important;
+    gap: 0 !important; border-radius: 1.35rem !important;
+}
+html.force-pc .hero-top {
+    grid-column: span 2 !important;
+}
+html.force-pc .home-card .divider {
+    display: none !important;
+}
+html.force-pc #homeLiveDivider {
+    display: none !important;
+}
+html.force-pc .hero-block {
+    grid-column: 1 !important; grid-row: 1 !important;
+    border-right: 1px solid var(--line) !important;
+    display: flex !important; flex-direction: column !important;
+    justify-content: space-between !important;
+}
+html.force-pc .driver-block {
+    grid-column: 2 !important; grid-row: 2 !important;
+    border-top: 1px solid var(--line) !important;
+    padding: .9rem 1.25rem !important;
+    min-height: 7.5rem !important;
+}
+html.force-pc #homeLiveBlock {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    border-right: 1px solid var(--line) !important;
+    border-top: 1px solid var(--line) !important;
+    padding: 1.5rem 1.25rem !important;
+}
+html.force-pc .actions-row {
+    grid-column: 2 !important; grid-row: 1 !important;
+    display: grid !important; grid-template-columns: 1fr 1fr !important;
+    border-bottom: 1px solid var(--line) !important; height: 100% !important;
+}
+html.force-pc .weekend-panel {
+    grid-column: 2 !important; grid-row: 1 !important;
+    min-height: 100% !important; border-bottom: 1px solid var(--line) !important;
+    display:flex !important; flex-direction:column !important; justify-content:center !important;
+}
+html.force-pc .action-item {
+    border-right: 1px solid var(--line) !important;
+    border-bottom: 1px solid var(--line) !important;
+    padding: 2.2rem 1rem !important; justify-content: center !important;
+}
+html.force-pc .action-item:nth-child(2n) {
+    border-right: none !important;
+}
+html.force-pc .action-item:nth-child(3), 
+html.force-pc .action-item:nth-child(4) {
+    border-bottom: none !important;
+}
+html.force-pc .home-card .block:last-child {
+    grid-column: 1 / span 2 !important; grid-row: 3 !important;
+    padding: 1.5rem 1.25rem !important;
+}
+
+/* Modo Móvil FORZADO (invalida las reglas de desktop incluso en monitores) */
+html.force-mobile body {
+    padding-bottom: calc(9rem + env(safe-area-inset-bottom)) !important;
+    padding-left: 0 !important;
+}
+html.force-mobile .app {
+    max-width: 34rem !important;
+    margin: auto !important;
+    padding: 0 1rem !important;
+}
+html.force-mobile .header-glass {
+    padding-top: calc(env(safe-area-inset-top) + 12px) !important;
+}
+html.force-mobile .bottom-nav {
+    position: fixed !important;
+    left: 1rem !important; right: 1rem !important; bottom: calc(1.1rem + env(safe-area-inset-bottom)) !important; top: auto !important;
+    width: auto !important; height: auto !important;
+    flex-direction: row !important; justify-content: space-around !important;
+    align-items: center !important; padding: .5rem !important;
+    border-radius: 1.6rem !important; box-shadow: 0 12px 36px rgba(0,0,0,.55) !important;
+}
+html.force-mobile .nav-item {
+    flex: 1 !important;
+    max-width: 4.5rem !important;
+    height: 2.9rem !important;
+    justify-content: center !important; padding-left: 0 !important;
+}
+html.force-mobile .nav-label {
+    display: none !important;
+}
+html.force-mobile .home-card {
+    display: block !important;
+}
+html.force-mobile .home-card .divider {
+    display: block !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app" id="appRoot">
+
+    <header class="header-glass">
+        <div class="logo">F-PRIX<span class="bar"></span></div>
+        <div class="header-actions">
+            <!-- Selector de Diseño (PC/Móvil/Auto) -->
+            <button class="icon-btn" id="layoutToggle" aria-label="Cambiar vista (Auto/PC/Móvil)">
+                <!-- El icono se renderiza dinámicamente con JS -->
+            </button>
+            <button class="icon-btn" id="themeToggle" aria-label="Cambiar modo claro/oscuro"></button>
+            <div class="font-control">
+                <button id="fontDec" aria-label="Achicar letra">A</button>
+                <button id="fontInc" aria-label="Agrandar letra">A</button>
+            </div>
+            <button class="icon-btn" id="refreshBtn" aria-label="Actualizar">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 4v5h5M20 20v-5h-5"/><path d="M5.5 9a7 7 0 0112-3.5M18.5 15a7 7 0 01-12 3.5"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===================== VISTA: HOME ===================== -->
+    <section class="view active" id="view-home" data-view="home">
+
+        <div class="home-card">
+            <div class="hero-top"></div>
+
+            <div class="block hero-block">
+                <div>
+                    <span class="race-tag">Próxima carrera</span>
+                    <h1 id="heroTitle">Cargando...</h1>
+                    <p class="session" id="heroSession">-</p>
+                </div>
+
+                <div>
+                    <div class="start-lights" id="startLights" aria-hidden="true">
+                        <div class="light"></div><div class="light"></div><div class="light"></div>
+                        <div class="light"></div><div class="light"></div>
+                        <span class="lights-label" id="lightsLabel"></span>
+                    </div>
+
+                    <div class="countdown">
+                        <div><span id="cdDays">--</span><small>DÍAS</small></div>
+                        <div><span id="cdHours">--</span><small>HORAS</small></div>
+                        <div><span id="cdMin">--</span><small>MIN</small></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <section class="weekend-panel" aria-label="Información del fin de semana de carrera">
+                <span class="weekend-kicker">Próximo desafío</span>
+                <h2 class="weekend-circuit" id="weekendCircuit">Cargando circuito...</h2>
+                <p class="weekend-location" id="weekendLocation">Calendario de Fórmula 1</p>
+                <div class="weekend-schedule" id="weekendSchedule" aria-live="polite">
+                    <div class="weekend-day"><span class="weekend-day-name">Agenda</span><span class="weekend-sessions">Cargando sesiones...</span></div>
+                </div>
+                <div class="weekend-footer">
+                    <div class="weekend-time" id="weekendTime">--:--<small>Hora Chile</small></div>
+                    <button class="weekend-link" data-goto="calendario">Ver calendario</button>
+                </div>
+            </section>
+
+            <div class="divider" id="homeLiveDivider" style="display: none;"></div>
+
+            <!-- PANEL DE MODO EN VIVO: Solo visible en carreras activas o simulación -->
+            <div class="block home-live-clickable" id="homeLiveBlock">
+                <h2><span><span class="live-dot"></span>Modo en vivo · Top 4</span> <small style="font-size:0.65rem; font-weight:600; color:var(--dim);">VER CARRERA</small></h2>
+                <p id="homeLiveMeta" style="margin:-.45rem 0 .8rem; color:var(--dim); font-family:var(--f-mono); font-size:.68rem; letter-spacing:.03rem; text-transform:uppercase;"></p>
+                <div id="homeLiveTop4" class="empty-state">Esperando una carrera en vivo...</div>
+                <a class="watch-race-link" href="https://www.disneyplus.com/" target="_blank" rel="noopener noreferrer">Abrir transmisión</a>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="block driver-block" id="favDriverBox">
+                <div>
+                    <span class="eyebrow">Tu piloto</span>
+                    <h3 id="favDriverName">Elegí tu piloto</h3>
+                    <p id="favDriverTeam">Tocá para ir a Pilotos</p>
+                </div>
+                <div class="position" id="favDriverPos">-</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="block">
+                <h2>Campeonato de pilotos</h2>
+                <div id="homeStandings" class="loading">Cargando...</div>
+            </div>
+        </div>
+
+        <p class="app-disclaimer">
+            Aplicación personal no oficial. No está afiliada ni respaldada por Formula 1, FIA, Disney+ ni sus afiliados.<br>
+            Datos: <a href="https://jolpi.ca/" target="_blank" rel="noopener noreferrer">Jolpica F1</a> y <a href="https://openf1.org/" target="_blank" rel="noopener noreferrer">OpenF1</a>.
+        </p>
+
+    </section>
+
+    <!-- ===================== VISTA: CALENDARIO ===================== -->
+    <section class="view" id="view-calendario" data-view="calendario">
+        <section class="glass-card">
+            <h2>Calendario {{YEAR}}</h2>
+            <div id="calendarList" class="loading">Cargando...</div>
+        </section>
+    </section>
+
+    <!-- ===================== VISTA: EN VIVO ===================== -->
+    <section class="view" id="view-envivo" data-view="envivo">
+        <section class="glass-card">
+            <h2>En vivo</h2>
+            <!-- Selector interactivo de simulación -->
+            <div class="sim-control">
+                <span>¿No hay carrera real activa?</span>
+                <button id="simToggle">Simular Carrera</button>
+            </div>
+            <div id="liveContent" class="loading">Buscando sesión activa...</div>
+        </section>
+    </section>
+
+    <!-- ===================== VISTA: CAMPEONATO ===================== -->
+    <section class="view" id="view-campeonato" data-view="campeonato">
+        <section class="glass-card">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="drivers">Pilotos</button>
+                <button class="tab-btn" data-tab="constructors">Equipos</button>
+            </div>
+            <div id="champContent" class="loading">Cargando...</div>
+        </section>
+    </section>
+
+    <!-- ===================== VISTA: PILOTOS ===================== -->
+    <section class="view" id="view-pilotos" data-view="pilotos">
+        <section class="glass-card">
+            <h2>Pilotos {{YEAR}}</h2>
+            <div id="driversList" class="loading">Cargando...</div>
+        </section>
+    </section>
+
+</div>
+
+<nav class="bottom-nav">
+    <button class="nav-item active" data-goto="home" aria-label="Inicio">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3v6.5M4.2 17.5L9.5 13.5M19.8 17.5L14.5 13.5"/></svg>
+        <span class="nav-label">Inicio</span>
+    </button>
+    <button class="nav-item" data-goto="calendario" aria-label="Calendario">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        <span class="nav-label">Calendario</span>
+    </button>
+    <button class="nav-item" data-goto="envivo" aria-label="En vivo">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.2"/><path d="M8.5 8.5a5 5 0 000 7M15.5 8.5a5 5 0 010 7M5.5 5.5a9 9 0 000 13M18.5 5.5a9 9 0 010 13"/></svg>
+        <span class="nav-label">En vivo</span>
+    </button>
+    <button class="nav-item" data-goto="campeonato" aria-label="Campeonato">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 01-10 0V4z"/><path d="M7 5H4a3 3 0 003 3M17 5h3a3 3 0 01-3 3"/><path d="M12 13v3M9 20h6M10 16.5h4v3.5h-4z"/></svg>
+        <span class="nav-label">Torneo</span>
+    </button>
+    <button class="nav-item" data-goto="pilotos" aria-label="Pilotos">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 14a8 8 0 0116 0v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z"/><path d="M4 14h16M9 14v-2a3 3 0 016 0v2"/></svg>
+        <span class="nav-label">Pilotos</span>
+    </button>
+</nav>
+
+<script>
+// ==========================================
+// F-PRIX v5.7 - app.js (Modos Móvil y PC con En Vivo optimizado)
+// ==========================================
+
+const JOLPICA = "https://api.jolpi.ca/ergast/f1";
+const OPENF1 = "https://api.openf1.org/v1";
+const CACHE_TTL = 1000 * 60 * 60; // 1 hora de cache
+
+const VIEW_ORDER = ["home", "calendario", "envivo", "campeonato", "pilotos"];
+
+let raceDate = null;
+let calendarData = [];
+let driverStandingsData = [];
+let constructorStandingsData = [];
+let driversData = [];
+
+// Estado de la Simulación en Vivo (Modo Demo)
+let simInterval = null;
+let isSimActive = false;
+let simDrivers = [];
+
+document.addEventListener("DOMContentLoaded", () => {
+    initTheme();
+    initLayoutMode(); // Selector de PC/Móvil
+    initFontControl();
+    initNavigation();
+    initTabs();
+    initFavDriverClick();
+    initSwipe();
+    
+    // Configuración del botón de simulación
+    document.getElementById("simToggle").addEventListener("click", toggleSimulation);
+    document.getElementById("refreshBtn").addEventListener("click", hardRefresh);
+
+    // Al hacer clic en el Top 4 de inicio, redirige a la vista completa de En Vivo
+    document.getElementById("homeLiveBlock").addEventListener("click", () => {
+        goto("envivo");
+    });
+    document.querySelector(".watch-race-link").addEventListener("click", (event) => {
+        event.stopPropagation();
+    });
+
+    loadCalendar();
+    loadStandings();
+    loadDrivers();
+    loadLive(); // Carga de fondo para saber si hay carrera real activa y mostrar Top 4 en inicio
+    setInterval(() => {
+        if (!isSimActive) loadLive();
+    }, 30000);
+    setInterval(updateCountdown, 1000);
+});
+
+// ==========================
+// CONTROL DE DISEÑO (MÓVIL / PC / AUTO)
+// ==========================
+
+const ICON_AUTO = '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="12" height="10" rx="1.5"/><rect x="15" y="8" width="7" height="12" rx="1"/><path d="M2 17h10M6 20h2"/></svg>';
+const ICON_PHONE = '<svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>';
+const ICON_DESKTOP = '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>';
+
+function applyLayoutMode(mode) {
+    const htmlEl = document.documentElement;
+    htmlEl.classList.remove("force-pc", "force-mobile");
+
+    let icon = ICON_AUTO;
+    let badge = '';
+
+    if (mode === "pc") {
+        htmlEl.classList.add("force-pc");
+        icon = ICON_DESKTOP;
+        badge = '<span class="badge-dot"></span>';
+    } else if (mode === "mobile") {
+        htmlEl.classList.add("force-mobile");
+        icon = ICON_PHONE;
+        badge = '<span class="badge-dot"></span>';
+    } else {
+        icon = ICON_AUTO;
+    }
+
+    const btn = document.getElementById("layoutToggle");
+    btn.innerHTML = icon + badge;
+    btn.title = "Diseño actual: " + (mode === "auto" ? "Automático/Adaptativo" : mode === "pc" ? "Forzar PC" : "Forzar Móvil");
+
+    try { localStorage.setItem("fprix_layout_mode", mode); } catch (e) {}
+}
+
+function initLayoutMode() {
+    const savedMode = localStorage.getItem("fprix_layout_mode") || "auto";
+    applyLayoutMode(savedMode);
+
+    document.getElementById("layoutToggle").addEventListener("click", () => {
+        const curMode = localStorage.getItem("fprix_layout_mode") || "auto";
+        let nextMode = "auto";
+
+        if (curMode === "auto") {
+            nextMode = "pc";
+        } else if (curMode === "pc") {
+            nextMode = "mobile";
+        } else {
+            nextMode = "auto";
+        }
+
+        applyLayoutMode(nextMode);
+    });
+}
+
+// ==========================
+// MODO CLARO / OSCURO
+// ==========================
+
+const ICON_SUN = '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>';
+const ICON_MOON = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 119.5 4a7 7 0 0010.5 10.5z"/></svg>';
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    try { localStorage.setItem("fprix_theme", theme); } catch (e) {}
+
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) metaTheme.setAttribute("content", theme === "light" ? "#ffffff" : "#000000");
+
+    const btn = document.getElementById("themeToggle");
+    btn.innerHTML = theme === "light" ? ICON_MOON : ICON_SUN;
+}
+
+function initTheme() {
+    const saved = localStorage.getItem("fprix_theme") || "dark";
+    applyTheme(saved);
+
+    document.getElementById("themeToggle").addEventListener("click", () => {
+        const cur = document.documentElement.getAttribute("data-theme") || "dark";
+        applyTheme(cur === "dark" ? "light" : "dark");
+    });
+}
+
+// ==========================
+// TAMAÑO DE LETRA
+// ==========================
+
+const FONT_MIN = 0.85, FONT_MAX = 1.5, FONT_STEP = 0.1;
+
+function applyFontScale(scale) {
+    document.documentElement.style.fontSize = (16 * scale) + "px";
+    try { localStorage.setItem("fprix_fontscale", scale); } catch (e) {}
+}
+
+function initFontControl() {
+    let scale = parseFloat(localStorage.getItem("fprix_fontscale")) || 1.15;
+    applyFontScale(scale);
+
+    document.getElementById("fontDec").addEventListener("click", () => {
+        scale = Math.max(FONT_MIN, +(scale - FONT_STEP).toFixed(2));
+        applyFontScale(scale);
+    });
+    document.getElementById("fontInc").addEventListener("click", () => {
+        scale = Math.min(FONT_MAX, +(scale + FONT_STEP).toFixed(2));
+        applyFontScale(scale);
+    });
+}
+
+// ==========================
+// CACHE helper
+// ==========================
+
+async function cachedFetch(key, url, ttl = CACHE_TTL) {
+    try {
+        const raw = localStorage.getItem(key);
+        if (raw) {
+            const cached = JSON.parse(raw);
+            if (Date.now() - cached.t < ttl) return cached.d;
+        }
+    } catch (e) {}
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Error de red: " + res.status);
+    const data = await res.json();
+
+    try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), d: data })); } catch (e) {}
+    return data;
+}
+
+function hardRefresh() {
+    ["fprix_calendar", "fprix_driverstd", "fprix_constructorstd", "fprix_drivers"]
+        .forEach(k => localStorage.removeItem(k));
+    loadCalendar();
+    loadStandings();
+    loadDrivers();
+    if (currentView() === "envivo") loadLive();
+}
+
+// ==========================
+// CALENDARIO
+// ==========================
+
+async function loadCalendar() {
+    try {
+        const data = await cachedFetch("fprix_calendar", `${JOLPICA}/current.json`);
+        calendarData = data.MRData.RaceTable.Races;
+        renderCalendar();
+        setNextRace();
+    } catch (e) {
+        document.getElementById("calendarList").innerHTML =
+            `<div class="empty-state">No se pudo cargar el calendario.<br>Revisá tu conexión.</div>`;
+        document.getElementById("heroTitle").textContent = "Sin conexión";
+    }
+}
+
+function formatChileDay(date) {
+    const label = date.toLocaleDateString("es-CL", {
+        weekday: "long", day: "numeric", month: "long", timeZone: "America/Santiago"
+    });
+    return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
+function formatChileTime(date) {
+    return date.toLocaleTimeString("es-CL", {
+        hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Santiago"
+    });
+}
+
+function renderWeekendSchedule(sessions) {
+    const days = new Map();
+
+    sessions.forEach(([name, detail]) => {
+        const date = new Date(`${detail.date}T${detail.time || "14:00:00Z"}`);
+        const day = formatChileDay(date);
+        if (!days.has(day)) days.set(day, []);
+        days.get(day).push(`${name} <b>${formatChileTime(date)}</b>`);
+    });
+
+    document.getElementById("weekendSchedule").innerHTML = [...days.entries()].map(([day, items]) => `
+        <div class="weekend-day">
+            <span class="weekend-day-name">${day}</span>
+            <span class="weekend-sessions">${items.join(" · ")}</span>
+        </div>
+    `).join("") || `<div class="weekend-day"><span class="weekend-sessions">Agenda aún no disponible.</span></div>`;
+}
+
+function setNextRace() {
+    const now = new Date();
+    const next = calendarData.find(r => {
+        const dt = new Date(`${r.date}T${r.time || "14:00:00Z"}`);
+        return dt.getTime() > now.getTime();
+    });
+
+    if (!next) {
+        document.getElementById("heroTitle").textContent = "Temporada finalizada";
+        document.getElementById("heroSession").textContent = "-";
+        document.getElementById("startLights").style.display = "none";
+        document.getElementById("weekendCircuit").textContent = "Temporada finalizada";
+        document.getElementById("weekendLocation").textContent = "Volvemos para la próxima carrera";
+        document.getElementById("weekendTime").innerHTML = `--:--<small>Hora Chile</small>`;
+        document.getElementById("weekendSchedule").innerHTML = `<div class="weekend-day"><span class="weekend-sessions">No hay más sesiones programadas.</span></div>`;
+        return;
+    }
+
+    raceDate = new Date(`${next.date}T${next.time || "14:00:00Z"}`);
+    document.getElementById("heroTitle").textContent = next.raceName.toUpperCase();
+    document.getElementById("weekendCircuit").textContent = next.Circuit.circuitName;
+    document.getElementById("weekendLocation").textContent = `${next.Circuit.Location.locality} · ${next.Circuit.Location.country}`;
+    const weekendTime = raceDate.toLocaleTimeString("es-CL", {
+        hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Santiago"
+    });
+    document.getElementById("weekendTime").innerHTML = `${weekendTime}<small>Hora Chile · Carrera</small>`;
+
+    const sessions = [
+        ["Práctica libre 1", next.FirstPractice],
+        ["Práctica libre 2", next.SecondPractice],
+        ["Práctica libre 3", next.ThirdPractice],
+        ["Clasificación sprint", next.SprintQualifying],
+        ["Carrera sprint", next.Sprint],
+        ["Clasificación oficial", next.Qualifying],
+        ["Carrera principal", { date: next.date, time: next.time }]
+    ].filter(s => s[1] && s[1].date);
+
+    renderWeekendSchedule(sessions);
+
+    const nextSession = sessions.find(s => {
+        const dt = new Date(`${s[1].date}T${s[1].time || "14:00:00Z"}`);
+        return dt.getTime() > now.getTime();
+    }) || sessions[sessions.length - 1];
+
+    document.getElementById("heroSession").textContent = nextSession[0];
+    updateCountdown();
+}
+
+function updateCountdown() {
+    if (!raceDate) return;
+    const diff = raceDate.getTime() - Date.now();
+
+    if (diff <= 0) {
+        document.getElementById("cdDays").textContent = "00";
+        document.getElementById("cdHours").textContent = "00";
+        document.getElementById("cdMin").textContent = "00";
+        updateStartLights(0, true);
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const min = Math.floor((diff / (1000 * 60)) % 60);
+
+    document.getElementById("cdDays").textContent = String(days).padStart(2, "0");
+    document.getElementById("cdHours").textContent = String(hours).padStart(2, "0");
+    document.getElementById("cdMin").textContent = String(min).padStart(2, "0");
+
+    updateStartLights(days, false);
+}
+
+function updateStartLights(daysLeft, isLive) {
+    const lights = document.querySelectorAll(".light");
+    const label = document.getElementById("lightsLabel");
+
+    const litCount = isLive ? 5 : Math.max(0, Math.min(5, 5 - daysLeft));
+
+    lights.forEach((l, i) => l.classList.toggle("on", i < litCount));
+
+    if (isLive) label.textContent = "¡Luces apagadas!";
+    else if (litCount === 0) label.textContent = "";
+    else label.textContent = `Faltan ${daysLeft} día${daysLeft === 1 ? "" : "s"}`;
+}
+
+// ==========================
+// RENDER CALENDARIO (Hora de Chile America/Santiago)
+// ==========================
+
+function renderCalendar() {
+    const now = new Date();
+    let nextFound = false;
+
+    const html = calendarData.map(r => {
+        const dt = new Date(`${r.date}T${r.time || "14:00:00Z"}`);
+        const isNext = !nextFound && dt.getTime() > now.getTime();
+        if (isNext) nextFound = true;
+
+        const optionsDate = { 
+            day: "2-digit", 
+            month: "short", 
+            timeZone: "America/Santiago" 
+        };
+        const dateStr = dt.toLocaleDateString("es-CL", optionsDate);
+
+        const optionsTime = { 
+            hour: "2-digit", 
+            minute: "2-digit", 
+            hour12: false, 
+            timeZone: "America/Santiago" 
+        };
+        const timeStr = dt.toLocaleTimeString("es-CL", optionsTime);
+
+        return `<div class="race-item ${isNext ? "next" : ""}">
+            <div>
+                <div class="name">R${r.round} · ${r.raceName}</div>
+                <div class="date">${r.Circuit.circuitName}</div>
+            </div>
+            <div class="race-schedule">
+                <div class="race-date">${dateStr}</div>
+                <div class="race-time">${timeStr} <small>HORA CHILE</small></div>
+            </div>
+        </div>`;
+    }).join("");
+
+    document.getElementById("calendarList").innerHTML = html || `<div class="empty-state">Sin carreras.</div>`;
+
+    const yearNow = calendarData[0] ? calendarData[0].season : new Date().getFullYear();
+    document.querySelectorAll("h2").forEach(h => {
+        h.innerHTML = h.innerHTML.replace("{{YEAR}}", yearNow);
+    });
+}
+
+// ==========================
+// STANDINGS
+// ==========================
+
+async function loadStandings() {
+    try {
+        const [d, c] = await Promise.all([
+            cachedFetch("fprix_driverstd", `${JOLPICA}/current/driverStandings.json`),
+            cachedFetch("fprix_constructorstd", `${JOLPICA}/current/constructorStandings.json`)
+        ]);
+
+        driverStandingsData = d.MRData.StandingsTable.StandingsLists[0]?.DriverStandings || [];
+        constructorStandingsData = c.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings || [];
+
+        renderHomeStandingsPreview();
+        renderChampionship("drivers");
+        applyFavDriver();
+    } catch (e) {
+        document.getElementById("homeStandings").innerHTML = `<div class="empty-state">No se pudo cargar el campeonato.</div>`;
+        document.getElementById("champContent").innerHTML = `<div class="empty-state">No se pudo cargar el campeonato.</div>`;
+    }
+}
+
+function podiumClass(pos) {
+    if (pos == 1) return "p1";
+    if (pos == 2) return "p2";
+    if (pos == 3) return "p3";
+    return "";
+}
+
+function renderHomeStandingsPreview() {
+    const top3 = driverStandingsData.slice(0, 3);
+    document.getElementById("homeStandings").innerHTML = top3.map(s => `
+        <div class="standing ${podiumClass(s.position)}">
+            <span class="pos">${s.position}</span>
+            <span>${s.Driver.familyName}</span>
+            <span class="pts">${s.points}</span>
+        </div>
+    `).join("") || `<div class="empty-state">Sin datos aún.</div>`;
+}
+
+function renderChampionship(type) {
+    const el = document.getElementById("champContent");
+    if (type === "drivers") {
+        el.innerHTML = driverStandingsData.map(s => `
+            <div class="standing ${podiumClass(s.position)}">
+                <span class="pos">${s.position}</span>
+                <span>${s.Driver.givenName} ${s.Driver.familyName}</span>
+                <span class="pts">${s.points}</span>
+            </div>
+        `).join("") || `<div class="empty-state">Sin datos.</div>`;
+    } else {
+        el.innerHTML = constructorStandingsData.map(s => `
+            <div class="standing ${podiumClass(s.position)}">
+                <span class="pos">${s.position}</span>
+                <span>${s.Constructor.name}</span>
+                <span class="pts">${s.points}</span>
+            </div>
+        `).join("") || `<div class="empty-state">Sin datos.</div>`;
+    }
+}
+
+function initTabs() {
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderChampionship(btn.dataset.tab);
+        });
+    });
+}
+
+// ==========================
+// PILOTOS + FAVORITO
+// ==========================
+
+async function loadDrivers() {
+    try {
+        const data = await cachedFetch("fprix_drivers", `${JOLPICA}/current/drivers.json`);
+        driversData = data.MRData.DriverTable.Drivers;
+        renderDrivers();
+        applyFavDriver();
+    } catch (e) {
+        document.getElementById("driversList").innerHTML = `<div class="empty-state">No se pudo cargar la lista de pilotos.</div>`;
+    }
+}
+
+function renderDrivers() {
+    const fav = localStorage.getItem("fprix_fav_driver");
+    document.getElementById("driversList").innerHTML = driversData.map(d => {
+        const isFav = d.driverId === fav;
+        return `<div class="driver-row ${isFav ? "fav" : ""}" data-driver="${d.driverId}" tabindex="0">
+            <div>${d.givenName} ${d.familyName}</div>
+            <div class="star">${isFav ? "★" : "☆"}</div>
+        </div>`;
+    }).join("") || `<div class="empty-state">Sin pilotos.</div>`;
+
+    document.querySelectorAll(".driver-row").forEach(row => {
+        row.addEventListener("click", () => {
+            localStorage.setItem("fprix_fav_driver", row.dataset.driver);
+            renderDrivers();
+            applyFavDriver();
+        });
+    });
+}
+
+function initFavDriverClick() {
+    document.getElementById("favDriverBox").addEventListener("click", () => goto("pilotos"));
+}
+
+function applyFavDriver() {
+    const favId = localStorage.getItem("fprix_fav_driver");
+    if (!favId) return;
+
+    const standing = driverStandingsData.find(s => s.Driver.driverId === favId);
+    if (!standing) return;
+
+    document.getElementById("favDriverName").textContent = `${standing.Driver.givenName} ${standing.Driver.familyName}`;
+    document.getElementById("favDriverTeam").textContent = standing.Constructors?.[0]?.name || "";
+    document.getElementById("favDriverPos").textContent = "P" + standing.position;
+}
+
+// =============================================================
+// SECCIÓN EN VIVO: TELEMETRÍA (POPULA EN VIVO Y TOP 4 DE INICIO)
+// =============================================================
+
+async function loadLive() {
+    if (isSimActive) return; // Si la simulación está activa, controla sus propios renderizados.
+
+    const el = document.getElementById("liveContent");
+    const homeLiveBlock = document.getElementById("homeLiveBlock");
+    const homeLiveDivider = document.getElementById("homeLiveDivider");
+    const homeLiveTop4 = document.getElementById("homeLiveTop4");
+    const homeLiveMeta = document.getElementById("homeLiveMeta");
+
+    if (el) el.innerHTML = `<div class="loading">Buscando sesión activa...</div>`;
+
+    try {
+        // 1. Obtener última sesión de telemetría de OpenF1
+        const sessions = await fetch(`${OPENF1}/sessions?session_key=latest`).then(r => r.json());
+        const session = sessions[0];
+        if (!session) throw new Error("no session");
+
+        const now = new Date();
+        const start = new Date(session.date_start);
+        const end = new Date(session.date_end);
+        const isLive = now >= start && now <= end;
+
+        // Sin sesión activa, el panel permanece visible e informa el estado.
+        if (!isLive) {
+            homeLiveBlock.style.display = "block";
+            homeLiveDivider.style.display = "block";
+            if (homeLiveMeta) homeLiveMeta.textContent = "Sin carrera activa";
+            if (homeLiveTop4) homeLiveTop4.innerHTML = `<div class="empty-state">Las posiciones de los cuatro primeros aparecerán aquí cuando comience la carrera.</div>`;
+            if (el) {
+                el.innerHTML = `
+                    <div class="empty-state">
+                        No hay sesión en vivo ahora mismo.<br>
+                        <small style="color: var(--dim);">Última guardada: ${session.session_name} (${session.location})</small>
+                    </div>
+                `;
+            }
+            return;
+        }
+
+        // 2. Si hay sesión en vivo real: Cargar clima, posiciones y compuestos
+        let weatherHTML = '';
+        try {
+            const weather = await fetch(`${OPENF1}/weather?session_key=latest`).then(r => r.json());
+            if (weather && weather.length > 0) {
+                const latestW = weather[weather.length - 1];
+                weatherHTML = `
+                    <div class="weather-panel">
+                        <div><span>${latestW.track_temperature}°C</span><small>Pista</small></div>
+                        <div><span>${latestW.air_temperature}°C</span><small>Aire</small></div>
+                        <div><span>${latestW.humidity}%</span><small>Humedad</small></div>
+                    </div>
+                `;
+            }
+        } catch (e) {
+            console.log("No weather data");
+        }
+
+        const [positions, drivers, stints] = await Promise.all([
+            fetch(`${OPENF1}/position?session_key=latest`).then(r => r.json()),
+            fetch(`${OPENF1}/drivers?session_key=latest`).then(r => r.json()),
+            fetch(`${OPENF1}/stints?session_key=latest`).then(r => r.json())
+        ]);
+
+        const latestByDriver = {};
+        positions.forEach(p => {
+            if (!latestByDriver[p.driver_number] || new Date(p.date) > new Date(latestByDriver[p.driver_number].date)) {
+                latestByDriver[p.driver_number] = p;
+            }
+        });
+
+        // Agrupar neumáticos actuales
+        const tyreByDriver = {};
+        stints.forEach(s => {
+            if (!tyreByDriver[s.driver_number] || s.stint_number > tyreByDriver[s.driver_number].stint_number) {
+                tyreByDriver[s.driver_number] = s;
+            }
+        });
+
+        // Ordenar pilotos por posición
+        const sortedDrivers = Object.values(latestByDriver)
+            .sort((a, b) => a.position - b.position);
+
+        // Renderizado Vista de Carrera Completa (En Vivo tab)
+        if (el) {
+            const rows = sortedDrivers.map(p => {
+                const d = drivers.find(dr => dr.driver_number === p.driver_number);
+                const name = d ? d.broadcast_name : "Piloto #" + p.driver_number;
+                const teamColor = d && d.team_colour ? `#${d.team_colour}` : 'var(--line)';
+                
+                const driverStint = tyreByDriver[p.driver_number];
+                const compoundLetter = driverStint && driverStint.compound ? driverStint.compound[0] : '?';
+                const tyreClass = ['S','M','H','I','W'].includes(compoundLetter) ? `tyre-${compoundLetter}` : '';
+
+                return `
+                    <div class="standing ${podiumClass(p.position)}" style="border-left: 4px solid ${teamColor}; padding-left: .5rem;">
+                        <span class="pos">${p.position}</span>
+                        <span style="font-weight: 700;">${name}</span>
+                        <span style="margin-left:auto; display:flex; gap:.5rem; align-items:center;">
+                            ${compoundLetter !== '?' ? `<span class="tyre-badge ${tyreClass}">${compoundLetter}</span>` : ''}
+                        </span>
+                    </div>
+                `;
+            }).join("");
+
+            el.innerHTML = `
+                ${weatherHTML}
+                <div style="margin-bottom:1rem;font-family:var(--f-mono);font-size:.85rem;letter-spacing:.03rem;">
+                    <span class="live-dot"></span>${session.session_name.toUpperCase()} · ${session.location}
+                </div>
+                ${rows || `<div class="empty-state">Sin datos de posiciones aún.</div>`}
+            `;
+        }
+
+        // Renderizado del Apartado de Inicio (Muestra los Primeros 4)
+        if (sortedDrivers.length > 0) {
+            homeLiveBlock.style.display = "block";
+            homeLiveDivider.style.display = "block";
+            if (homeLiveMeta) homeLiveMeta.textContent = `${session.session_name} · ${session.location}`;
+
+            const top4Drivers = sortedDrivers.slice(0, 4);
+            homeLiveTop4.innerHTML = top4Drivers.map(p => {
+                const d = drivers.find(dr => dr.driver_number === p.driver_number);
+                const name = d ? d.broadcast_name : "Piloto #" + p.driver_number;
+                const teamColor = d && d.team_colour ? `#${d.team_colour}` : 'var(--line)';
+                
+                const driverStint = tyreByDriver[p.driver_number];
+                const compoundLetter = driverStint && driverStint.compound ? driverStint.compound[0] : '?';
+                const tyreClass = ['S','M','H','I','W'].includes(compoundLetter) ? `tyre-${compoundLetter}` : '';
+
+                return `
+                    <div class="standing ${podiumClass(p.position)}" style="border-left: 4px solid ${teamColor}; padding-left: .5rem; border-bottom: 1px solid var(--line);">
+                        <span class="pos">${p.position}</span>
+                        <span style="font-weight: 700;">${name}</span>
+                        <span style="margin-left:auto; display:flex; gap:.5rem; align-items:center;">
+                            ${compoundLetter !== '?' ? `<span class="tyre-badge ${tyreClass}">${compoundLetter}</span>` : ''}
+                        </span>
+                    </div>
+                `;
+            }).join("");
+        } else {
+            homeLiveBlock.style.display = "block";
+            homeLiveDivider.style.display = "block";
+            if (homeLiveMeta) homeLiveMeta.textContent = `${session.session_name} · esperando posiciones`;
+            if (homeLiveTop4) homeLiveTop4.innerHTML = `<div class="empty-state">Esperando las posiciones de carrera...</div>`;
+        }
+
+    } catch (e) {
+        homeLiveBlock.style.display = "block";
+        homeLiveDivider.style.display = "block";
+        if (homeLiveMeta) homeLiveMeta.textContent = "Datos en vivo no disponibles";
+        if (homeLiveTop4) homeLiveTop4.innerHTML = `<div class="empty-state">No se pudieron cargar las posiciones en vivo.</div>`;
+        if (el) el.innerHTML = `<div class="empty-state">No se pudo conectar con datos en vivo.<br>Probá de nuevo más tarde o activa la simulación.</div>`;
+    }
+}
+
+// ==============================================
+// SIMULACIÓN MOCK DE GRAN PREMIO (MODO DEMO)
+// ==============================================
+
+function toggleSimulation() {
+    const btn = document.getElementById("simToggle");
+    const homeLiveBlock = document.getElementById("homeLiveBlock");
+    const homeLiveDivider = document.getElementById("homeLiveDivider");
+    const homeLiveMeta = document.getElementById("homeLiveMeta");
+    
+    if (isSimActive) {
+        // Detener simulación
+        clearInterval(simInterval);
+        isSimActive = false;
+        btn.textContent = "Simular Carrera";
+        btn.classList.remove("active");
+        homeLiveBlock.style.display = "block";
+        homeLiveDivider.style.display = "block";
+        if (homeLiveMeta) homeLiveMeta.textContent = "Actualizando datos en vivo...";
+        loadLive();
+    } else {
+        // Iniciar simulación
+        isSimActive = true;
+        btn.textContent = "Detener";
+        btn.classList.add("active");
+        setupSimulation();
+    }
+}
+
+function setupSimulation() {
+    // Generar 10 pilotos de simulación con datos F1 reales
+    simDrivers = [
+        { name: "M. VERSTAPPEN", code: "VER", team: "Red Bull", color: "#3671C2", pos: 1, tyre: "M" },
+        { name: "L. HAMILTON", code: "HAM", team: "Ferrari", color: "#E10600", pos: 2, tyre: "S" },
+        { name: "C. LECLERC", code: "LEC", team: "Ferrari", color: "#E10600", pos: 3, tyre: "M" },
+        { name: "L. NORRIS", code: "NOR", team: "McLaren", color: "#FF8700", pos: 4, tyre: "S" },
+        { name: "O. PIASTRI", code: "PIA", team: "McLaren", color: "#FF8700", pos: 5, tyre: "H" },
+        { name: "G. RUSSELL", code: "RUS", team: "Mercedes", color: "#27F4D2", pos: 6, tyre: "M" },
+        { name: "F. ALONSO", code: "ALO", team: "Aston Martin", color: "#229971", pos: 7, tyre: "H" },
+        { name: "C. SAINZ", code: "SAI", team: "Williams", color: "#37BEDD", pos: 8, tyre: "S" },
+        { name: "P. GASLY", code: "GAS", team: "Alpine", color: "#FF87BC", pos: 9, tyre: "M" },
+        { name: "N. HULKENBERG", code: "HUL", team: "Sauber", color: "#52e252", pos: 10, tyre: "H" }
+    ];
+
+    runSimulationTick();
+    simInterval = setInterval(runSimulationTick, 3000);
+}
+
+function runSimulationTick() {
+    const el = document.getElementById("liveContent");
+    const homeLiveBlock = document.getElementById("homeLiveBlock");
+    const homeLiveDivider = document.getElementById("homeLiveDivider");
+    const homeLiveTop4 = document.getElementById("homeLiveTop4");
+    const homeLiveMeta = document.getElementById("homeLiveMeta");
+
+    // Generar cambios climáticos sutiles
+    const trackTemp = (32 + Math.random() * 2).toFixed(1);
+    const airTemp = (24 + Math.random() * 0.5).toFixed(1);
+    const humidity = Math.floor(61 + Math.random() * 5);
+
+    const weatherHTML = `
+        <div class="weather-panel">
+            <div><span>${trackTemp}°C</span><small>Pista</small></div>
+            <div><span>${airTemp}°C</span><small>Aire</small></div>
+            <div><span>${humidity}%</span><small>Humedad</small></div>
+        </div>
+    `;
+
+    // Hacer adelantamientos aleatorios en la pista
+    if (Math.random() > 0.4) {
+        const swapIdx = Math.floor(Math.random() * (simDrivers.length - 1));
+        if (swapIdx > 0) { // Evitamos mover demasiado al P1 siempre
+            const temp = simDrivers[swapIdx];
+            simDrivers[swapIdx] = simDrivers[swapIdx + 1];
+            simDrivers[swapIdx + 1] = temp;
+        }
+    }
+
+    // Cambiar algún neumático aleatorio (simular parada en box)
+    if (Math.random() > 0.8) {
+        const compounds = ["S", "M", "H"];
+        const randDriver = simDrivers[Math.floor(Math.random() * simDrivers.length)];
+        const currentTyre = randDriver.tyre;
+        const nextTyre = compounds.filter(c => c !== currentTyre)[Math.floor(Math.random() * 2)];
+        randDriver.tyre = nextTyre;
+    }
+
+    // Renderizado en la pestaña completa "En Vivo"
+    if (el) {
+        const rows = simDrivers.map((d, i) => {
+            const pos = i + 1;
+            const teamColor = d.color;
+            const tyreClass = `tyre-${d.tyre}`;
+
+            return `
+                <div class="standing ${podiumClass(pos)}" style="border-left: 4px solid ${teamColor}; padding-left: .5rem;">
+                    <span class="pos">${pos}</span>
+                    <span style="font-weight: 700;">${d.name} <small style="color: var(--dim); font-size:.7rem;">${d.team}</small></span>
+                    <span style="margin-left:auto; display:flex; gap:.5rem; align-items:center;">
+                        <span class="tyre-badge ${tyreClass}">${d.tyre}</span>
+                    </span>
+                </div>
+            `;
+        }).join("");
+
+        el.innerHTML = `
+            ${weatherHTML}
+            <div style="margin-bottom:1rem;font-family:var(--f-mono);font-size:.85rem;letter-spacing:.03rem; display:flex; justify-content:space-between; align-items:center;">
+                <span><span class="live-dot"></span>SIMULADOR EN CURSO</span>
+                <span style="color: var(--red); font-weight: bold; font-size:0.75rem;">VUELTA ${Math.floor(Math.random()*15 + 45)}/71</span>
+            </div>
+            ${rows}
+        `;
+    }
+
+    // Renderizado del Top 4 en la pantalla de "Inicio"
+    if (homeLiveBlock && homeLiveTop4) {
+        homeLiveBlock.style.display = "block";
+        homeLiveDivider.style.display = "block";
+        if (homeLiveMeta) homeLiveMeta.textContent = "Simulador · carrera en curso";
+
+        const top4 = simDrivers.slice(0, 4);
+        homeLiveTop4.innerHTML = top4.map((d, i) => {
+            const pos = i + 1;
+            const teamColor = d.color;
+            const tyreClass = `tyre-${d.tyre}`;
+
+            return `
+                <div class="standing ${podiumClass(pos)}" style="border-left: 4px solid ${teamColor}; padding-left: .5rem; border-bottom: 1px solid var(--line);">
+                    <span class="pos">${pos}</span>
+                    <span style="font-weight: 700;">${d.name} <small style="color: var(--dim); font-size:.7rem;">${d.team}</small></span>
+                    <span style="margin-left:auto; display:flex; gap:.5rem; align-items:center;">
+                        <span class="tyre-badge ${tyreClass}">${d.tyre}</span>
+                    </span>
+                </div>
+            `;
+        }).join("");
+    }
+}
+
+// ==========================
+// NAVEGACIÓN (tap + swipe)
+// ==========================
+
+function currentView() {
+    return document.querySelector(".view.active")?.dataset.view || "home";
+}
+
+function goto(name) {
+    const curIdx = VIEW_ORDER.indexOf(currentView());
+    const newIdx = VIEW_ORDER.indexOf(name);
+    if (newIdx === -1 || newIdx === curIdx) return;
+    const dir = newIdx > curIdx ? "slide-fwd" : "slide-back";
+
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active", "slide-fwd", "slide-back"));
+
+    const target = document.getElementById("view-" + name);
+    target.classList.add(dir);
+    target.classList.add("active");
+
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    const navBtn = document.querySelector(`.nav-item[data-goto="${name}"]`);
+    if (navBtn) navBtn.classList.add("active");
+
+    if (name === "envivo") {
+        loadLive();
+    } else {
+        // Apagar simulación automáticamente al salir del tab vivo para ahorrar recursos
+        if (isSimActive) toggleSimulation();
+    }
+    window.scrollTo({ top: 0, behavior: "auto" });
+}
+
+function initNavigation() {
+    document.querySelectorAll("[data-goto]").forEach(btn => {
+        btn.addEventListener("click", () => goto(btn.dataset.goto));
+    });
+}
+
+function initSwipe() {
+    let startX = 0, startY = 0, tracking = false;
+
+    if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+        return;
+    }
+
+    document.addEventListener("touchstart", (e) => {
+        if (document.documentElement.classList.contains("force-pc")) return;
+
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        tracking = true;
+    }, { passive: true });
+
+    document.addEventListener("touchend", (e) => {
+        if (!tracking) return;
+        tracking = false;
+
+        if (document.documentElement.classList.contains("force-pc")) return;
+
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+
+        if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+
+        const idx = VIEW_ORDER.indexOf(currentView());
+        if (dx < 0 && idx < VIEW_ORDER.length - 1) goto(VIEW_ORDER[idx + 1]);
+        else if (dx > 0 && idx > 0) goto(VIEW_ORDER[idx - 1]);
+    }, { passive: true });
+}
+</script>
+
+</body>
+</html>
