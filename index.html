@@ -425,11 +425,11 @@ html[data-theme="light"] .circuit-map-container {
     position: fixed;
     left: 0.4rem;
     right: 0.4rem;
-    bottom: env(safe-area-inset-bottom);
+    bottom: 0;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 0.7rem 0.55rem;
+    padding: 0.5rem 0.55rem calc(0.5rem + env(safe-area-inset-bottom));
     border-radius: 2.2rem;
     
     background: rgba(255, 255, 255, var(--glass-bg-opacity));
@@ -930,7 +930,7 @@ html.force-mobile .header-glass {
 }
 html.force-mobile .bottom-nav {
     position: fixed !important;
-    left: 0.4rem !important; right: 0.4rem !important; bottom: env(safe-area-inset-bottom) !important; top: auto !important;
+    left: 0.4rem !important; right: 0.4rem !important; bottom: 0 !important; top: auto !important;
     width: auto !important; height: auto !important;
     flex-direction: row !important; justify-content: space-around !important;
     align-items: center !important; padding: .55rem !important;
