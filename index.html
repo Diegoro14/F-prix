@@ -6,11 +6,13 @@
 <title>F-Prix - Liquid Glass Edition</title>
 <meta name="theme-color" content="#000000">
 
+<!-- Soporte nativo para Web App en iOS (PWA) -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="F-Prix">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000'/%3E%3Crect y='42' width='100' height='16' fill='%23E10600'/%3E%3C/svg%3E">
 
+<!-- Fuentes tipográficas optimizadas para alto rendimiento -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
@@ -20,7 +22,7 @@
 
 html{
     background:var(--black);
-    font-size:17px; /* Aumentado de 16px a 17px para mayor legibilidad nativa */
+    font-size:17px; 
     height: 100%;
     position: fixed;
     width: 100%;
@@ -28,45 +30,46 @@ html{
 }
 
 :root{
-    /* Variables de Paleta y UI General */
+    /* Variables de Paleta y UI General - Modo Oscuro */
     --black:#000000;
     --black-rgb:0,0,0;
-    --surface:#0A0A0B;
-    --surface2:#151517;
-    --line:rgba(255,255,255,.10);
+    --surface:#0D0D10;
+    --surface2:#18181C;
+    --line:rgba(255,255,255,.14);
     --red:#E10600;
-    --red-dim:rgba(225,6,0,.35);
-    --text:#F5F5F7;
-    --dim:#A1A1AA; /* Aumentado contraste de gris tenue para lectura fluida en Modo Oscuro */
-    --gold:#D4AF37;
-    --silver:#C7CBD1;
-    --bronze:#B87333;
+    --red-dim:rgba(225,6,0,.40);
+    --text:#FFFFFF;
+    --dim:#D4D4D8; /* Gris titanio claro de altísima legibilidad en fondo oscuro */
+    --gold:#F59E0B;
+    --silver:#E4E4E7;
+    --bronze:#D97706;
     --f-display:'Titillium Web',sans-serif;
     --f-mono:'Space Mono',monospace;
-    --map-stroke: rgba(255, 255, 255, 0.75);
-    --map-stroke-glow: rgba(255, 255, 255, 0.15);
+    --map-stroke: #FFFFFF;
+    --map-stroke-glow: rgba(255, 255, 255, 0.25);
 
-    /* Variables de Control de Cristal Líquido Avanzado */
+    /* Control de muelle de alta elasticidad para la gota de agua */
     --glass-blur: 24px;
-    --glass-saturate: 190%;
-    --glass-bg-opacity: 0.08;
-    --glass-border-opacity: 0.22;
+    --glass-saturate: 195%;
+    --glass-bg-opacity: 0.12;
+    --glass-border-opacity: 0.30;
     --glass-refraction-scale: 12;
-    --glass-bezier: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --glass-bezier: cubic-bezier(0.34, 1.65, 0.4, 1);
     --glass-duration: 0.45s;
     --glass-scale-active: 0.94;
 }
 
 html[data-theme="light"]{
-    --black:#FFFFFF;
-    --black-rgb:255,255,255;
-    --surface:#F4F4F5;
-    --surface2:#E9E9EB;
-    --line:rgba(0,0,0,.10);
-    --text:#0A0A0B;
-    --dim:#52525B; /* Mayor profundidad de contraste de gris para Modo Claro */
-    --map-stroke: rgba(10, 10, 11, 0.65);
-    --map-stroke-glow: rgba(10, 10, 11, 0.08);
+    /* Variables de Paleta y UI General - Modo Claro Premium */
+    --black:#F4F4F5;
+    --black-rgb:244,244,245;
+    --surface:#FFFFFF;
+    --surface2:#E4E4E7;
+    --line:rgba(9,9,11,.15);
+    --text:#09090B; /* Negro azabache profundo para excelente contraste */
+    --dim:#27272A;  /* Gris grafito oscuro que cumple con estándares WCAG AAA */
+    --map-stroke: #09090B;
+    --map-stroke-glow: rgba(9, 9, 11, 0.12);
 }
 
 body{
@@ -77,7 +80,7 @@ body{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-top: calc(env(safe-area-inset-top) + 75px);
-    padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(8.5rem + env(safe-area-inset-bottom));
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
     transition:background .25s ease, color .25s ease, padding 0.3s ease;
@@ -110,46 +113,45 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
     justify-content:space-between;
     align-items:center;
     padding: calc(env(safe-area-inset-top) + 12px) 1.5rem 12px; 
-    background: rgba(var(--black-rgb), 0.72);
+    background: rgba(var(--black-rgb), 0.78);
     backdrop-filter: blur(24px) saturate(190%);
     -webkit-backdrop-filter: blur(24px) saturate(190%);
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1.5px solid var(--line);
     flex-wrap:nowrap;
     row-gap:.5rem;
     transition: background .25s ease, border-color .25s ease, left 0.3s ease;
 }
-.logo{font-size:1.3rem;font-weight:900;letter-spacing:.2rem;text-transform:uppercase;display:flex;align-items:center;}
+.logo{font-size:1.36rem;font-weight:900;letter-spacing:.22rem;text-transform:uppercase;display:flex;align-items:center;}
 .logo .f1-logo-container{display:inline-flex;align-items:center;height:1.15rem;margin-left:0.4rem;vertical-align:middle;}
 .logo .f1-logo-container svg{height:100%;width:auto;}
 .header-actions{display:flex;gap:.5rem;align-items:center;flex-wrap:nowrap;justify-content:flex-end;}
 
-.icon-btn{width:2.5rem;height:2.5rem;border:1px solid var(--line);border-radius:.65rem;color:var(--text);
+.icon-btn{width:2.5rem;height:2.5rem;border:1.5px solid var(--line);border-radius:.75rem;color:var(--text);
     background:var(--surface);display:flex;align-items:center;justify-content:center;position:relative;}
-.icon-btn:hover{border-color:var(--red-dim);color:var(--red);}
-.icon-btn:active{background:var(--surface2);transform:scale(0.97);}
+.icon-btn:hover{border-color:var(--red);color:var(--red);}
+.icon-btn:active{background:var(--surface2);transform:scale(0.95);}
 
 .badge-dot {
     position: absolute;
-    top: 3px;
-    right: 3px;
-    width: 6px;
-    height: 6px;
+    top: 4px;
+    right: 4px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: var(--red);
-    box-shadow: 0 0 4px var(--red);
+    box-shadow: 0 0 6px var(--red);
 }
 
-.font-control{display:flex;border:1px solid var(--line);border-radius:.65rem;overflow:hidden;background:var(--surface);}
+.font-control{display:flex;border:1.5px solid var(--line);border-radius:.75rem;overflow:hidden;background:var(--surface);}
 .font-control button{
-    width:2.2rem;height:2.5rem;border:none;background:transparent;color:var(--text);
+    width:2.4rem;height:2.5rem;border:none;background:transparent;color:var(--text);
     font-family:var(--f-mono);font-weight:700;font-size:.85rem;
 }
-.font-control button:first-child{border-right:1px solid var(--line);font-size:.7rem;}
+.font-control button:first-child{border-right:1.5px solid var(--line);font-size:.7rem;}
 .font-control button:last-child{font-size:1rem;}
 .font-control button:hover{background:var(--surface2);color:var(--red);}
 .font-control button:active{background:var(--surface2);}
 
-/* Contenedor del logo F1 — ancho automático para mantener proporción */
 .logo .flag-container {
     display: inline-flex;
     align-items: center;
@@ -162,7 +164,7 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
     width: auto;
 }
 
-/* ============ VISTAS CON DESLIZAMIENTO SUAVE iOS (FÍSICA DE MUELLE) ============ */
+/* ============ VISTAS CON DESLIZAMIENTO SUAVE iOS ============ */
 .view{
     display:none;
     backface-visibility: hidden;
@@ -170,18 +172,18 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
 }
 .view.active{display:block;}
 .view.slide-fwd {
-    animation: iosSlideFwd 0.42s cubic-bezier(0.25, 1, 0.22, 1) both;
+    animation: iosSlideFwd 0.45s cubic-bezier(0.25, 1, 0.22, 1) both;
     will-change: transform, opacity;
 }
 .view.slide-back {
-    animation: iosSlideBack 0.42s cubic-bezier(0.25, 1, 0.22, 1) both;
+    animation: iosSlideBack 0.45s cubic-bezier(0.25, 1, 0.22, 1) both;
     will-change: transform, opacity;
 }
 
 @keyframes iosSlideFwd {
     0% {
         opacity: 0;
-        transform: translate3d(40px, 0, 0) scale(0.97);
+        transform: translate3d(50px, 0, 0) scale(0.97);
     }
     100% {
         opacity: 1;
@@ -191,7 +193,7 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
 @keyframes iosSlideBack {
     0% {
         opacity: 0;
-        transform: translate3d(-40px, 0, 0) scale(0.97);
+        transform: translate3d(-50px, 0, 0) scale(0.97);
     }
     100% {
         opacity: 1;
@@ -199,50 +201,64 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
     }
 }
 
-/* ============ HOME & CARDS ============ */
+/* ============ TARJETAS EDITORIALES DE ALTO CONTRASTE ============ */
 .home-card{
-    background:var(--surface);border:1px solid var(--line);border-radius:1.15rem;
+    background:var(--surface);border:1.5px solid var(--line);border-radius:1.35rem;
     overflow:hidden;margin-bottom:1rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     transition: display 0.3s ease, grid-template-columns 0.3s ease;
 }
-.hero-top{height:.2rem;background:linear-gradient(90deg, var(--red), transparent 85%);}
-.block{padding:1.35rem 1.25rem;}
-.divider{height:1px;background:var(--line);margin:0 1.25rem;}
+.hero-top{height:.25rem;background:linear-gradient(90deg, var(--red), transparent 85%);}
+.block{padding:1.5rem 1.35rem;}
+.divider{height:1.5px;background:var(--line);margin:0 1.35rem;}
 
 .race-tag{
     display:inline-flex;align-items:center;gap:.45rem;font-family:var(--f-mono);
-    font-size:.85rem;letter-spacing:.1rem;color:var(--red);text-transform:uppercase;margin-bottom:.9rem; /* Aumentado de .75rem a .85rem */
+    font-size:.85rem;letter-spacing:.12rem;color:var(--red);text-transform:uppercase;margin-bottom:.9rem;
+    font-weight: 700;
 }
-.race-tag::before{content:'';width:.45rem;height:.45rem;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red);}
+.race-tag::before{content:'';width:.5rem;height:.5rem;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);}
 
-.hero-block h1{font-size:1.9rem;font-weight:900;text-transform:uppercase;letter-spacing:.02rem;line-height:1.12;margin-bottom:.4rem;}
-.session{color:var(--dim);font-size:1.05rem;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.06rem;margin-bottom:1.3rem;} /* Aumentado de .95rem a 1.05rem */
+.hero-block h1{font-size:2.1rem;font-weight:900;text-transform:uppercase;letter-spacing:.02rem;line-height:1.1;margin-bottom:.4rem;}
+.session{color:var(--dim);font-size:1.05rem;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.06rem;margin-bottom:1.3rem;font-weight: 700;}
 
 .start-lights{display:flex;gap:.5rem;margin-bottom:1rem;align-items:center;flex-wrap:wrap;}
-.light{width:1rem;height:1rem;border-radius:50%;background:var(--surface2);border:1px solid var(--line);transition:background .3s, box-shadow .3s;}
-.light.on{background:var(--red);box-shadow:0 0 10px var(--red-dim), 0 0 3px var(--red);}
-.lights-label{font-family:var(--f-mono);font-size:.82rem;letter-spacing:.05rem;color:var(--dim);text-transform:uppercase;margin-left:.25rem;} /* Aumentado de .7rem a .82rem */
+.light{width:1.15rem;height:1.15rem;border-radius:50%;background:var(--surface2);border:1.5px solid var(--line);transition:background .3s, box-shadow .3s;}
+.light.on{background:var(--red);box-shadow:0 0 12px var(--red-dim), 0 0 4px var(--red);}
+.lights-label{font-family:var(--f-mono);font-size:.82rem;letter-spacing:.05rem;color:var(--dim);text-transform:uppercase;margin-left:.25rem;font-weight: 700;}
 
 .countdown{display:flex;gap:.65rem;margin-bottom:1.2rem;}
-.countdown div{flex:1;background:var(--black);border:1px solid var(--line);border-radius:.65rem;text-align:center;padding:.8rem .4rem;}
-.countdown span{display:block;font-family:var(--f-mono);font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums;}
-.countdown small{color:var(--dim);font-size:.78rem;letter-spacing:.1rem;} /* Aumentado de .65rem a .78rem */
+.countdown div{flex:1;background:var(--black);border:1.5px solid var(--line);border-radius:.75rem;text-align:center;padding:.9rem .4rem;box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);}
+.countdown span{display:block;font-family:var(--f-mono);font-size:1.85rem;font-weight:900;font-variant-numeric:tabular-nums;}
+.countdown small{color:var(--dim);font-size:.78rem;letter-spacing:.1rem;font-weight: 700;}
 
 .primary-button{
-    border:none;background:var(--red);color:white;font-size.95rem;font-weight:700;letter-spacing:.1rem;
+    border:none;background:var(--red);color:white;font-size:0.95rem;font-weight:700;letter-spacing:.1rem;
     text-transform:uppercase;padding:.95rem;border-radius:.65rem;cursor:pointer;width:100%;font-family:var(--f-display);
+    box-shadow: 0 4px 14px var(--red-dim);
 }
-.primary-button:hover{background:#FF1E18;transform:translateY(-1px);box-shadow:0 4px 12px var(--red-dim);}
+.primary-button:hover{background:#FF1E18;transform:translateY(-1.5px);box-shadow:0 6px 16px var(--red-dim);}
 .primary-button:active{background:#B80500;transform:translateY(0);}
 
+/* Fusión fotográfica editorial de pilotos favoritos */
 .driver-block{display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden;}
-.driver-block .fav-driver-photo{position:absolute;right:-1rem;top:0;bottom:0;width:50%;object-fit:cover;object-position:top center;opacity:0.10;pointer-events:none;z-index:0;}
+.driver-block .fav-driver-photo{
+    position:absolute;right:0;top:0;bottom:0;width:55%;
+    object-fit:cover;object-position:top right;
+    mask-image: linear-gradient(to left, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%);
+    opacity: 0.28;
+    pointer-events:none;z-index:0;
+}
+html[data-theme="light"] .driver-block .fav-driver-photo {
+    opacity: 0.35;
+}
 .driver-block>div{position:relative;z-index:1;}
 .driver-block:hover{background:var(--surface2);}
-.driver-block .eyebrow{font-size:.85rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;display:block;} /* Aumentado de .75rem a .85rem */
-.driver h3{margin-bottom:.2rem;font-size:1.2rem;font-weight:700;} /* Aumentado de 1.15rem a 1.2rem */
-.driver p{color:var(--dim);font-size:.92rem;letter-spacing:.03rem;text-transform:uppercase;} /* Aumentado de .8rem a .92rem */
-.position{font-family:var(--f-mono);font-size:1.7rem;font-weight:700;color:var(--red);flex-shrink:0;}
+.driver-block .eyebrow{font-size:.85rem;font-weight:700;letter-spacing:.12rem;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;display:block;}
+.driver h3{margin-bottom:.2rem;font-size:1.3rem;font-weight:900;letter-spacing: -0.01rem;}
+.driver p{color:var(--dim);font-size:.92rem;letter-spacing:.03rem;text-transform:uppercase;font-weight: 600;}
+.position{font-family:var(--f-mono);font-size:1.85rem;font-weight:900;color:var(--red);flex-shrink:0;}
 
 .home-live-clickable {
     cursor: pointer;
@@ -251,54 +267,58 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
 .home-live-clickable:hover {
     background: var(--surface2);
 }
+
 .watch-race-link{
-    display:inline-flex;align-items:center;justify-content:center;margin-top:1rem;padding:.65rem .85rem;
-    border:1px solid var(--red-dim);border-radius:.5rem;background:rgba(225,6,0,.12);color:var(--text);
-    font-size:.85rem;font-weight:700;letter-spacing:.07rem;text-decoration:none;text-transform:uppercase; /* Aumentado de .72rem a .85rem */
+    display:inline-flex;align-items:center;justify-content:center;margin-top:1rem;padding:.75rem 1rem;
+    border:1.5px solid var(--red);border-radius:.65rem;background:linear-gradient(135deg, var(--red) 0%, #B80500 100%);color:white;
+    font-size:.88rem;font-weight:900;letter-spacing:.08rem;text-decoration:none;text-transform:uppercase;
+    box-shadow: 0 4px 14px rgba(225,6,0,0.22);
 }
-.watch-race-link:hover{background:var(--red);border-color:var(--red);color:white;}
-.app-disclaimer{color:var(--dim);font-size:.82rem;line-height:1.5;text-align:center;padding:.5rem .75rem 1.5rem;} /* Aumentado de .68rem a .82rem */
-.app-disclaimer a{color:var(--dim);text-decoration:underline;text-underline-offset:2px;}
+.watch-race-link:hover{background:linear-gradient(135deg, #FF1E18 0%, var(--red) 100%);transform:translateY(-1px);box-shadow:0 6px 18px var(--red-dim);}
+.watch-race-link:active{transform:translateY(0);}
+
+.app-disclaimer{color:var(--dim);font-size:.82rem;line-height:1.5;text-align:center;padding:1rem .75rem 1.5rem;font-weight: 600;}
+.app-disclaimer a{color:var(--text);text-decoration:underline;text-underline-offset:2px;font-weight: 700;}
 
 .actions-row{display:flex;padding:0;}
 .action-item{
     flex:1;border:none;background:transparent;color:var(--text);display:flex;flex-direction:column;
-    align-items:center;gap:.5rem;padding:1.1rem .3rem;cursor:pointer;border-right:1px solid var(--line);
+    align-items:center;gap:.5rem;padding:1.2rem .3rem;cursor:pointer;border-right:1.5px solid var(--line);
     transition: background 0.2s, color 0.2s;
 }
 .action-item:last-child{border-right:none;}
 .action-item:hover{background:var(--surface2);color:var(--red);}
 .action-item:active{background:var(--surface2);}
-.action-item .icon{color:var(--red);width:1.3rem;height:1.3rem;transition:transform 0.2s;}
-.action-item:hover .icon{transform:scale(1.1);}
-.action-item span{font-size:.85rem;font-weight:600;letter-spacing:.02rem;text-transform:uppercase;text-align:center;} /* Aumentado de .72rem a .85rem */
+.action-item .icon{color:var(--red);width:1.35rem;height:1.35rem;transition:transform 0.2s;}
+.action-item:hover .icon{transform:scale(1.12);}
+.action-item span{font-size:.85rem;font-weight:700;letter-spacing:.02rem;text-transform:uppercase;text-align:center;}
 
+/* Fin de semana */
 .weekend-panel{
     position:relative;
     overflow:hidden;
-    padding:1.5rem 1.25rem;
+    padding:1.65rem 1.35rem;
     background:var(--surface);
-    border-bottom:1px solid var(--line);
+    border-bottom:1.5px solid var(--line);
     transition: background 0.3s ease;
 }
 
 .circuit-map-container {
     position: absolute;
-    right: 3%;
+    right: 2%;
     bottom: 5%;
-    width: 58%;
-    height: 85%;
+    width: 60%;
+    height: 90%;
     pointer-events: none;
-    opacity: 0.18; 
+    opacity: 0.25; 
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: opacity 0.3s ease;
 }
-
 html[data-theme="light"] .circuit-map-container {
-    opacity: 0.22; 
+    opacity: 0.32; 
 }
 
 .weekend-circuit, .weekend-location, .weekend-schedule, .weekend-footer {
@@ -308,7 +328,7 @@ html[data-theme="light"] .circuit-map-container {
 
 .weekend-circuit{
     margin: 0.2rem 0 .2rem;
-    font-size:1.65rem; /* Aumentado de 1.55rem a 1.65rem */
+    font-size:1.75rem;
     font-weight:900;
     letter-spacing:.02rem;
     line-height:1.1;
@@ -316,14 +336,15 @@ html[data-theme="light"] .circuit-map-container {
 }
 .weekend-location{
     color:var(--dim);
-    font-size:.95rem; /* Aumentado de .82rem a .95rem */
+    font-size:.95rem;
     letter-spacing:.05rem;
     text-transform:uppercase;
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.2rem;
+    font-weight: 700;
 }
 .weekend-schedule{
     display:grid;
-    gap:.55rem;
+    gap:.6rem;
 }
 .weekend-day{
     display:flex;
@@ -334,7 +355,7 @@ html[data-theme="light"] .circuit-map-container {
 .weekend-day-name{
     min-width:6.2rem;
     color:var(--text);
-    font-size:.88rem; /* Aumentado de .75rem a .88rem */
+    font-size:.88rem; 
     font-weight:900; 
     letter-spacing:.05rem;
     text-transform:uppercase;
@@ -342,7 +363,7 @@ html[data-theme="light"] .circuit-map-container {
 .weekend-sessions{
     color:var(--text); 
     font-family:var(--f-mono);
-    font-size:.88rem; /* Aumentado de .75rem a .88rem */
+    font-size:.88rem; 
     font-weight:800; 
     line-height:1.45;
 }
@@ -355,12 +376,12 @@ html[data-theme="light"] .circuit-map-container {
     justify-content:space-between;
     align-items:flex-end;
     gap:.75rem;
-    margin-top:1.35rem;
+    margin-top:1.5rem;
 }
 .weekend-time{
     color:var(--text);
     font-family:var(--f-mono);
-    font-size:1.1rem; 
+    font-size:1.15rem; 
     font-weight:900; 
 }
 .weekend-time small{
@@ -368,95 +389,98 @@ html[data-theme="light"] .circuit-map-container {
     margin-top:.2rem;
     color:var(--red);
     font-family:var(--f-display);
-    font-size:.78rem; /* Aumentado de .68rem a .78rem */
+    font-size:.78rem;
     font-weight: 800;
     letter-spacing:.08rem;
 }
+
+/* Rediseño de botones de enlace secundario */
 .weekend-link{
-    border:1px solid var(--red-dim);
-    border-radius:.45rem;
+    border:1.5px solid var(--red-dim);
+    border-radius:.55rem;
     background:rgba(225,6,0,.15);
     color:var(--text);
-    padding:.48rem .65rem;
-    font-size:.82rem; /* Aumentado de .68rem a .82rem */
+    padding:.58rem .75rem;
+    font-size:.82rem;
     font-weight:900; 
     letter-spacing:.06rem;
     text-transform:uppercase;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
-.weekend-link:hover{background:var(--red);border-color:var(--red);color:white;}
+.weekend-link:hover{background:var(--red);border-color:var(--red);color:white;transform: translateY(-1px);}
+.weekend-link:active{transform: translateY(0);}
 
 .block h2{
-    font-size:.9rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--dim);margin-bottom:1rem; /* Aumentado de .8rem a .9rem */
+    font-size:.95rem;font-weight:900;letter-spacing:.12rem;text-transform:uppercase;color:var(--dim);margin-bottom:1rem;
     display:flex;justify-content:space-between;align-items:center;
 }
 
-.glass-card{background:var(--surface);border:1px solid var(--line);border-radius:1.15rem;padding:1.25rem;margin-bottom:1rem;}
-.glass-card h2{margin-bottom:1rem;font-size:.9rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--dim);} /* Aumentado de .8rem a .9rem */
+.glass-card{background:var(--surface);border:1.5px solid var(--line);border-radius:1.35rem;padding:1.4rem;margin-bottom:1rem;box-shadow: 0 6px 24px rgba(0,0,0,0.08);}
+.glass-card h2{margin-bottom:1rem;font-size:.95rem;font-weight:900;letter-spacing:.12rem;text-transform:uppercase;color:var(--dim);}
 
-/* ============ STANDINGS ============ */
-.standing{display:flex;align-items:center;gap:.85rem;padding:.75rem 0;border-bottom:1px solid var(--line);transition:background 0.2s, padding-left 0.2s;}
-.standing:hover{background:rgba(255,255,255,0.02);padding-left:0.3rem;}
+/* ============ STANDINGS / POSICIONES ============ */
+.standing{display:flex;align-items:center;gap:.85rem;padding:.85rem 0;border-bottom:1.5px solid var(--line);transition:background 0.2s, padding-left 0.2s;}
+.standing:hover{background:rgba(255,255,255,0.03);padding-left:0.35rem;}
 .standing:last-child{border:none;}
-.standing .pos{color:var(--dim);width:1.4rem;font-family:var(--f-mono);font-size:1.02rem;flex-shrink:0;} /* Aumentado de .9rem a 1.02rem */
-.standing.p1 .pos{color:var(--gold);font-weight:700;}
-.standing.p2 .pos{color:var(--silver);font-weight:700;}
-.standing.p3 .pos{color:var(--bronze);font-weight:700;}
-.standing span:nth-child(2){flex:1;font-size:1.12rem;font-weight:600;} /* Aumentado de 1rem a 1.12rem */
-.standing .pts{color:var(--red);font-weight:700;font-family:var(--f-mono);font-size:1.02rem;} /* Aumentado de .9rem a 1.02rem */
+.standing .pos{color:var(--dim);width:1.5rem;font-family:var(--f-mono);font-size:1.05rem;font-weight: 900;flex-shrink:0;}
+.standing.p1 .pos{color:var(--gold);font-weight:900;}
+.standing.p2 .pos{color:var(--silver);font-weight:900;}
+.standing.p3 .pos{color:var(--bronze);font-weight:900;}
+.standing span:nth-child(2){flex:1;font-size:1.15rem;font-weight:700;}
+.standing .pts{color:var(--red);font-weight:900;font-family:var(--f-mono);font-size:1.05rem;}
 
-/* ============ MASCARA TRANSPARENTE DE DIFUMINADO EN LA BASE (MÁXIMO iOS STYLE) ============ */
+/* ============ MASCARA TRANSPARENTE DE DIFUMINADO EN LA BASE ============ */
 .bottom-blur-guard {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: calc(7rem + env(safe-area-inset-bottom));
+    height: calc(8.5rem + env(safe-area-inset-bottom));
     background: linear-gradient(
         to top, 
-        rgba(var(--black-rgb), 0.96) 20%, 
-        rgba(var(--black-rgb), 0.40) 60%, 
+        rgba(var(--black-rgb), 0.98) 20%, 
+        rgba(var(--black-rgb), 0.45) 60%, 
         transparent 100%
     );
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     pointer-events: none;
     z-index: 45;
-    mask-image: linear-gradient(to top, black 35%, rgba(0,0,0,0.85) 60%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to top, black 35%, rgba(0,0,0,0.85) 60%, transparent 100%);
+    mask-image: linear-gradient(to top, black 35%, rgba(0,0,0,0.85) 65%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 35%, rgba(0,0,0,0.85) 65%, transparent 100%);
     transition: background 0.25s ease;
 }
 
-/* ============ LIQUID GLASS NAVIGATION BAR (iOS PREMIUM STYLE) ============ */
+/* ============ DOCK DE CONTROL FLOTANTE (ESTILO IPHONE) ============ */
 .bottom-nav {
     position: fixed;
-    left: 0.35rem;
-    right: 0.35rem;
-    bottom: 0;
+    left: 1rem;
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom)); 
     display: flex;
     justify-content: space-around;
-    align-items: flex-end;
-    padding: 0.08rem 0.4rem calc(0.22rem + env(safe-area-inset-bottom));
-    border-radius: 1.5rem;
-    height: auto;
+    align-items: center; 
+    padding: 0 0.5rem;
+    border-radius: 2.2rem; 
+    height: 4.4rem; 
     
-    background: rgba(255, 255, 255, var(--glass-bg-opacity));
-    border: none;
+    background: rgba(var(--black-rgb), 0.25);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
     
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url(#liquid-refraction);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url(#liquid-refraction);
     
     box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.25),
-        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.10),
-        inset 0 4px 10px -3px rgba(255, 255, 255, 0.08);
+        0 16px 48px rgba(0, 0, 0, 0.50),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -1px 2px 0 rgba(0, 0, 0, 0.20);
     
     z-index: 50;
     user-select: none;
     touch-action: pan-y;
+    transition: left 0.3s ease, right 0.3s ease, bottom 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background 0.25s, border-color 0.25s;
 }
 
-/* Borde superior difuminado con degradado suave (no duro) */
 .bottom-nav::before {
     content: '';
     position: absolute;
@@ -466,11 +490,11 @@ html[data-theme="light"] .circuit-map-container {
     height: 1.5px;
     background: linear-gradient(90deg, 
         transparent 0%, 
-        rgba(255, 255, 255, 0.06) 15%,
-        rgba(255, 255, 255, 0.18) 35%, 
-        rgba(255, 255, 255, 0.24) 50%, 
-        rgba(255, 255, 255, 0.18) 65%,
-        rgba(255, 255, 255, 0.06) 85%,
+        rgba(255, 255, 255, 0.08) 15%,
+        rgba(255, 255, 255, 0.22) 35%, 
+        rgba(255, 255, 255, 0.30) 50%, 
+        rgba(255, 255, 255, 0.22) 65%,
+        rgba(255, 255, 255, 0.08) 85%,
         transparent 100%
     );
     border-radius: 1px;
@@ -478,7 +502,6 @@ html[data-theme="light"] .circuit-map-container {
     z-index: 3;
 }
 
-/* Sombra inferior difuminada que se funde con el fondo */
 .bottom-nav::after {
     content: '';
     position: absolute;
@@ -487,7 +510,7 @@ html[data-theme="light"] .circuit-map-container {
     right: 15%;
     height: 8px;
     background: linear-gradient(to bottom, 
-        rgba(0, 0, 0, 0.12),
+        rgba(0, 0, 0, 0.20),
         transparent
     );
     pointer-events: none;
@@ -495,59 +518,85 @@ html[data-theme="light"] .circuit-map-container {
     border-radius: 0 0 50% 50%;
 }
 
-/* Indicador Glass Circular - centrado en icono+texto */
+/* ============ EFECTO GOTA DE AGUA FLUIDA PREMIUM ============ */
 .nav-indicator {
     position: absolute;
-    height: calc(100% - 0.15rem - env(safe-area-inset-bottom));
-    top: 0.075rem;
     left: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
+    top: 0;
+    border-radius: 1.8rem; 
+    
+    background: radial-gradient(
+        circle at 35% 25%, 
+        rgba(255, 255, 255, 0.12) 0%, 
+        rgba(255, 255, 255, 0.03) 40%, 
+        rgba(225, 6, 0, 0.06) 85%, 
+        rgba(225, 6, 0, 0.16) 100%
+    );
     box-shadow: 
-        inset 0 1px 1px rgba(255, 255, 255, 0.25),
-        0 3px 10px rgba(225, 6, 0, 0.20);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+        inset 0 1.5px 3px rgba(255, 255, 255, 0.25), 
+        inset 0 -1.5px 2px rgba(0, 0, 0, 0.30),
+        0 4px 16px rgba(225, 6, 0, 0.26);
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    
     pointer-events: none;
     z-index: -1;
     transform: translate3d(0, 0, 0);
-    will-change: transform, width, height, border-radius;
+    will-change: transform, width, height;
     transform-origin: center center;
     transition: 
         transform var(--glass-duration) var(--glass-bezier), 
         width var(--glass-duration) var(--glass-bezier),
-        height var(--glass-duration) var(--glass-bezier),
-        border-radius var(--glass-duration) var(--glass-bezier);
+        height var(--glass-duration) var(--glass-bezier);
+}
+
+/* Brillo especular superior del domo de agua súper sutil y elegante */
+.nav-indicator::before {
+    content: '';
+    position: absolute;
+    top: 8%;
+    left: 18%;
+    width: 25%;
+    height: 15%;
+    background: rgba(255, 255, 255, 0.10); 
+    border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+    filter: blur(0.5px);
+    transform: rotate(-10deg);
+    pointer-events: none;
 }
 
 /* Estado de Arrastre Táctil Activo */
 .bottom-nav.dragging {
-    background: rgba(255, 255, 255, calc(var(--glass-bg-opacity) + 0.02));
-    box-shadow:
-        0 14px 38px rgba(0, 0, 0, 0.42),
-        inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.35);
+    background: rgba(var(--black-rgb), 0.35);
 }
 
 .bottom-nav.dragging .nav-indicator {
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.20);
+    background: radial-gradient(
+        circle at 35% 25%, 
+        rgba(255, 255, 255, 0.18) 0%, 
+        rgba(255, 255, 255, 0.05) 35%, 
+        rgba(225, 6, 0, 0.12) 75%, 
+        rgba(225, 6, 0, 0.24) 100%
+    );
     box-shadow: 
-        inset 0 1px 2px rgba(255, 255, 255, 0.45),
-        0 6px 16px rgba(225, 6, 0, 0.35);
+        inset 0 1.5px 3px rgba(255, 255, 255, 0.35), 
+        inset 0 -1.5px 2px rgba(0, 0, 0, 0.35),
+        0 6px 20px rgba(225, 6, 0, 0.38);
 }
 
+/* ============ BOTONES DE ENLACE DE NAVEGACION ============ */
 .nav-item {
     flex: 1;
-    max-width: 3rem;
-    height: 2.1rem;
+    max-width: 4rem; 
+    height: 3.6rem; 
     border: none;
-    color: rgba(255, 255, 255, 0.50);
+    color: rgba(255, 255, 255, 0.60);
     background: transparent;
-    border-radius: 1rem;
+    border-radius: 1.8rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    gap: 0.02rem;
+    justify-content: center; 
+    gap: 0.18rem; 
     position: relative;
     z-index: 2;
     pointer-events: none; 
@@ -557,36 +606,36 @@ html[data-theme="light"] .circuit-map-container {
 
 .nav-item.active {
     color: var(--red);
+    font-weight: 700;
 }
 
 .nav-item .icon {
-    width: 1.2rem;
-    height: 1.2rem;
-    stroke-width: 2.6;
+    width: 1.45rem; 
+    height: 1.45rem;
+    stroke-width: 2.2; 
     shape-rendering: geometricPrecision;
 }
 
-/* Adaptación del cristal líquido en Modo Claro */
+/* ============ COMPORTAMIENTO MODO CLARO GOTA DE AGUA ============ */
 html[data-theme="light"] .bottom-nav {
-    background: rgba(255, 255, 255, calc(var(--glass-bg-opacity) + 0.42));
-    border: none;
+    background: rgba(255, 255, 255, 0.30);
+    border: 1.5px solid rgba(9, 9, 11, 0.12);
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url(#liquid-refraction-light);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url(#liquid-refraction-light);
     box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.06),
-        inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.95),
-        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.02),
-        inset 0 4px 8px -3px rgba(255, 255, 255, 0.5);
+        0 10px 36px rgba(0, 0, 0, 0.08),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -1px 2px 0 rgba(0, 0, 0, 0.03);
 }
 
 html[data-theme="light"] .bottom-nav::before {
     background: linear-gradient(90deg, 
         transparent 0%, 
-        rgba(0, 0, 0, 0.04) 15%,
-        rgba(0, 0, 0, 0.10) 35%, 
-        rgba(0, 0, 0, 0.14) 50%, 
-        rgba(0, 0, 0, 0.10) 65%,
-        rgba(0, 0, 0, 0.04) 85%,
+        rgba(0, 0, 0, 0.05) 15%,
+        rgba(0, 0, 0, 0.12) 35%, 
+        rgba(0, 0, 0, 0.18) 50%, 
+        rgba(0, 0, 0, 0.12) 65%,
+        rgba(0, 0, 0, 0.05) 85%,
         transparent 100%
     );
 }
@@ -599,30 +648,41 @@ html[data-theme="light"] .bottom-nav::after {
 }
 
 html[data-theme="light"] .bottom-nav.dragging .nav-indicator {
-    background: rgba(0, 0, 0, 0.10);
+    background: rgba(0, 0, 0, 0.08);
 }
 
 html[data-theme="light"] .nav-item {
-    color: rgba(0, 0, 0, 0.45);
+    color: rgba(9, 9, 11, 0.65);
 }
 
 html[data-theme="light"] .nav-indicator {
-    background: rgba(0, 0, 0, 0.05);
+    background: radial-gradient(
+        circle at 35% 25%, 
+        rgba(255, 255, 255, 0.40) 0%, 
+        rgba(255, 255, 255, 0.10) 45%, 
+        rgba(225, 6, 0, 0.04) 80%, 
+        rgba(225, 6, 0, 0.14) 100%
+    );
     box-shadow: 
-        inset 0 1px 1.5px rgba(255, 255, 255, 0.8),
-        0 3px 10px rgba(225, 6, 0, 0.12);
-    border: 1px solid rgba(0, 0, 0, 0.03);
+        inset 0 1.5px 3px rgba(255, 255, 255, 0.70), 
+        inset 0 -1px 1.5px rgba(0, 0, 0, 0.05),
+        0 4px 12px rgba(225, 6, 0, 0.14);
+    border: 1.5px solid rgba(9, 9, 11, 0.16);
+}
+
+html[data-theme="light"] .nav-indicator::before {
+    background: rgba(255, 255, 255, 0.30); 
 }
 
 .nav-label {
     display: block;
-    font-size: 0.42rem;
+    font-size: 0.60rem; 
     font-weight: 700;
-    letter-spacing: 0.015rem;
+    letter-spacing: 0.02rem;
     text-transform: uppercase;
     margin-bottom: 0;
-    opacity: 0.50;
-    line-height: 1;
+    opacity: 0.85;
+    line-height: 1.2;
     transition: opacity 0.3s ease, color 0.3s ease;
 }
 
@@ -631,53 +691,67 @@ html[data-theme="light"] .nav-indicator {
     color: var(--red);
 }
 
-/* ============ TABS / LISTAS ============ */
+/* ============ TABS / LISTAS / DRIVERS ROWS ============ */
 .tabs{display:flex;gap:.6rem;margin-bottom:1.1rem;}
-.tab-btn{flex:1;border:1px solid var(--line);padding:.7rem;border-radius:.65rem;background:var(--black);
-    color:var(--dim);font-size:.9rem;font-weight:700;letter-spacing:.05rem;text-transform:uppercase;} /* Aumentado de .78rem a .9rem */
+.tab-btn{flex:1;border:1.5px solid var(--line);padding:.75rem;border-radius:.75rem;background:var(--black);
+    color:var(--dim);font-size:.92rem;font-weight:900;letter-spacing:.05rem;text-transform:uppercase;}
 .tab-btn:hover{color:var(--text);border-color:var(--dim);}
-.tab-btn.active{background:var(--red);color:white;border-color:var(--red);}
+.tab-btn.active{background:var(--red);color:white;border-color:var(--red);box-shadow: 0 4px 12px var(--red-dim);}
 
-.race-item{display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--line);transition:background 0.2s;}
-.race-item:hover{background:rgba(255,255,255,0.01);}
+.race-item{display:flex;justify-content:space-between;align-items:center;padding:.95rem 0;border-bottom:1.5px solid var(--line);transition:background 0.2s;}
+.race-item:hover{background:rgba(255,255,255,0.02);}
 .race-item:last-child{border:none;}
-.race-item .name{font-size:1.08rem;font-weight:600;} /* Aumentado de .95rem a 1.08rem */
-.race-item .date{color:var(--dim);font-size:.88rem;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.03rem;text-align:right;} /* Aumentado de .75rem a .88rem */
+.race-item .name{font-size:1.1rem;font-weight:700;}
+.race-item .date{color:var(--dim);font-size:.88rem;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.03rem;text-align:right;font-weight: 600;}
 .race-schedule{min-width:8.7rem;text-align:right;line-height:1.2;}
-.race-date{color:var(--text);font-size:1.02rem;font-weight:700;letter-spacing:.04rem;} /* Aumentado de .9rem a 1.02rem */
-.race-time{display:inline-flex;align-items:center;gap:.35rem;margin-top:.38rem;padding:.32rem .5rem;border:1px solid var(--red-dim);border-radius:.4rem;background:rgba(225,6,0,.12);color:#FF5A55;font-family:var(--f-mono);font-size:.95rem;font-weight:700;letter-spacing:.04rem;} /* Aumentado de .82rem a .95rem */
-.race-time small{color:var(--text);font-family:var(--f-display);font-size:.75rem;font-weight:700;letter-spacing:.06rem;} /* Aumentado de .6rem a .75rem */
-.race-item.next{background:linear-gradient(90deg, rgba(225,6,0,.1), transparent);margin:0 -1.25rem;padding:.85rem 1.25rem;border-radius:.5rem;}
+.race-date{color:var(--text);font-size:1.05rem;font-weight:800;letter-spacing:.04rem;}
+.race-time{display:inline-flex;align-items:center;gap:.35rem;margin-top:.38rem;padding:.32rem .5rem;border:1.5px solid var(--red-dim);border-radius:.45rem;background:rgba(225,6,0,.15);color:#FF453A;font-family:var(--f-mono);font-size:.95rem;font-weight:900;letter-spacing:.04rem;}
+html[data-theme="light"] .race-time { color: #D70015; background: rgba(225,6,0,.08); border-color: rgba(225,6,0,.25); }
+.race-time small{color:var(--text);font-family:var(--f-display);font-size:.75rem;font-weight:800;letter-spacing:.06rem;}
+.race-item.next{background:linear-gradient(90deg, rgba(225,6,0,.12), transparent);margin:0 -1.25rem;padding:.95rem 1.25rem;border-radius:.65rem;}
 .race-item.next .name{color:var(--red);}
 
-.driver-row{display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:1.12rem;transition:background 0.2s, padding-left 0.2s;position:relative;overflow:hidden;}
+/* Listas con integración fotográfica premium de Wikipedia */
+.driver-row{display:flex;justify-content:space-between;align-items:center;padding:.95rem 0;border-bottom:1.5px solid var(--line);cursor:pointer;font-size:1.15rem;transition:background 0.2s, padding-left 0.2s;position:relative;overflow:hidden;}
 .driver-row .driver-name{flex:1;text-align:left;position:relative;z-index:1;}
-.driver-row .driver-photo-bg{position:absolute;right:0;top:0;bottom:0;width:55%;object-fit:cover;object-position:top center;opacity:0.10;pointer-events:none;z-index:0;}
-.driver-row.fav .driver-photo-bg{opacity:0.15;}
-.driver-row.fav .driver-name{font-weight:700;color:var(--red);}
-.driver-row:hover{background:rgba(255,255,255,0.02);padding-left:0.5rem;}
+.driver-row .driver-photo-bg{
+    position:absolute;right:0;top:0;bottom:0;width:55%;
+    object-fit:cover;object-position:top center;
+    mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+    opacity: 0.20;
+    pointer-events:none;z-index:0;
+    transition: opacity 0.3s ease;
+}
+html[data-theme="light"] .driver-row .driver-photo-bg {
+    opacity: 0.28;
+}
+.driver-row.fav .driver-photo-bg{opacity:0.32;}
+html[data-theme="light"] .driver-row.fav .driver-photo-bg { opacity: 0.40; }
+.driver-row.fav .driver-name{font-weight:800;color:var(--red);}
+.driver-row:hover{background:rgba(255,255,255,0.03);padding-left:0.5rem;}
 .driver-row:last-child{border:none;}
-.driver-row.fav{background:rgba(225,6,0,.09);border-radius:.65rem;padding-left:.75rem;padding-right:.75rem;margin:0 -.75rem;border-bottom-color:transparent;}
-.star{color:var(--red);font-family:var(--f-mono);font-size:1.05rem;}
+.driver-row.fav{background:rgba(225,6,0,.08);border-radius:.75rem;padding-left:.85rem;padding-right:.85rem;margin:0 -.85rem;border-bottom-color:transparent;}
+.star{color:var(--red);font-family:var(--f-mono);font-size:1.1rem;font-weight: 900;}
 
 .live-dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--red);display:inline-block;margin-right:.45rem;box-shadow:0 0 8px var(--red);animation:pulse 1.4s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
 
-.empty-state{text-align:center;color:var(--dim);padding:1.6rem .6rem;font-size:1.05rem;line-height:1.55;} /* Aumentado de .9rem a 1.05rem */
-.loading{text-align:center;color:var(--dim);padding:1.25rem;font-family:var(--f-mono);font-size:.95rem;letter-spacing:.05rem;text-transform:uppercase;} /* Aumentado de .8rem a .95rem */
+.empty-state{text-align:center;color:var(--dim);padding:1.8rem .6rem;font-size:1.05rem;line-height:1.55;font-weight: 600;}
+.loading{text-align:center;color:var(--dim);padding:1.4rem;font-family:var(--f-mono);font-size:.95rem;letter-spacing:.05rem;text-transform:uppercase;font-weight: 700;}
 
 /* ============ ELEMENTOS EXTRA EN VIVO ============ */
 .weather-panel{
     display:grid;grid-template-columns:repeat(3, 1fr);gap:.5rem;margin-bottom:1rem;
-    background:var(--black);border:1px solid var(--line);border-radius:.65rem;padding:.75rem;
+    background:var(--black);border:1.5px solid var(--line);border-radius:.75rem;padding:.85rem;
 }
 .weather-panel div{text-align:center;}
-.weather-panel div span{display:block;font-size:1.25rem;font-weight:700;font-family:var(--f-mono);color:var(--text);} /* Aumentado de 1.15rem a 1.25rem */
-.weather-panel div small{color:var(--dim);font-size:.75rem;text-transform:uppercase;} /* Aumentado de .6rem a .75rem */
+.weather-panel div span{display:block;font-size:1.35rem;font-weight:900;font-family:var(--f-mono);color:var(--text);}
+.weather-panel div small{color:var(--dim);font-size:.78rem;text-transform:uppercase;font-weight: 700;}
 
 .tyre-badge{
     display:inline-flex;align-items:center;justify-content:center;
-    width:1.2rem;height:1.2rem;border-radius:50%;font-size:.65rem;font-weight:900;
+    width:1.25rem;height:1.25rem;border-radius:50%;font-size:.68rem;font-weight:900;
     color:black;font-family:var(--f-mono);box-shadow:0 0 4px rgba(0,0,0,0.5);
 }
 .tyre-S{background:#ff1e18;color:white;}
@@ -688,27 +762,28 @@ html[data-theme="light"] .nav-indicator {
 
 .sim-control{
     display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;
-    padding:.6rem .8rem;border-radius:.65rem;background:rgba(225,6,0,0.1);border:1px solid var(--red-dim);
+    padding:.7rem .9rem;border-radius:.75rem;background:rgba(225,6,0,0.1);border:1.5px solid var(--red-dim);
 }
-.sim-control span{font-size:.92rem;font-weight:600;} /* Aumentado de .8rem a .92rem */
+.sim-control span{font-size:.95rem;font-weight:700;}
 .sim-control button{
-    border:none;background:var(--red);color:white;font-size:.82rem;font-weight:700; /* Aumentado de .7rem a .82rem */
-    padding:.35rem .75rem;border-radius:.4rem;text-transform:uppercase;letter-spacing:0.02rem;
+    border:none;background:var(--red);color:white;font-size:.85rem;font-weight:900;
+    padding:.45rem .85rem;border-radius:.5rem;text-transform:uppercase;letter-spacing:0.02rem;
+    box-shadow: 0 2px 8px var(--red-dim);
 }
-.sim-control button.active{background:#00d200;}
+.sim-control button.active{background:#00d200;box-shadow: 0 2px 8px rgba(0,210,0,0.3);}
 
 /* ============ CONTROLADORES DEL GLASS-KIT ============ */
 .glass-kit-panel {
     background: linear-gradient(135deg, var(--surface), var(--surface2));
-    border: 1px solid var(--line);
-    border-radius: 1.25rem;
-    padding: 1.4rem;
+    border: 1.5px solid var(--line);
+    border-radius: 1.35rem;
+    padding: 1.5rem;
     margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
 }
 .glass-kit-panel h2 {
-    font-size: 1.05rem; /* Aumentado de 0.95rem a 1.05rem */
+    font-size: 1.1rem;
     color: var(--text);
     margin-bottom: 1rem;
     display: flex;
@@ -718,26 +793,26 @@ html[data-theme="light"] .nav-indicator {
 .glass-kit-panel h2 .icon-badge {
     background: var(--red);
     color: white;
-    font-size: 0.72rem; /* Aumentado de 0.6rem a 0.72rem */
-    padding: 2px 6px;
+    font-size: 0.72rem;
+    padding: 2.5px 7px;
     border-radius: 10px;
     font-family: var(--f-mono);
 }
 .glass-slider-group {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.1rem;
 }
 .glass-slider-row {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.4rem;
 }
 .glass-slider-row .slider-label {
     display: flex;
     justify-content: space-between;
-    font-size: 0.9rem; /* Aumentado de 0.78rem a 0.9rem */
-    font-weight: 600;
+    font-size: 0.92rem;
+    font-weight: 700;
     color: var(--dim);
 }
 .glass-slider-row .slider-label span:last-child {
@@ -756,12 +831,12 @@ html[data-theme="light"] .nav-indicator {
 .glass-slider-row input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background: var(--red);
     cursor: pointer;
-    box-shadow: 0 0 8px var(--red-dim);
+    box-shadow: 0 0 10px var(--red-dim);
     transition: transform 0.1s;
 }
 .glass-slider-row input[type="range"]::-webkit-slider-thumb:active {
@@ -772,7 +847,7 @@ html[data-theme="light"] .nav-indicator {
 @media (min-width: 768px) {
     html:not(.force-mobile) body {
         padding-top: 2.5rem;
-        padding-bottom: 2rem;
+        padding-bottom: 2.5rem;
         padding-left: 17.5rem; 
     }
     html:not(.force-mobile) .app {
@@ -795,20 +870,23 @@ html[data-theme="light"] .nav-indicator {
         width: 14.5rem; height: auto;
         flex-direction: column; justify-content: flex-start;
         align-items: stretch; padding: 1.5rem 1rem;
-        border-radius: 1.8rem; gap: 0.5rem;
+        border-radius: 2rem; gap: 0.5rem;
         touch-action: pan-x;
     }
     html:not(.force-mobile) .nav-indicator {
         width: calc(100% - 2rem) !important;
         left: 1rem !important;
-        height: 2.6rem;
+        height: 2.8rem;
         top: 0;
+    }
+    html:not(.force-mobile) .nav-indicator::before {
+        display: none !important;
     }
     html:not(.force-mobile) .bottom-blur-guard {
         display: none !important;
     }
     html:not(.force-mobile) .nav-item {
-        width: 100%; height: 2.6rem;
+        width: 100%; height: 2.8rem;
         max-width: none;
         flex-direction: row;
         justify-content: flex-start; padding-left: 1.25rem;
@@ -822,7 +900,7 @@ html[data-theme="light"] .nav-indicator {
     }
     html:not(.force-mobile) .home-card {
         display: grid; grid-template-columns: 1fr 1fr;
-        gap: 0; border-radius: 1.35rem;
+        gap: 0; border-radius: 1.5rem;
     }
     html:not(.force-mobile) .hero-top {
         grid-column: span 2;
@@ -835,38 +913,38 @@ html[data-theme="light"] .nav-indicator {
     }
     html:not(.force-mobile) .hero-block {
         grid-column: 1; grid-row: 1;
-        border-right: 1px solid var(--line);
+        border-right: 1.5px solid var(--line);
         display: flex; flex-direction: column;
         justify-content: space-between;
     }
     html:not(.force-mobile) .driver-block {
         grid-column: 2; grid-row: 2;
-        border-top: 1px solid var(--line);
-        padding: .9rem 1.25rem;
-        min-height: 7.5rem;
+        border-top: 1.5px solid var(--line);
+        padding: 1.1rem 1.35rem;
+        min-height: 8rem;
     }
     
     html:not(.force-mobile) #homeLiveBlock {
         grid-column: 1;
         grid-row: 2;
-        border-right: 1px solid var(--line);
-        border-top: 1px solid var(--line);
-        padding: 1.5rem 1.25rem;
+        border-right: 1.5px solid var(--line);
+        border-top: 1.5px solid var(--line);
+        padding: 1.5rem 1.35rem;
     }
 
     html:not(.force-mobile) .actions-row {
         grid-column: 2; grid-row: 1;
         display: grid; grid-template-columns: 1fr 1fr;
-        border-bottom: 1px solid var(--line); height: 100%;
+        border-bottom: 1.5px solid var(--line); height: 100%;
     }
     html:not(.force-mobile) .weekend-panel {
         grid-column: 2; grid-row: 1;
-        min-height: 100%; border-bottom: 1px solid var(--line);
+        min-height: 100%; border-bottom: 1.5px solid var(--line);
         display:flex; flex-direction:column; justify-content:center;
     }
     html:not(.force-mobile) .action-item {
-        border-right: 1px solid var(--line) !important;
-        border-bottom: 1px solid var(--line) !important;
+        border-right: 1.5px solid var(--line) !important;
+        border-bottom: 1.5px solid var(--line) !important;
         padding: 2.2rem 1rem !important; justify-content: center;
     }
     html:not(.force-mobile) .action-item:nth-child(2n) {
@@ -878,14 +956,14 @@ html[data-theme="light"] .nav-indicator {
     }
     html:not(.force-mobile) .home-card .block:last-child {
         grid-column: 1 / span 2; grid-row: 3;
-        padding: 1.5rem 1.25rem;
+        padding: 1.5rem 1.35rem;
     }
 }
 
 /* Modo PC FORZADO */
 html.force-pc body {
     padding-top: 2.5rem !important;
-    padding-bottom: 2rem !important;
+    padding-bottom: 2.5rem !important;
     padding-left: 17.5rem !important; 
 }
 html.force-pc .app {
@@ -908,19 +986,22 @@ html.force-pc .bottom-nav {
     width: 14.5rem !important; height: auto !important;
     flex-direction: column !important; justify-content: flex-start !important;
     align-items: stretch !important; padding: 1.5rem 1rem !important;
-    border-radius: 1.8rem !important; gap: 0.5rem !important;
+    border-radius: 2rem !important; gap: 0.5rem !important;
 }
 html.force-pc .nav-indicator {
     width: calc(100% - 2rem) !important;
     left: 1rem !important;
-    height: 2.6rem !important;
+    height: 2.8rem !important;
     top: 0 !important;
+}
+html.force-pc .nav-indicator::before {
+    display: none !important;
 }
 html.force-pc .bottom-blur-guard {
     display: none !important;
 }
 html.force-pc .nav-item {
-    width: 100% !important; height: 2.6rem !important;
+    width: 100% !important; height: 2.8rem !important;
     max-width: none !important;
     flex-direction: row !important;
     justify-content: flex-start !important; padding-left: 1.25rem !important;
@@ -934,7 +1015,7 @@ html.force-pc .nav-item.active {
 }
 html.force-pc .home-card {
     display: grid !important; grid-template-columns: 1fr 1fr !important;
-    gap: 0 !important; border-radius: 1.35rem !important;
+    gap: 0 !important; border-radius: 1.5rem !important;
 }
 html.force-pc .hero-top {
     grid-column: span 2 !important;
@@ -947,36 +1028,36 @@ html.force-pc #homeLiveDivider {
 }
 html.force-pc .hero-block {
     grid-column: 1 !important; grid-row: 1 !important;
-    border-right: 1px solid var(--line) !important;
+    border-right: 1.5px solid var(--line) !important;
     display: flex !important; flex-direction: column !important;
     justify-content: space-between !important;
 }
 html.force-pc .driver-block {
     grid-column: 2 !important; grid-row: 2 !important;
-    border-top: 1px solid var(--line) !important;
-    padding: .9rem 1.25rem !important;
-    min-height: 7.5rem !important;
+    border-top: 1.5px solid var(--line) !important;
+    padding: 1.1rem 1.35rem !important;
+    min-height: 8rem !important;
 }
 html.force-pc #homeLiveBlock {
     grid-column: 1 !important;
     grid-row: 2 !important;
-    border-right: 1px solid var(--line) !important;
-    border-top: 1px solid var(--line) !important;
-    padding: 1.5rem 1.25rem !important;
+    border-right: 1.5px solid var(--line) !important;
+    border-top: 1.5px solid var(--line) !important;
+    padding: 1.5rem 1.35rem !important;
 }
 html.force-pc .actions-row {
     grid-column: 2 !important; grid-row: 1 !important;
     display: grid !important; grid-template-columns: 1fr 1fr !important;
-    border-bottom: 1px solid var(--line) !important; height: 100% !important;
+    border-bottom: 1.5px solid var(--line) !important; height: 100% !important;
 }
 html.force-pc .weekend-panel {
     grid-column: 2 !important; grid-row: 1 !important;
-    min-height: 100% !important; border-bottom: 1px solid var(--line) !important;
+    min-height: 100% !important; border-bottom: 1.5px solid var(--line) !important;
     display:flex !important; flex-direction:column !important; justify-content:center !important;
 }
 html.force-pc .action-item {
-    border-right: 1px solid var(--line) !important;
-    border-bottom: 1px solid var(--line) !important;
+    border-right: 1.5px solid var(--line) !important;
+    border-bottom: 1.5px solid var(--line) !important;
     padding: 2.2rem 1rem !important; justify-content: center !important;
 }
 html.force-pc .action-item:nth-child(2n) {
@@ -988,7 +1069,7 @@ html.force-pc .action-item:nth-child(4) {
 }
 html.force-pc .home-card .block:last-child {
     grid-column: 1 / span 2 !important; grid-row: 3 !important;
-    padding: 1.5rem 1.25rem !important;
+    padding: 1.5rem 1.35rem !important;
 }
 
 /* Modo Móvil FORZADO */
@@ -1005,40 +1086,48 @@ html.force-mobile .app {
 html.force-mobile .header-glass {
     position: fixed !important;
     padding-top: calc(env(safe-area-inset-top) + 12px) !important;
-    background: rgba(var(--black-rgb), 0.72) !important;
+    background: rgba(var(--black-rgb), 0.78) !important;
     backdrop-filter: blur(24px) saturate(190%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
-    border-bottom: 1px solid var(--line) !important;
+    border-bottom: 1.5px solid var(--line) !important;
     left: 0 !important;
     right: 0 !important;
 }
 html.force-mobile .bottom-nav {
     position: fixed !important;
-    left: 0.35rem !important; right: 0.35rem !important; bottom: 0 !important; top: auto !important;
-    width: auto !important; height: auto !important;
-    flex-direction: row !important; justify-content: space-around !important;
-    align-items: flex-end !important; padding: 0.08rem 0.4rem !important;
-    border-radius: 1.5rem !important; box-shadow: 0 10px 30px rgba(0,0,0,.35) !important;
-    border: none !important;
+    left: 1rem !important; 
+    right: 1rem !important; 
+    bottom: calc(1rem + env(safe-area-inset-bottom)) !important; 
+    top: auto !important;
+    width: auto !important; 
+    height: 4.4rem !important;
+    flex-direction: row !important; 
+    justify-content: space-around !important;
+    align-items: center !important; 
+    padding: 0 0.5rem !important;
+    border-radius: 2.2rem !important; 
+    box-shadow: 0 16px 48px rgba(0,0,0,.5) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
 }
 html.force-mobile .bottom-blur-guard {
     display: block !important;
 }
 html.force-mobile .nav-item {
     flex: 1 !important;
-    max-width: 3rem !important;
-    height: 2.1rem !important;
-    justify-content: flex-end !important; padding-left: 0 !important;
+    max-width: 4rem !important;
+    height: 3.6rem !important;
+    justify-content: center !important; 
+    padding-left: 0 !important;
     flex-direction: column !important;
-    gap: 0.02rem !important;
+    gap: 0.18rem !important;
     padding-bottom: 0 !important;
 }
 html.force-mobile .nav-label {
     display: block !important;
-    font-size: 0.42rem !important;
+    font-size: 0.60rem !important;
     margin-bottom: 0 !important;
-    opacity: 0.50 !important;
-    line-height: 1 !important;
+    opacity: 0.85 !important;
+    line-height: 1.2 !important;
 }
 
 html.force-mobile .nav-item.active .nav-label {
@@ -1056,14 +1145,12 @@ html.force-mobile .home-card .divider {
 
 <body>
 
-<!-- ============ ELEMENTOS DE FILTRADO SVG AVANZADOS (SHADERS DE REFRACCIÓN) ============ -->
+<!-- ============ FILTROS DE REFRACCIÓN SVG AVANZADOS ============ -->
 <svg style="position: absolute; width: 0; height: 0;" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <!-- Filtro de Refracción Líquido para el Tema Oscuro -->
     <filter id="liquid-refraction">
-      <!-- Generamos turbulencia fractal orgánica muy fina -->
       <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" result="noise" seed="4" />
-      <!-- Distorsionamos los gráficos utilizando el canal Rojo y Verde del ruido -->
       <feDisplacementMap id="displacement-dark" in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" />
     </filter>
     
@@ -1075,13 +1162,11 @@ html.force-mobile .home-card .divider {
   </defs>
 </svg>
 
-<!-- Efecto de desvanecimiento por difuminado inteligente iOS de fondo -->
 <div class="bottom-blur-guard" id="bottomBlurGuard" aria-hidden="true"></div>
 
 <div class="app" id="appRoot">
 
     <header class="header-glass">
-        <!-- Logo F-PRIX con icono oficial de Fórmula 1 -->
         <div class="logo">
             F-PRIX
             <span class="flag-container">
@@ -1089,7 +1174,6 @@ html.force-mobile .home-card .divider {
             </span>
         </div>
         <div class="header-actions">
-            <!-- Solo se mantiene el control de tema en la cabecera principal -->
             <button class="icon-btn" id="themeToggle" aria-label="Cambiar modo claro/oscuro"></button>
         </div>
     </header>
@@ -1100,7 +1184,6 @@ html.force-mobile .home-card .divider {
         <div class="home-card">
             <div class="hero-top"></div>
 
-            <!-- Panel de Entrada de la Carrera -->
             <div class="block hero-block">
                 <div>
                     <span class="race-tag">Próxima carrera</span>
@@ -1124,7 +1207,6 @@ html.force-mobile .home-card .divider {
                 </div>
             </div>
 
-            <!-- Caja Unificada con Agenda y Hora Local (Fondo Reemplazado por Mapa de Circuito) -->
             <section class="weekend-panel" aria-label="Información del fin de semana de carrera">
                 <div class="circuit-map-container" id="circuitMapContainer"></div>
 
@@ -1146,10 +1228,9 @@ html.force-mobile .home-card .divider {
 
             <div class="divider" id="homeLiveDivider" style="display: none;"></div>
 
-            <!-- PANEL DE MODO EN VIVO -->
             <div class="block home-live-clickable" id="homeLiveBlock">
-                <h2><span><span class="live-dot"></span>Modo en vivo · Top 4</span> <small style="font-size:0.65rem; font-weight:600; color:var(--dim);">VER CARRERA</small></h2>
-                <p id="homeLiveMeta" style="margin:-.45rem 0 .8rem; color:var(--dim); font-family:var(--f-mono); font-size:.68rem; letter-spacing:.03rem; text-transform:uppercase;"></p>
+                <h2><span><span class="live-dot"></span>Modo en vivo · Top 4</span> <small style="font-size:0.65rem; font-weight:700; color:var(--dim);">VER CARRERA</small></h2>
+                <p id="homeLiveMeta" style="margin:-.45rem 0 .8rem; color:var(--dim); font-family:var(--f-mono); font-size:.68rem; letter-spacing:.03rem; text-transform:uppercase; font-weight: 700;"></p>
                 <div id="homeLiveTop4" class="empty-state">Esperando una carrera en vivo...</div>
                 <a class="watch-race-link" href="https://www.disneyplus.com/" target="_blank" rel="noopener noreferrer">Abrir transmisión</a>
             </div>
@@ -1192,7 +1273,6 @@ html.force-mobile .home-card .divider {
     <section class="view" id="view-envivo" data-view="envivo">
         <section class="glass-card">
             <h2>En vivo</h2>
-            <!-- Selector interactivo de simulación -->
             <div class="sim-control">
                 <span>¿No hay carrera real activa?</span>
                 <button id="simToggle">Simular Carrera</button>
@@ -1222,7 +1302,6 @@ html.force-mobile .home-card .divider {
 
     <!-- ===================== VISTA: AJUSTES ===================== -->
     <section class="view" id="view-ajustes" data-view="ajustes">
-        <!-- Laboratorio de Control Glass-Kit Interactivo -->
         <section class="glass-kit-panel" aria-label="Ajustes de Liquid Glass">
             <h2>
                 <span>F-Prix Liquid Glass Lab</span>
@@ -1263,27 +1342,25 @@ html.force-mobile .home-card .divider {
             </div>
         </section>
 
-        <!-- Nuevo panel integrado: Ajustes del Sistema y Preferencias de UI -->
         <section class="glass-kit-panel" aria-label="Ajustes de Preferencias">
             <h2>
                 <span>Preferencias de UI</span>
             </h2>
             <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 0.85rem;">
-                    <span style="font-size: 1rem; font-weight: 600; color: var(--dim);">Modo de Pantalla</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--line); padding-bottom: 0.85rem;">
+                    <span style="font-size: 1rem; font-weight: 700; color: var(--dim);">Modo de Pantalla</span>
                     <button class="icon-btn" id="layoutToggle" aria-label="Cambiar vista" style="width: auto; padding: 0 1rem; display: flex; gap: 0.5rem; height: 2.75rem; border-radius: 0.75rem;">
-                        <!-- Se renderiza mediante JS -->
                     </button>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 0.85rem;">
-                    <span style="font-size: 1rem; font-weight: 600; color: var(--dim);">Tamaño de Letra</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--line); padding-bottom: 0.85rem;">
+                    <span style="font-size: 1rem; font-weight: 700; color: var(--dim);">Tamaño de Letra</span>
                     <div class="font-control">
                         <button id="fontDec" aria-label="Achicar letra" style="height: 2.75rem; width: 2.75rem;">A</button>
                         <button id="fontInc" aria-label="Agrandar letra" style="height: 2.75rem; width: 2.75rem;">A</button>
                     </div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.25rem;">
-                    <span style="font-size: 1rem; font-weight: 600; color: var(--dim);">Base de Datos</span>
+                    <span style="font-size: 1rem; font-weight: 700; color: var(--dim);">Base de Datos</span>
                     <button class="icon-btn" id="refreshBtn" aria-label="Actualizar datos" style="width: auto; padding: 0 1.25rem; display: flex; gap: 0.5rem; height: 2.75rem; border-radius: 0.75rem;">
                         <svg class="icon" viewBox="0 0 24 24" style="width: 1.1rem; height: 1.1rem;"><path d="M4 4v5h5M20 20v-5h-5"/><path d="M5.5 9a7 7 0 0112-3.5M18.5 15a7 7 0 01-12 3.5"/></svg>
                         <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">Sincronizar</span>
@@ -1295,45 +1372,45 @@ html.force-mobile .home-card .divider {
 
 </div>
 
-<!-- ============ LIQUID GLASS NAVIGATION COMPONENT ============ -->
+
+<!-- ============ COMPONENTE DE NAVEGACIÓN DE CRISTAL INTERACTIVO ============ -->
 <nav class="bottom-nav" id="liquidNav">
-    <!-- Indicador dinámico de muelle (Spring Indicator) -->
     <div class="nav-indicator" id="navIndicator"></div>
 
     <button class="nav-item active" data-goto="home" aria-label="Inicio">
-        <span class="nav-label">Inicio</span>
         <svg class="icon" viewBox="0 0 48 48"><path d="M7 25L24 9l17 16"/><path d="M11 23v16a2 2 0 002 2h9v-11h4v11h9a2 2 0 002-2V23"/></svg>
+        <span class="nav-label">Inicio</span>
     </button>
     <button class="nav-item" data-goto="calendario" aria-label="Calendario">
-        <span class="nav-label">Calendario</span>
         <svg class="icon" viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="32" rx="6"/><path d="M6 20h36M16 6v8M32 6v8"/></svg>
+        <span class="nav-label">Calendario</span>
     </button>
     <button class="nav-item" data-goto="envivo" aria-label="En vivo">
-        <span class="nav-label">En vivo</span>
         <svg class="icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="4.5"/><path d="M17 17a10 10 0 000 14M31 17a10 10 0 010 14M11 11a18 18 0 000 26M37 11a18 18 0 010 26"/></svg>
+        <span class="nav-label">En vivo</span>
     </button>
     <button class="nav-item" data-goto="campeonato" aria-label="Campeonato">
-        <span class="nav-label">Campeonato</span>
         <svg class="icon" viewBox="0 0 48 48"><path d="M14 8h20v8a10 10 0 01-20 0V8z"/><path d="M14 10H6a6 6 0 008 6M34 10h8a6 6 0 01-8 6"/><path d="M24 26v6M18 40h12M20 33h8v7h-8z"/></svg>
+        <span class="nav-label">Campeonato</span>
     </button>
     <button class="nav-item" data-goto="pilotos" aria-label="Pilotos">
-        <span class="nav-label">Pilotos</span>
         <svg class="icon" viewBox="0 0 48 48"><path d="M10 32c0-12 6-22 14-22s14 10 14 22v2a3 3 0 01-3 3H13a3 3 0 01-3-3v-2z"/><path d="M15 28c2-5 5-7 9-7s7 2 9 7"/><line x1="15" y1="28" x2="33" y2="28"/><path d="M22 10v5M26 10v5"/><path d="M10 32h28"/></svg>
+        <span class="nav-label">Pilotos</span>
     </button>
     <button class="nav-item" data-goto="ajustes" aria-label="Ajustes">
-        <span class="nav-label">Ajustes</span>
         <svg class="icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><path d="M38.8 30a3.3 3.3 0 00.66 3.64l.12.12a4 4 0 11-5.66 5.66l-.12-.12a3.3 3.3 0 00-3.64-.66 3.3 3.3 0 00-2 3.02V42a4 4 0 01-8 0v-.18a3.3 3.3 0 00-2.16-3.02 3.3 3.3 0 00-3.64.66l-.12.12a4 4 0 11-5.66-5.66l.12-.12a3.3 3.3 0 00.66-3.64 3.3 3.3 0 00-3.02-2H6a4 4 0 010-8h.18a3.3 3.3 0 003.02-2.16 3.3 3.3 0 00-.66-3.64l-.12-.12a4 4 0 115.66-5.66l.12.12a3.3 3.3 0 003.64.66H18a3.3 3.3 0 002-3.02V6a4 4 0 018 0v.18a3.3 3.3 0 002 3.02 3.3 3.3 0 003.64-.66l.12-.12a4 4 0 115.66 5.66l-.12.12a3.3 3.3 0 00-.66 3.64V18a3.3 3.3 0 003.02 2H42a4 4 0 010 8h-.18a3.3 3.3 0 00-3.02 2z"/></svg>
+        <span class="nav-label">Ajustes</span>
     </button>
 </nav>
 
 <script>
 // ==========================================
-// F-PRIX v6.5 - app.js + Liquid Glass Engine
+// F-PRIX v7.0 - app.js + Liquid Drop Engine
 // ==========================================
 
 const JOLPICA = "https://api.jolpi.ca/ergast/f1";
 const OPENF1 = "https://api.openf1.org/v1";
-const CACHE_TTL = 1000 * 60 * 60; // 1 hora de cache
+const CACHE_TTL = 1000 * 60 * 60; 
 
 const VIEW_ORDER = ["home", "calendario", "envivo", "campeonato", "pilotos", "ajustes"];
 
@@ -1364,11 +1441,9 @@ document.addEventListener("DOMContentLoaded", () => {
     initFavDriverClick();
     initSwipe();
     
-    // Configuración del botón de simulación
     document.getElementById("simToggle").addEventListener("click", toggleSimulation);
     document.getElementById("refreshBtn").addEventListener("click", hardRefresh);
 
-    // Al hacer clic en el Top 4 de inicio, redirige a la vista completa de En Vivo
     document.getElementById("homeLiveBlock").addEventListener("click", () => {
         goto("envivo");
     });
@@ -1376,10 +1451,7 @@ document.addEventListener("DOMContentLoaded", () => {
         event.stopPropagation();
     });
 
-    // Inicializando el Motor y los Controles del Glass Kit
     initGlassKitSliders();
-    
-    // Inicializar el Motor de Arrastre Táctil de Gota ("Swipe-to-Select") de la Barra
     initInteractiveNav();
 
     loadCalendar();
@@ -1392,7 +1464,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 30000);
     setInterval(updateCountdown, 1000);
 
-    // Ajustar indicador del Nav en carga y en cambios de tamaño
     window.addEventListener("resize", () => {
         if (!isDraggingNav) updateNavIndicator(currentView(), false);
     });
@@ -1443,7 +1514,7 @@ function initGlassKitSliders() {
 }
 
 // =========================================================================
-// MOTOR FÍSICO DE SEGUIMIENTO DE DEDO Y DEFORMACIÓN DE GOTA (SWIPE BAR ENGINE)
+// MOTOR FÍSICO DE GOTA DE AGUA Y DEFORMACIÓN AL ARRASTRAR (iOS SPRING)
 // =========================================================================
 let isDraggingNav = false;
 let navRect = null;
@@ -1498,6 +1569,11 @@ function stopNavDragging() {
     document.getElementById("displacement-dark")?.setAttribute("scale", baseWarp);
     document.getElementById("displacement-light")?.setAttribute("scale", Math.max(0, baseWarp - 4));
 
+    const indicator = document.getElementById("navIndicator");
+    if (indicator) {
+        indicator.style.borderRadius = "1.8rem";
+    }
+
     const currentActive = currentView();
     updateNavIndicator(currentActive, true);
 }
@@ -1510,6 +1586,9 @@ function updateNavIndicatorToTouch(touchPoint) {
     const isPC = window.innerWidth >= 768 && !document.documentElement.classList.contains("force-mobile") || document.documentElement.classList.contains("force-pc");
 
     indicator.style.transition = "none";
+
+    const maxStretch = 1.45; 
+    const minSquish = 0.65;  
 
     if (isPC) {
         const touchY = touchPoint.clientY;
@@ -1535,16 +1614,22 @@ function updateNavIndicatorToTouch(touchPoint) {
         const deltaY = topPos - lastTop;
         indicator.dataset.lastTop = topPos;
 
-        let stretchY = 1;
-        let stretchX = 1;
-        if (Math.abs(deltaY) > 1.5) {
-            stretchY = Math.min(1.25, 1 + Math.abs(deltaY) * 0.015);
-            stretchX = Math.max(0.75, 1 - Math.abs(deltaY) * 0.008);
+        let speedY = Math.abs(deltaY);
+        let stretchY = Math.min(maxStretch, 1 + speedY * 0.035);
+        let stretchX = Math.max(minSquish, 1 - speedY * 0.02);
+        let skew = Math.max(-12, Math.min(12, deltaY * 0.6));
+
+        let borderRadius = "1.25rem";
+        if (deltaY > 1.2) {
+            borderRadius = "1.25rem 1.25rem 2rem 2rem / 0.8rem 0.8rem 1.8rem 1.8rem";
+        } else if (deltaY < -1.2) {
+            borderRadius = "2rem 2rem 1.25rem 1.25rem / 1.8rem 1.8rem 0.8rem 0.8rem";
         }
+        indicator.style.borderRadius = borderRadius;
 
         indicator.style.width = "calc(100% - 2rem)";
         indicator.style.height = `${itemHeight}px`;
-        indicator.style.transform = `translate3d(0, ${topPos}px, 0) scale(${stretchX}, ${stretchY})`;
+        indicator.style.transform = `translate3d(0, ${topPos}px, 0) scale(${stretchX}, ${stretchY}) skewY(${skew / 2}deg)`;
 
         const targetView = closestItem.dataset.goto;
         if (targetView && targetView !== currentView()) {
@@ -1575,20 +1660,24 @@ function updateNavIndicatorToTouch(touchPoint) {
         const deltaX = leftPos - lastLeft;
         indicator.dataset.lastLeft = leftPos;
 
-        let stretchX = 1;
-        let stretchY = 1;
-        let skew = 0;
+        let speedX = Math.abs(deltaX);
+        let stretchX = Math.min(maxStretch, 1 + speedX * 0.04);
+        let stretchY = Math.max(minSquish, 1 - speedX * 0.022);
+        let skew = Math.max(-15, Math.min(15, deltaX * 0.85));
 
-        if (Math.abs(deltaX) > 1.5) {
-            stretchX = Math.min(1.35, 1 + Math.abs(deltaX) * 0.02);
-            stretchY = Math.max(0.7, 1 - Math.abs(deltaX) * 0.012);
-            skew = Math.max(-12, Math.min(12, deltaX * 0.55));
+        let borderRadius = "1.8rem";
+        if (deltaX > 1.2) {
+            borderRadius = "1.3rem 2.2rem 2.2rem 1.3rem / 1.7rem 1.7rem 1.7rem 1.7rem";
+        } else if (deltaX < -1.2) {
+            borderRadius = "2.2rem 1.3rem 1.3rem 2.2rem / 1.7rem 1.7rem 1.7rem 1.7rem";
         }
+        indicator.style.borderRadius = borderRadius;
 
         indicator.style.width = `${itemWidth}px`;
-        indicator.style.transform = `translate3d(${leftPos}px, 0, 0) scale(${stretchX}, ${stretchY}) skewX(${skew}deg)`;
+        indicator.style.height = `calc(100% - 0.8rem)`; 
+        indicator.style.transform = `translate3d(${leftPos}px, 0.4rem, 0) scale(${stretchX}, ${stretchY}) skewX(${skew}deg)`;
 
-        const warpDynamic = Math.min(26, 12 + Math.abs(deltaX) * 0.95);
+        const warpDynamic = Math.min(30, 12 + speedX * 1.2);
         document.getElementById("displacement-dark")?.setAttribute("scale", warpDynamic);
         document.getElementById("displacement-light")?.setAttribute("scale", Math.max(0, warpDynamic - 4));
 
@@ -1600,9 +1689,6 @@ function updateNavIndicatorToTouch(touchPoint) {
     }
 }
 
-// ==========================================
-// MOTOR DEL INDICADOR DESLIZANTE DE NAV
-// ==========================================
 function updateNavIndicator(viewName, isAnimate = true) {
     const nav = document.getElementById("liquidNav");
     const indicator = document.getElementById("navIndicator");
@@ -1631,6 +1717,7 @@ function updateNavIndicator(viewName, isAnimate = true) {
         const relativeTop = itemRect.top - navRect.top;
         const relativeHeight = itemRect.height;
 
+        indicator.style.borderRadius = "1.35rem"; 
         indicator.style.width = "calc(100% - 2rem)";
         indicator.style.height = `${relativeHeight}px`;
         indicator.style.transform = `translate3d(0, ${relativeTop}px, 0) scale(1, 1)`;
@@ -1640,9 +1727,10 @@ function updateNavIndicator(viewName, isAnimate = true) {
         const relativeLeft = itemRect.left - navRect.left;
         const relativeWidth = itemRect.width;
 
+        indicator.style.borderRadius = "1.8rem"; 
         indicator.style.width = `${relativeWidth}px`;
-        indicator.style.height = `calc(100% - 0.15rem - env(safe-area-inset-bottom))`;
-        indicator.style.transform = `translate3d(${relativeLeft}px, 0, 0) scale(1, 1) skewX(0deg)`;
+        indicator.style.height = `calc(100% - 0.8rem)`; 
+        indicator.style.transform = `translate3d(${relativeLeft}px, 0.4rem, 0) scale(1, 1) skewX(0deg)`;
     }
 
     if (!isAnimate) {
@@ -1653,7 +1741,7 @@ function updateNavIndicator(viewName, isAnimate = true) {
 }
 
 // ==========================
-// CONTROL DE DISEÑO (MÓVIL / PC / AUTO)
+// CONTROL DE DISEÑO Y MODO PANTALLA
 // ==========================
 function applyLayoutMode(mode) {
     const htmlEl = document.documentElement;
@@ -1715,7 +1803,7 @@ function applyTheme(theme) {
     try { localStorage.setItem("fprix_theme", theme); } catch (e) {}
 
     const metaTheme = document.querySelector('meta[name="theme-color"]');
-    if (metaTheme) metaTheme.setAttribute("content", theme === "light" ? "#ffffff" : "#000000");
+    if (metaTheme) metaTheme.setAttribute("content", theme === "light" ? "#f4f4f5" : "#000000");
 
     const btn = document.getElementById("themeToggle");
     if (btn) btn.innerHTML = theme === "light" ? ICON_MOON : ICON_SUN;
@@ -1750,7 +1838,7 @@ function applyFontScale(scale) {
 }
 
 function initFontControl() {
-    let scale = parseFloat(localStorage.getItem("fprix_fontscale")) || 1.20; /* Elevado de 1.15 a 1.20 para tamaño inicial por defecto más cómodo */
+    let scale = parseFloat(localStorage.getItem("fprix_fontscale")) || 1.20; 
     applyFontScale(scale);
 
     document.getElementById("fontDec").addEventListener("click", () => {
@@ -1764,7 +1852,7 @@ function initFontControl() {
 }
 
 // ==========================
-// CACHE HELPER
+// GESTION DE CACHE
 // ==========================
 async function cachedFetch(key, url, ttl = CACHE_TTL) {
     try {
@@ -1786,11 +1874,9 @@ async function cachedFetch(key, url, ttl = CACHE_TTL) {
 function hardRefresh() {
     ["fprix_calendar", "fprix_driverstd", "fprix_constructorstd", "fprix_drivers"]
         .forEach(k => localStorage.removeItem(k));
-    // Limpiar cache de fotos de pilotos
     Object.keys(localStorage).forEach(k => {
-        if (k.startsWith("fprix_driver_photo_")) localStorage.removeItem(k);
+        if (k.startsWith("fprix_photo_")) localStorage.removeItem(k);
     });
-    driverPhotosCache = {};
     loadCalendar();
     loadStandings();
     loadDrivers();
@@ -1798,7 +1884,7 @@ function hardRefresh() {
 }
 
 // ==========================================
-// RENDER DINÁMICO DE MAPAS
+// RENDER DINÁMICO DE MAPAS DE CIRCUITO
 // ==========================================
 function drawCircuitMap(circuitName) {
     const container = document.getElementById("circuitMapContainer");
@@ -1810,11 +1896,11 @@ function drawCircuitMap(circuitName) {
 
     const spaPath = "M 80 290 L 160 130 C 180 90, 200 110, 240 120 L 320 160 C 350 175, 370 150, 390 130 L 460 70 C 510 30, 540 60, 520 110 L 490 200 C 470 250, 440 230, 410 270 L 360 320 C 330 350, 290 310, 260 270 L 210 285 L 150 250 C 110 230, 90 260, 80 290 Z";
     const spaStands = `
-        <rect x="75" y="240" width="10" height="25" fill="#E10600" transform="rotate(-30 75 240)" opacity="0.8"/>
-        <rect x="150" y="105" width="28" height="10" fill="#E10600" opacity="0.8"/>
-        <rect x="440" y="60" width="32" height="10" fill="#E10600" transform="rotate(15 440 60)" opacity="0.8"/>
-        <rect x="535" y="150" width="10" height="30" fill="#E10600" opacity="0.8"/>
-        <rect x="340" y="275" width="38" height="10" fill="#E10600" transform="rotate(-15 340 275)" opacity="0.8"/>
+        <rect x="75" y="240" width="12" height="25" fill="#E10600" transform="rotate(-30 75 240)" opacity="0.95"/>
+        <rect x="150" y="105" width="30" height="12" fill="#E10600" opacity="0.95"/>
+        <rect x="440" y="60" width="35" height="12" fill="#E10600" transform="rotate(15 440 60)" opacity="0.95"/>
+        <rect x="535" y="150" width="12" height="30" fill="#E10600" opacity="0.95"/>
+        <rect x="340" y="275" width="40" height="12" fill="#E10600" transform="rotate(-15 340 275)" opacity="0.95"/>
     `;
 
     if (name.includes("spa") || name.includes("belg") || name.includes("francorchamps")) {
@@ -1823,26 +1909,26 @@ function drawCircuitMap(circuitName) {
     } else if (name.includes("monza") || name.includes("ital")) {
         pathData = "M 60 200 L 480 200 C 540 200, 550 260, 480 280 L 440 290 C 380 310, 340 270, 280 250 L 150 250 C 70 250, 50 220, 60 200 Z";
         grandstands = `
-            <rect x="80" y="188" width="60" height="8" fill="#E10600" opacity="0.8"/>
-            <rect x="460" y="230" width="30" height="8" fill="#E10600" transform="rotate(45 460 230)" opacity="0.8"/>
+            <rect x="80" y="188" width="60" height="10" fill="#E10600" opacity="0.95"/>
+            <rect x="460" y="230" width="30" height="10" fill="#E10600" transform="rotate(45 460 230)" opacity="0.95"/>
         `;
     } else if (name.includes("monaco") || name.includes("monte")) {
         pathData = "M 100 280 L 120 150 L 220 100 L 290 160 L 380 130 L 420 200 L 490 220 L 460 300 L 350 270 L 250 310 L 150 290 Z";
         grandstands = `
-            <rect x="180" y="115" width="30" height="8" fill="#E10600" opacity="0.8"/>
-            <rect x="400" y="240" width="30" height="8" fill="#E10600" opacity="0.8"/>
+            <rect x="180" y="115" width="30" height="10" fill="#E10600" opacity="0.95"/>
+            <rect x="400" y="240" width="30" height="10" fill="#E10600" opacity="0.95"/>
         `;
     } else if (name.includes("silverstone") || name.includes("brit")) {
         pathData = "M 100 200 L 200 100 L 320 120 L 420 80 L 500 180 L 420 280 L 300 240 L 180 300 Z";
         grandstands = `
-            <rect x="120" y="130" width="30" height="8" fill="#E10600" transform="rotate(-45 120 130)" opacity="0.8"/>
-            <rect x="440" y="200" width="30" height="8" fill="#E10600" opacity="0.8"/>
+            <rect x="120" y="130" width="30" height="10" fill="#E10600" transform="rotate(-45 120 130)" opacity="0.95"/>
+            <rect x="440" y="200" width="30" height="10" fill="#E10600" opacity="0.95"/>
         `;
     } else if (name.includes("interlagos") || name.includes("carlos pace") || name.includes("braz")) {
         pathData = "M 100 250 L 180 150 L 280 180 L 350 120 L 450 180 L 400 280 L 300 240 L 200 300 Z";
         grandstands = `
-            <rect x="120" y="180" width="35" height="8" fill="#E10600" opacity="0.8"/>
-            <rect x="360" y="130" width="25" height="8" fill="#E10600" opacity="0.8"/>
+            <rect x="120" y="180" width="35" height="10" fill="#E10600" opacity="0.95"/>
+            <rect x="360" y="130" width="25" height="10" fill="#E10600" opacity="0.95"/>
         `;
     } else {
         pathData = spaPath;
@@ -2038,6 +2124,47 @@ function renderCalendar() {
     });
 }
 
+// ==========================================
+// MOTOR DE IMÁGENES DE WIKIPEDIA (CON BUSCADOR AVANZADO INTEGRADO)
+// ==========================================
+async function fetchWikiImage(searchText, type) {
+    const cleanSearchText = searchText.trim();
+    const lsKey = `fprix_photo_${type}_${cleanSearchText.replace(/\s+/g, '_')}`;
+    const lsCached = localStorage.getItem(lsKey);
+    if (lsCached) {
+        try {
+            const parsed = JSON.parse(lsCached);
+            if (Date.now() - parsed.ts < CACHE_TTL * 24 * 7) { 
+                return parsed.url;
+            }
+        } catch (e) {}
+    }
+
+    try {
+        let query = cleanSearchText;
+        if (type === 'team') {
+            query = `${cleanSearchText} F1 team`;
+        }
+        
+        const url = `https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(query)}&gsrlimit=1&prop=pageimages&piprop=thumbnail&pithumbsize=350&format=json&origin=*`;
+        
+        const resp = await fetch(url);
+        const data = await resp.json();
+        const pages = data.query?.pages;
+        if (!pages) return null;
+        
+        const page = Object.values(pages)[0];
+        const photoUrl = page?.thumbnail?.source || null;
+        if (photoUrl) {
+            localStorage.setItem(lsKey, JSON.stringify({ url: photoUrl, ts: Date.now() }));
+            return photoUrl;
+        }
+    } catch (e) {
+        console.error("Fallo al buscar imagen de Wikipedia para: " + cleanSearchText, e);
+    }
+    return null;
+}
+
 // ==========================
 // STANDINGS
 // ==========================
@@ -2079,22 +2206,76 @@ function renderHomeStandingsPreview() {
 
 function renderChampionship(type) {
     const el = document.getElementById("champContent");
+    if (!el) return;
+
     if (type === "drivers") {
-        el.innerHTML = driverStandingsData.map(s => `
-            <div class="standing ${podiumClass(s.position)}">
-                <span class="pos">${s.position}</span>
-                <span>${s.Driver.givenName} ${s.Driver.familyName}</span>
-                <span class="pts">${s.points}</span>
-            </div>
-        `).join("") || `<div class="empty-state">Sin datos.</div>`;
+        el.innerHTML = driverStandingsData.map(s => {
+            const driverName = `${s.Driver.givenName} ${s.Driver.familyName}`;
+            const teamName = s.Constructors?.[0]?.name || "";
+            return `
+                <div class="driver-row standing-driver-row ${podiumClass(s.position)}" data-driver-id="${s.Driver.driverId}" tabindex="0">
+                    <div class="driver-name" style="display: flex; align-items: center; gap: 0.75rem; width: 100%; position: relative; z-index: 1;">
+                        <span class="pos" style="width: 1.8rem; font-family: var(--f-mono); font-weight: 900; font-size: 1.15rem;">${s.position}</span>
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 800; font-size: 1.15rem;">${driverName}</span>
+                            <span style="font-size: 0.82rem; color: var(--dim); text-transform: uppercase; font-family: var(--f-mono); font-weight:700;">${teamName}</span>
+                        </div>
+                        <span class="pts" style="margin-left: auto; color: var(--red); font-weight: 900; font-family: var(--f-mono); font-size: 1.1rem;">${s.points} PTS</span>
+                    </div>
+                </div>
+            `;
+        }).join("") || `<div class="empty-state">Sin datos.</div>`;
+
+        // Consumo asíncrono y elegante de fotos para la tabla del campeonato
+        driverStandingsData.forEach(s => {
+            const fullName = `${s.Driver.givenName} ${s.Driver.familyName}`;
+            fetchWikiImage(fullName, 'driver').then(url => {
+                if (url) {
+                    const row = el.querySelector(`[data-driver-id="${s.Driver.driverId}"]`);
+                    if (row && !row.querySelector('.driver-photo-bg')) {
+                        const img = document.createElement('img');
+                        img.className = 'driver-photo-bg';
+                        img.src = url;
+                        img.alt = '';
+                        img.loading = 'lazy';
+                        row.insertBefore(img, row.firstChild);
+                    }
+                }
+            });
+        });
     } else {
-        el.innerHTML = constructorStandingsData.map(s => `
-            <div class="standing ${podiumClass(s.position)}">
-                <span class="pos">${s.position}</span>
-                <span>${s.Constructor.name}</span>
-                <span class="pts">${s.points}</span>
-            </div>
-        `).join("") || `<div class="empty-state">Sin datos.</div>`;
+        el.innerHTML = constructorStandingsData.map(s => {
+            return `
+                <div class="driver-row standing-team-row ${podiumClass(s.position)}" data-team-id="${s.Constructor.constructorId}" tabindex="0">
+                    <div class="driver-name" style="display: flex; align-items: center; gap: 0.75rem; width: 100%; position: relative; z-index: 1;">
+                        <span class="pos" style="width: 1.8rem; font-family: var(--f-mono); font-weight: 900; font-size: 1.15rem;">${s.position}</span>
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 800; font-size: 1.15rem;">${s.Constructor.name}</span>
+                            <span style="font-size: 0.82rem; color: var(--dim); text-transform: uppercase; font-family: var(--f-mono); font-weight:700;">${s.Constructor.nationality}</span>
+                        </div>
+                        <span class="pts" style="margin-left: auto; color: var(--red); font-weight: 900; font-family: var(--f-mono); font-size: 1.1rem;">${s.points} PTS</span>
+                    </div>
+                </div>
+            `;
+        }).join("") || `<div class="empty-state">Sin datos.</div>`;
+
+        // Consumo asíncrono de fotos o logos de escuderías para la pestaña de Equipos
+        constructorStandingsData.forEach(s => {
+            fetchWikiImage(s.Constructor.name, 'team').then(url => {
+                if (url) {
+                    const row = el.querySelector(`[data-team-id="${s.Constructor.constructorId}"]`);
+                    if (row && !row.querySelector('.driver-photo-bg')) {
+                        const img = document.createElement('img');
+                        img.className = 'driver-photo-bg';
+                        img.style.objectPosition = 'center right'; 
+                        img.src = url;
+                        img.alt = '';
+                        img.loading = 'lazy';
+                        row.insertBefore(img, row.firstChild);
+                    }
+                }
+            });
+        });
     }
 }
 
@@ -2111,58 +2292,6 @@ function initTabs() {
 // ==========================
 // PILOTOS + FAVORITO
 // ==========================
-
-// Cache de fotos de pilotos (Wikipedia)
-let driverPhotosCache = {};
-
-function getDriverWikiTitle(driver) {
-    if (!driver.url) return null;
-    try {
-        const url = new URL(driver.url);
-        // URL like https://en.wikipedia.org/wiki/Lewis_Hamilton
-        return decodeURIComponent(url.pathname.split("/").pop());
-    } catch (e) {
-        return null;
-    }
-}
-
-async function fetchDriverPhoto(driverId) {
-    // Revisar cache en memoria primero
-    if (driverPhotosCache[driverId]) return driverPhotosCache[driverId];
-    // Revisar cache en localStorage
-    const lsKey = "fprix_driver_photo_" + driverId;
-    const lsCached = localStorage.getItem(lsKey);
-    if (lsCached) {
-        try {
-            const parsed = JSON.parse(lsCached);
-            if (Date.now() - parsed.ts < CACHE_TTL * 24) {
-                driverPhotosCache[driverId] = parsed.url;
-                return parsed.url;
-            }
-        } catch (e) {}
-    }
-    // Buscar el driver
-    const driver = driversData.find(d => d.driverId === driverId);
-    if (!driver) return null;
-    const title = getDriverWikiTitle(driver);
-    if (!title) return null;
-    try {
-        const resp = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=300&origin=*`);
-        const data = await resp.json();
-        const pages = data.query?.pages;
-        if (!pages) return null;
-        const page = Object.values(pages)[0];
-        const photoUrl = page?.thumbnail?.source || null;
-        if (photoUrl) {
-            driverPhotosCache[driverId] = photoUrl;
-            try { localStorage.setItem(lsKey, JSON.stringify({ url: photoUrl, ts: Date.now() })); } catch (e) {}
-        }
-        return photoUrl;
-    } catch (e) {
-        return null;
-    }
-}
-
 async function loadDrivers() {
     try {
         const data = await cachedFetch("fprix_drivers", `${JOLPICA}/current/drivers.json`);
@@ -2178,11 +2307,8 @@ function renderDrivers() {
     const fav = localStorage.getItem("fprix_fav_driver");
     document.getElementById("driversList").innerHTML = driversData.map(d => {
         const isFav = d.driverId === fav;
-        const cachedPhoto = driverPhotosCache[d.driverId] || null;
-        const photoHtml = cachedPhoto ? `<img class="driver-photo-bg" src="${cachedPhoto}" alt="" loading="lazy">` : '';
         return `<div class="driver-row ${isFav ? "fav" : ""}" data-driver="${d.driverId}" tabindex="0">
-            ${photoHtml}
-            <div class="driver-name">${d.givenName} ${d.familyName}</div>
+            <div class="driver-name" style="font-weight: 800; font-size: 1.2rem;">${d.givenName} ${d.familyName}</div>
             <div class="star">${isFav ? "★" : "☆"}</div>
         </div>`;
     }).join("") || `<div class="empty-state">Sin pilotos.</div>`;
@@ -2195,23 +2321,22 @@ function renderDrivers() {
         });
     });
 
-    // Cargar fotos de fondo que no estén en cache
+    // Carga de fotos asíncronas para el listado general de pilotos
     driversData.forEach(d => {
-        if (!driverPhotosCache[d.driverId]) {
-            fetchDriverPhoto(d.driverId).then(url => {
-                if (url) {
-                    const row = document.querySelector(`.driver-row[data-driver="${d.driverId}"]`);
-                    if (row && !row.querySelector('.driver-photo-bg')) {
-                        const img = document.createElement('img');
-                        img.className = 'driver-photo-bg';
-                        img.src = url;
-                        img.alt = '';
-                        img.loading = 'lazy';
-                        row.insertBefore(img, row.firstChild);
-                    }
+        const fullName = `${d.givenName} ${d.familyName}`;
+        fetchWikiImage(fullName, 'driver').then(url => {
+            if (url) {
+                const row = document.querySelector(`.driver-row[data-driver="${d.driverId}"]`);
+                if (row && !row.querySelector('.driver-photo-bg')) {
+                    const img = document.createElement('img');
+                    img.className = 'driver-photo-bg';
+                    img.src = url;
+                    img.alt = '';
+                    img.loading = 'lazy';
+                    row.insertBefore(img, row.firstChild);
                 }
-            });
-        }
+            }
+        });
     });
 }
 
@@ -2230,42 +2355,28 @@ function applyFavDriver() {
     document.getElementById("favDriverTeam").textContent = standing.Constructors?.[0]?.name || "";
     document.getElementById("favDriverPos").textContent = "P" + standing.position;
 
-    // Foto difuminada del piloto favorito en el bloque de inicio
     const box = document.getElementById("favDriverBox");
     let existingPhoto = box.querySelector('.fav-driver-photo');
-    const cachedPhoto = driverPhotosCache[favId];
-    if (cachedPhoto) {
-        if (!existingPhoto) {
-            const img = document.createElement('img');
-            img.className = 'fav-driver-photo';
-            img.src = cachedPhoto;
-            img.alt = '';
-            img.loading = 'lazy';
-            box.appendChild(img);
-        } else {
-            existingPhoto.src = cachedPhoto;
-        }
-    } else {
-        // Intentar cargar la foto
-        fetchDriverPhoto(favId).then(url => {
-            if (url) {
-                if (!existingPhoto) {
-                    const img = document.createElement('img');
-                    img.className = 'fav-driver-photo';
-                    img.src = url;
-                    img.alt = '';
-                    img.loading = 'lazy';
-                    box.appendChild(img);
-                } else {
-                    existingPhoto.src = url;
-                }
+    const fullName = `${standing.Driver.givenName} ${standing.Driver.familyName}`;
+
+    fetchWikiImage(fullName, 'driver').then(url => {
+        if (url) {
+            if (!existingPhoto) {
+                const img = document.createElement('img');
+                img.className = 'fav-driver-photo';
+                img.src = url;
+                img.alt = '';
+                img.loading = 'lazy';
+                box.appendChild(img);
+            } else {
+                existingPhoto.src = url;
             }
-        });
-    }
+        }
+    });
 }
 
 // ==========================================
-// SECCIÓN EN VIVO: TELEMETRÍA REAL
+// SECCIÓN EN VIVO: TELEMETRÍA REAL (OPENF1)
 // ==========================================
 async function loadLive() {
     if (isSimActive) return; 
@@ -2353,9 +2464,9 @@ async function loadLive() {
                 const tyreClass = ['S','M','H','I','W'].includes(compoundLetter) ? `tyre-${compoundLetter}` : '';
 
                 return `
-                    <div class="standing ${podiumClass(p.position)}" style="border-left: 4px solid ${teamColor}; padding-left: .5rem;">
+                    <div class="standing ${podiumClass(p.position)}" style="border-left: 5px solid ${teamColor}; padding-left: .75rem;">
                         <span class="pos">${p.position}</span>
-                        <span style="font-weight: 700;">${name}</span>
+                        <span style="font-weight: 800;">${name}</span>
                         <span style="margin-left:auto; display:flex; gap:.5rem; align-items:center;">
                             ${compoundLetter !== '?' ? `<span class="tyre-badge ${tyreClass}">${compoundLetter}</span>` : ''}
                         </span>
@@ -2365,7 +2476,7 @@ async function loadLive() {
 
             el.innerHTML = `
                 ${weatherHTML}
-                <div style="margin-bottom:1rem;font-family:var(--f-mono);font-size:.85rem;letter-spacing:.03rem;">
+                <div style="margin-bottom:1rem;font-family:var(--f-mono);font-size:.85rem;letter-spacing:.03rem; font-weight:700;">
                     <span class="live-dot"></span>${session.session_name.toUpperCase()} · ${session.location}
                 </div>
                 ${rows || `<div class="empty-state">Sin datos de posiciones aún.</div>`}
@@ -2388,9 +2499,9 @@ async function loadLive() {
                 const tyreClass = ['S','M','H','I','W'].includes(compoundLetter) ? `tyre-${compoundLetter}` : '';
 
                 return `
-                    <div class="standing ${podiumClass(p.position)}" style="border-left: 4px solid ${teamColor}; padding-left: .5rem; border-bottom: 1px solid var(--line);">
+                    <div class="standing ${podiumClass(p.position)}" style="border-left: 5px solid ${teamColor}; padding-left: .75rem; border-bottom: 1.5px solid var(--line);">
                         <span class="pos">${p.position}</span>
-                        <span style="font-weight: 700;">${name}</span>
+                        <span style="font-weight: 800;">${name}</span>
                         <span style="margin-left:auto; display:flex; gap:.5rem; align-items:center;">
                             ${compoundLetter !== '?' ? `<span class="tyre-badge ${tyreClass}">${compoundLetter}</span>` : ''}
                         </span>
@@ -2494,9 +2605,9 @@ function runSimulationTick() {
             const tyreClass = `tyre-${d.tyre}`;
 
             return `
-                <div class="standing ${podiumClass(pos)}" style="border-left: 4px solid ${teamColor}; padding-left: .5rem;">
+                <div class="standing ${podiumClass(pos)}" style="border-left: 5px solid ${teamColor}; padding-left: .75rem;">
                     <span class="pos">${pos}</span>
-                    <span style="font-weight: 700;">${d.name} <small style="color: var(--dim); font-size:.7rem;">${d.team}</small></span>
+                    <span style="font-weight: 800;">${d.name} <small style="color: var(--dim); font-size:.7rem;">${d.team}</small></span>
                     <span style="margin-left:auto; display:flex; gap:.5rem; align-items:center;">
                         <span class="tyre-badge ${tyreClass}">${d.tyre}</span>
                     </span>
@@ -2506,7 +2617,7 @@ function runSimulationTick() {
 
         el.innerHTML = `
             ${weatherHTML}
-            <div style="margin-bottom:1rem;font-family:var(--f-mono);font-size:.85rem;letter-spacing:.03rem; display:flex; justify-content:space-between; align-items:center;">
+            <div style="margin-bottom:1rem;font-family:var(--f-mono);font-size:.85rem;letter-spacing:.03rem; display:flex; justify-content:space-between; align-items:center; font-weight:700;">
                 <span><span class="live-dot"></span>SIMULADOR EN CURSO</span>
                 <span style="color: var(--red); font-weight: bold; font-size:0.75rem;">VUELTA ${Math.floor(Math.random()*15 + 45)}/71</span>
             </div>
@@ -2526,9 +2637,9 @@ function runSimulationTick() {
             const tyreClass = `tyre-${d.tyre}`;
 
             return `
-                <div class="standing ${podiumClass(pos)}" style="border-left: 4px solid ${teamColor}; padding-left: .5rem; border-bottom: 1px solid var(--line);">
+                <div class="standing ${podiumClass(pos)}" style="border-left: 5px solid ${teamColor}; padding-left: .75rem; border-bottom: 1.5px solid var(--line);">
                     <span class="pos">${pos}</span>
-                    <span style="font-weight: 700;">${d.name} <small style="color: var(--dim); font-size:.7rem;">${d.team}</small></span>
+                    <span style="font-weight: 800;">${d.name} <small style="color: var(--dim); font-size:.7rem;">${d.team}</small></span>
                     <span style="margin-left:auto; display:flex; gap:.5rem; align-items:center;">
                         <span class="tyre-badge ${tyreClass}">${d.tyre}</span>
                     </span>
@@ -2538,9 +2649,9 @@ function runSimulationTick() {
     }
 }
 
-// ==========================================
-// NAVEGACIÓN Y GESTOS TÁCTILES iOS SPRING
-// ==========================================
+// ==========================
+// NAVEGACIÓN Y GESTOS TÁCTILES SWIPE iOS
+// ==========================
 function currentView() {
     return document.querySelector(".view.active")?.dataset.view || "home";
 }
