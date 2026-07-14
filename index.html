@@ -423,9 +423,9 @@ html[data-theme="light"] .circuit-map-container {
 /* ============ LIQUID GLASS NAVIGATION BAR (iOS PREMIUM STYLE) ============ */
 .bottom-nav {
     position: fixed;
-    left: 1.25rem;
-    right: 1.25rem;
-    bottom: calc(0.3rem + env(safe-area-inset-bottom));
+    left: 0.4rem;
+    right: 0.4rem;
+    bottom: env(safe-area-inset-bottom);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -930,7 +930,7 @@ html.force-mobile .header-glass {
 }
 html.force-mobile .bottom-nav {
     position: fixed !important;
-    left: 1.25rem !important; right: 1.25rem !important; bottom: calc(0.3rem + env(safe-area-inset-bottom)) !important; top: auto !important;
+    left: 0.4rem !important; right: 0.4rem !important; bottom: env(safe-area-inset-bottom) !important; top: auto !important;
     width: auto !important; height: auto !important;
     flex-direction: row !important; justify-content: space-around !important;
     align-items: center !important; padding: .55rem !important;
