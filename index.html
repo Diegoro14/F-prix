@@ -77,7 +77,7 @@ body{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-top: calc(env(safe-area-inset-top) + 75px);
-    padding-bottom: calc(10.5rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(7rem + env(safe-area-inset-bottom));
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
     transition:background .25s ease, color .25s ease, padding 0.3s ease;
@@ -149,13 +149,17 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
 .font-control button:hover{background:var(--surface2);color:var(--red);}
 .font-control button:active{background:var(--surface2);}
 
-/* Ajuste específico para el contenedor de la bandera de cuadros */
+/* Contenedor del logo F1 — ancho automático para mantener proporción */
 .logo .flag-container {
     display: inline-flex;
     align-items: center;
-    height: 1.6rem;
-    margin-left: 0.55rem;
+    height: 1.15rem;
+    margin-left: 0.4rem;
     vertical-align: middle;
+}
+.logo .flag-container svg {
+    height: 100%;
+    width: auto;
 }
 
 /* ============ VISTAS CON DESLIZAMIENTO SUAVE iOS (FÍSICA DE MUELLE) ============ */
@@ -406,11 +410,11 @@ html[data-theme="light"] .circuit-map-container {
     bottom: 0;
     left: 0;
     right: 0;
-    height: calc(10.5rem + env(safe-area-inset-bottom));
+    height: calc(7rem + env(safe-area-inset-bottom));
     background: linear-gradient(
         to top, 
-        rgba(var(--black-rgb), 0.96) 15%, 
-        rgba(var(--black-rgb), 0.45) 65%, 
+        rgba(var(--black-rgb), 0.96) 20%, 
+        rgba(var(--black-rgb), 0.40) 60%, 
         transparent 100%
     );
     backdrop-filter: blur(14px);
@@ -425,45 +429,84 @@ html[data-theme="light"] .circuit-map-container {
 /* ============ LIQUID GLASS NAVIGATION BAR (iOS PREMIUM STYLE) ============ */
 .bottom-nav {
     position: fixed;
-    left: 0.4rem;
-    right: 0.4rem;
+    left: 0.35rem;
+    right: 0.35rem;
     bottom: 0;
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    padding: 0.5rem 0.55rem calc(0.5rem + env(safe-area-inset-bottom));
-    border-radius: 2.2rem;
+    align-items: flex-end;
+    padding: 0.08rem 0.4rem calc(0.22rem + env(safe-area-inset-bottom));
+    border-radius: 1.5rem;
+    height: auto;
     
     background: rgba(255, 255, 255, var(--glass-bg-opacity));
-    border: 1px solid rgba(255, 255, 255, var(--glass-border-opacity));
+    border: none;
     
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url(#liquid-refraction);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url(#liquid-refraction);
     
     box-shadow:
-        0 16px 44px rgba(0, 0, 0, 0.42),
-        inset 0 1.5px 0.5px 0 rgba(255, 255, 255, 0.35),
-        inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.15),
-        inset 0 10px 20px -6px rgba(255, 255, 255, 0.12),
-        inset 0 0 2px 1.5px rgba(255, 255, 255, 0.08);
-        
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.10),
+        inset 0 4px 10px -3px rgba(255, 255, 255, 0.08);
+    
     z-index: 50;
     user-select: none;
     touch-action: pan-y;
 }
 
-/* Indicador Físico de Fondo Autodeslizable (Gota Elástica Líquida) */
+/* Borde superior difuminado con degradado suave (no duro) */
+.bottom-nav::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 8%;
+    right: 8%;
+    height: 1.5px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.06) 15%,
+        rgba(255, 255, 255, 0.18) 35%, 
+        rgba(255, 255, 255, 0.24) 50%, 
+        rgba(255, 255, 255, 0.18) 65%,
+        rgba(255, 255, 255, 0.06) 85%,
+        transparent 100%
+    );
+    border-radius: 1px;
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Sombra inferior difuminada que se funde con el fondo */
+.bottom-nav::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 15%;
+    right: 15%;
+    height: 8px;
+    background: linear-gradient(to bottom, 
+        rgba(0, 0, 0, 0.12),
+        transparent
+    );
+    pointer-events: none;
+    z-index: -1;
+    border-radius: 0 0 50% 50%;
+}
+
+/* Indicador Glass Circular - centrado en icono+texto */
 .nav-indicator {
     position: absolute;
-    height: calc(100% - 1.0rem - env(safe-area-inset-bottom));
-    top: 0.5rem;
+    height: calc(100% - 0.15rem - env(safe-area-inset-bottom));
+    top: 0.075rem;
     left: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.12);
     box-shadow: 
-        inset 0 1px 1px rgba(255, 255, 255, 0.3),
-        0 4px 14px rgba(225, 6, 0, 0.25);
-    border: 1.5px solid rgba(255, 255, 255, 0.08);
+        inset 0 1px 1px rgba(255, 255, 255, 0.25),
+        0 3px 10px rgba(225, 6, 0, 0.20);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     pointer-events: none;
     z-index: -1;
     transform: translate3d(0, 0, 0);
@@ -476,37 +519,39 @@ html[data-theme="light"] .circuit-map-container {
         border-radius var(--glass-duration) var(--glass-bezier);
 }
 
-/* Estado de Arrastre Táctil Activo (Gota Gelatinosa) */
+/* Estado de Arrastre Táctil Activo */
 .bottom-nav.dragging {
-    background: rgba(255, 255, 255, calc(var(--glass-bg-opacity) + 0.03));
+    background: rgba(255, 255, 255, calc(var(--glass-bg-opacity) + 0.02));
     box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.5),
-        inset 0 1.5px 0.5px 0 rgba(255, 255, 255, 0.45);
+        0 14px 38px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.35);
 }
 
 .bottom-nav.dragging .nav-indicator {
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.20);
     box-shadow: 
-        inset 0 1px 2px rgba(255, 255, 255, 0.5),
-        0 8px 20px rgba(225, 6, 0, 0.4);
+        inset 0 1px 2px rgba(255, 255, 255, 0.45),
+        0 6px 16px rgba(225, 6, 0, 0.35);
 }
 
 .nav-item {
     flex: 1;
-    max-width: 3.5rem; /* Ajustado para dar cabida a 6 elementos */
-    height: 3.5rem;
+    max-width: 3rem;
+    height: 2.1rem;
     border: none;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(255, 255, 255, 0.50);
     background: transparent;
-    border-radius: 1.2rem;
+    border-radius: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
+    gap: 0.02rem;
     position: relative;
     z-index: 2;
     pointer-events: none; 
+    padding-bottom: 0;
     transition: color 0.3s ease, transform var(--glass-duration) var(--glass-bezier);
 }
 
@@ -515,50 +560,69 @@ html[data-theme="light"] .circuit-map-container {
 }
 
 .nav-item .icon {
-    width: 1.6rem;
-    height: 1.6rem;
-    stroke-width: 2.5;
+    width: 1.2rem;
+    height: 1.2rem;
+    stroke-width: 2.6;
     shape-rendering: geometricPrecision;
 }
 
 /* Adaptación del cristal líquido en Modo Claro */
 html[data-theme="light"] .bottom-nav {
     background: rgba(255, 255, 255, calc(var(--glass-bg-opacity) + 0.42));
-    border: 1px solid rgba(0, 0, 0, calc(var(--glass-border-opacity) - 0.08));
+    border: none;
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url(#liquid-refraction-light);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url(#liquid-refraction-light);
     box-shadow:
-        0 14px 38px rgba(0, 0, 0, 0.09),
-        inset 0 1.5px 0.5px 0 rgba(255, 255, 255, 0.95),
-        inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.04),
-        inset 0 10px 18px -6px rgba(255, 255, 255, 0.7),
-        inset 0 0 1px 1px rgba(255, 255, 255, 0.8);
+        0 8px 24px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.02),
+        inset 0 4px 8px -3px rgba(255, 255, 255, 0.5);
+}
+
+html[data-theme="light"] .bottom-nav::before {
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(0, 0, 0, 0.04) 15%,
+        rgba(0, 0, 0, 0.10) 35%, 
+        rgba(0, 0, 0, 0.14) 50%, 
+        rgba(0, 0, 0, 0.10) 65%,
+        rgba(0, 0, 0, 0.04) 85%,
+        transparent 100%
+    );
+}
+
+html[data-theme="light"] .bottom-nav::after {
+    background: linear-gradient(to bottom, 
+        rgba(0, 0, 0, 0.05),
+        transparent
+    );
 }
 
 html[data-theme="light"] .bottom-nav.dragging .nav-indicator {
-    background: rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.10);
 }
 
 html[data-theme="light"] .nav-item {
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.45);
 }
 
 html[data-theme="light"] .nav-indicator {
-    background: rgba(0, 0, 0, 0.06);
+    background: rgba(0, 0, 0, 0.05);
     box-shadow: 
         inset 0 1px 1.5px rgba(255, 255, 255, 0.8),
-        0 4px 12px rgba(225, 6, 0, 0.16);
-    border: 1px solid rgba(0, 0, 0, 0.04);
+        0 3px 10px rgba(225, 6, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .nav-label {
     display: block;
-    font-size: 0.55rem;
+    font-size: 0.42rem;
     font-weight: 700;
-    letter-spacing: 0.03rem;
+    letter-spacing: 0.015rem;
     text-transform: uppercase;
-    margin-bottom: 0.1rem;
-    opacity: 0.6;
+    margin-bottom: 0;
+    opacity: 0.50;
+    line-height: 1;
     transition: opacity 0.3s ease, color 0.3s ease;
 }
 
@@ -588,8 +652,8 @@ html[data-theme="light"] .nav-indicator {
 
 .driver-row{display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:1.12rem;transition:background 0.2s, padding-left 0.2s;position:relative;overflow:hidden;}
 .driver-row .driver-name{flex:1;text-align:left;position:relative;z-index:1;}
-.driver-row .driver-photo-bg{position:absolute;right:0;top:0;bottom:0;width:55%;object-fit:cover;object-position:top center;opacity:0.07;pointer-events:none;z-index:0;}
-.driver-row.fav .driver-photo-bg{opacity:0.12;}
+.driver-row .driver-photo-bg{position:absolute;right:0;top:0;bottom:0;width:55%;object-fit:cover;object-position:top center;opacity:0.10;pointer-events:none;z-index:0;}
+.driver-row.fav .driver-photo-bg{opacity:0.15;}
 .driver-row.fav .driver-name{font-weight:700;color:var(--red);}
 .driver-row:hover{background:rgba(255,255,255,0.02);padding-left:0.5rem;}
 .driver-row:last-child{border:none;}
@@ -737,14 +801,14 @@ html[data-theme="light"] .nav-indicator {
     html:not(.force-mobile) .nav-indicator {
         width: calc(100% - 2rem) !important;
         left: 1rem !important;
-        height: 3.2rem;
+        height: 2.6rem;
         top: 0;
     }
     html:not(.force-mobile) .bottom-blur-guard {
         display: none !important;
     }
     html:not(.force-mobile) .nav-item {
-        width: 100%; height: 3.2rem;
+        width: 100%; height: 2.6rem;
         max-width: none;
         flex-direction: row;
         justify-content: flex-start; padding-left: 1.25rem;
@@ -849,14 +913,14 @@ html.force-pc .bottom-nav {
 html.force-pc .nav-indicator {
     width: calc(100% - 2rem) !important;
     left: 1rem !important;
-    height: 3.2rem !important;
+    height: 2.6rem !important;
     top: 0 !important;
 }
 html.force-pc .bottom-blur-guard {
     display: none !important;
 }
 html.force-pc .nav-item {
-    width: 100% !important; height: 3.2rem !important;
+    width: 100% !important; height: 2.6rem !important;
     max-width: none !important;
     flex-direction: row !important;
     justify-content: flex-start !important; padding-left: 1.25rem !important;
@@ -950,27 +1014,31 @@ html.force-mobile .header-glass {
 }
 html.force-mobile .bottom-nav {
     position: fixed !important;
-    left: 0.4rem !important; right: 0.4rem !important; bottom: 0 !important; top: auto !important;
+    left: 0.35rem !important; right: 0.35rem !important; bottom: 0 !important; top: auto !important;
     width: auto !important; height: auto !important;
     flex-direction: row !important; justify-content: space-around !important;
-    align-items: center !important; padding: .55rem !important;
-    border-radius: 2.2rem !important; box-shadow: 0 16px 44px rgba(0,0,0,.42) !important;
+    align-items: flex-end !important; padding: 0.08rem 0.4rem !important;
+    border-radius: 1.5rem !important; box-shadow: 0 10px 30px rgba(0,0,0,.35) !important;
+    border: none !important;
 }
 html.force-mobile .bottom-blur-guard {
     display: block !important;
 }
 html.force-mobile .nav-item {
     flex: 1 !important;
-    max-width: 3.5rem !important; /* Ajuste para el modo móvil forzado */
-    height: 3rem !important;
-    justify-content: center !important; padding-left: 0 !important;
+    max-width: 3rem !important;
+    height: 2.1rem !important;
+    justify-content: flex-end !important; padding-left: 0 !important;
     flex-direction: column !important;
+    gap: 0.02rem !important;
+    padding-bottom: 0 !important;
 }
 html.force-mobile .nav-label {
     display: block !important;
-    font-size: 0.55rem !important;
-    margin-bottom: 0.1rem !important;
-    opacity: 0.6 !important;
+    font-size: 0.42rem !important;
+    margin-bottom: 0 !important;
+    opacity: 0.50 !important;
+    line-height: 1 !important;
 }
 
 html.force-mobile .nav-item.active .nav-label {
@@ -1013,13 +1081,11 @@ html.force-mobile .home-card .divider {
 <div class="app" id="appRoot">
 
     <header class="header-glass">
-        <!-- Reemplazo de logotipo por bandera de cuadros vectorizada de alta fidelidad -->
+        <!-- Logo F-PRIX con icono oficial de Fórmula 1 -->
         <div class="logo">
             F-PRIX
             <span class="flag-container">
-                <svg viewBox="0 0 32 32" style="width: 1.8rem; height: 1.8rem; fill: currentColor; transform: rotate(-8deg);">
-                    <path d="M4 2a1 1 0 0 0-1 1v26a1 1 0 1 0 2 0V19h23a1 1 0 0 0 .8-1.6L24 10.5l4.8-6.9A1 1 0 0 0 28 2H4zm18.3 4H26l-3.5 5 3.5 5h-3.7l-3.5-5 3.5-5zm-6 0h4.2l-3.5 5 3.5 5h-4.2l-3.5-5 3.5-5zm-6 0h4.2v10H10.3V6z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 434.4 108.67"><defs><mask id="f1mask-a" x="0" y="0" width="356.26" height="108.67" maskUnits="userSpaceOnUse"><g transform="translate(-264.6 -421.83)"><polygon points="264.6 421.83 620.86 421.83 620.86 530.5 264.6 530.5 264.6 421.83" style="fill:#fff"/></g></mask><mask id="f1mask-b" x="260.9" y="0" width="173.5" height="108.67" maskUnits="userSpaceOnUse"><g transform="translate(-264.6 -421.83)"><polygon points="525.5 421.83 699 421.83 699 530.5 525.5 530.5 525.5 421.83" style="fill:#fff"/></g></mask></defs><g style="mask:url(#f1mask-a)"><path d="M264.6,530.5l76-76c27.51-27.51,42.4-32.7,94.2-32.7H620.86l-37.77,37H442.88c-38.2,0-48,3-66.85,21.7L325.81,530.5Z" transform="translate(-264.6 -421.83)" style="fill:#e10500"/></g><path d="M446.64,469.15c-38.2,0-45.58,1.74-62.8,19l-42.11,42.4h56.72l13.46-13.75c8-8.25,11.29-10.27,30.24-10.27h92.75l37.77-37.33Z" transform="translate(-264.6 -421.83)" style="fill:#e10500"/><g style="mask:url(#f1mask-b)"><polygon points="369.57 0 260.9 108.67 325.29 108.67 434.4 0 369.57 0" style="fill:#e10500"/></g><polygon points="365.69 90.55 380.35 90.55 380.35 93.29 374.59 93.29 374.59 108.67 371.42 108.67 371.42 93.29 365.69 93.29 365.69 90.55" style="fill:#e10500"/><polygon points="383.29 90.55 387.75 90.55 392.75 104.73 392.8 104.73 397.67 90.55 402.08 90.55 402.08 108.67 399.06 108.67 399.06 94.69 399.01 94.69 393.99 108.67 391.38 108.67 386.35 94.69 386.3 94.69 386.3 108.67 383.29 108.67 383.29 90.55" style="fill:#e10500"/></svg>
             </span>
         </div>
         <div class="header-actions">
@@ -1575,7 +1641,7 @@ function updateNavIndicator(viewName, isAnimate = true) {
         const relativeWidth = itemRect.width;
 
         indicator.style.width = `${relativeWidth}px`;
-        indicator.style.height = `calc(100% - 1.0rem - env(safe-area-inset-bottom))`;
+        indicator.style.height = `calc(100% - 0.15rem - env(safe-area-inset-bottom))`;
         indicator.style.transform = `translate3d(${relativeLeft}px, 0, 0) scale(1, 1) skewX(0deg)`;
     }
 
