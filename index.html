@@ -231,7 +231,9 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
 .primary-button:hover{background:#FF1E18;transform:translateY(-1px);box-shadow:0 4px 12px var(--red-dim);}
 .primary-button:active{background:#B80500;transform:translateY(0);}
 
-.driver-block{display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background 0.2s;}
+.driver-block{display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden;}
+.driver-block .fav-driver-photo{position:absolute;right:-1rem;top:0;bottom:0;width:50%;object-fit:cover;object-position:top center;opacity:0.10;pointer-events:none;z-index:0;}
+.driver-block>div{position:relative;z-index:1;}
 .driver-block:hover{background:var(--surface2);}
 .driver-block .eyebrow{font-size:.85rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;display:block;} /* Aumentado de .75rem a .85rem */
 .driver h3{margin-bottom:.2rem;font-size:1.2rem;font-weight:700;} /* Aumentado de 1.15rem a 1.2rem */
@@ -501,7 +503,7 @@ html[data-theme="light"] .circuit-map-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     position: relative;
     z-index: 2;
     pointer-events: none; 
@@ -513,9 +515,9 @@ html[data-theme="light"] .circuit-map-container {
 }
 
 .nav-item .icon {
-    width: 2.7rem;
-    height: 2.7rem;
-    stroke-width: 2.2;
+    width: 1.6rem;
+    height: 1.6rem;
+    stroke-width: 2.5;
     shape-rendering: geometricPrecision;
 }
 
@@ -550,12 +552,19 @@ html[data-theme="light"] .nav-indicator {
 }
 
 .nav-label {
-    display: none;
-    font-size: 0.92rem; /* Aumentado de 0.82rem a 0.92rem */
+    display: block;
+    font-size: 0.55rem;
     font-weight: 700;
-    letter-spacing: 0.04rem;
+    letter-spacing: 0.03rem;
     text-transform: uppercase;
-    margin-top: 2px;
+    margin-bottom: 0.1rem;
+    opacity: 0.6;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.nav-item.active .nav-label {
+    opacity: 1;
+    color: var(--red);
 }
 
 /* ============ TABS / LISTAS ============ */
@@ -577,7 +586,11 @@ html[data-theme="light"] .nav-indicator {
 .race-item.next{background:linear-gradient(90deg, rgba(225,6,0,.1), transparent);margin:0 -1.25rem;padding:.85rem 1.25rem;border-radius:.5rem;}
 .race-item.next .name{color:var(--red);}
 
-.driver-row{display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:1.12rem;transition:background 0.2s, padding-left 0.2s;} /* Aumentado de 1rem a 1.12rem */
+.driver-row{display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:1.12rem;transition:background 0.2s, padding-left 0.2s;position:relative;overflow:hidden;}
+.driver-row .driver-name{flex:1;text-align:left;position:relative;z-index:1;}
+.driver-row .driver-photo-bg{position:absolute;right:0;top:0;bottom:0;width:55%;object-fit:cover;object-position:top center;opacity:0.07;pointer-events:none;z-index:0;}
+.driver-row.fav .driver-photo-bg{opacity:0.12;}
+.driver-row.fav .driver-name{font-weight:700;color:var(--red);}
 .driver-row:hover{background:rgba(255,255,255,0.02);padding-left:0.5rem;}
 .driver-row:last-child{border:none;}
 .driver-row.fav{background:rgba(225,6,0,.09);border-radius:.65rem;padding-left:.75rem;padding-right:.75rem;margin:0 -.75rem;border-bottom-color:transparent;}
@@ -954,7 +967,15 @@ html.force-mobile .nav-item {
     flex-direction: column !important;
 }
 html.force-mobile .nav-label {
-    display: none !important;
+    display: block !important;
+    font-size: 0.55rem !important;
+    margin-bottom: 0.1rem !important;
+    opacity: 0.6 !important;
+}
+
+html.force-mobile .nav-item.active .nav-label {
+    opacity: 1 !important;
+    color: var(--red) !important;
 }
 html.force-mobile .home-card {
     display: block !important;
@@ -1214,28 +1235,28 @@ html.force-mobile .home-card .divider {
     <div class="nav-indicator" id="navIndicator"></div>
 
     <button class="nav-item active" data-goto="home" aria-label="Inicio">
-        <svg class="icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="5"/><path d="M24 6v13M8.4 35L19 27M39.6 35L29 27"/></svg>
         <span class="nav-label">Inicio</span>
+        <svg class="icon" viewBox="0 0 48 48"><path d="M7 25L24 9l17 16"/><path d="M11 23v16a2 2 0 002 2h9v-11h4v11h9a2 2 0 002-2V23"/></svg>
     </button>
     <button class="nav-item" data-goto="calendario" aria-label="Calendario">
-        <svg class="icon" viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="32" rx="6"/><path d="M6 20h36M16 6v8M32 6v8"/></svg>
         <span class="nav-label">Calendario</span>
+        <svg class="icon" viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="32" rx="6"/><path d="M6 20h36M16 6v8M32 6v8"/></svg>
     </button>
     <button class="nav-item" data-goto="envivo" aria-label="En vivo">
-        <svg class="icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="4.5"/><path d="M17 17a10 10 0 000 14M31 17a10 10 0 010 14M11 11a18 18 0 000 26M37 11a18 18 0 010 26"/></svg>
         <span class="nav-label">En vivo</span>
+        <svg class="icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="4.5"/><path d="M17 17a10 10 0 000 14M31 17a10 10 0 010 14M11 11a18 18 0 000 26M37 11a18 18 0 010 26"/></svg>
     </button>
     <button class="nav-item" data-goto="campeonato" aria-label="Campeonato">
+        <span class="nav-label">Campeonato</span>
         <svg class="icon" viewBox="0 0 48 48"><path d="M14 8h20v8a10 10 0 01-20 0V8z"/><path d="M14 10H6a6 6 0 008 6M34 10h8a6 6 0 01-8 6"/><path d="M24 26v6M18 40h12M20 33h8v7h-8z"/></svg>
-        <span class="nav-label">Torneo</span>
     </button>
     <button class="nav-item" data-goto="pilotos" aria-label="Pilotos">
-        <svg class="icon" viewBox="0 0 48 48"><path d="M8 28a16 16 0 0132 0v4a4 4 0 01-4 4H12a4 4 0 01-4-4v-4z"/><path d="M8 28h32M18 28v-4a6 6 0 0112 0v4"/></svg>
         <span class="nav-label">Pilotos</span>
+        <svg class="icon" viewBox="0 0 48 48"><path d="M10 32c0-12 6-22 14-22s14 10 14 22v2a3 3 0 01-3 3H13a3 3 0 01-3-3v-2z"/><path d="M15 28c2-5 5-7 9-7s7 2 9 7"/><line x1="15" y1="28" x2="33" y2="28"/><path d="M22 10v5M26 10v5"/><path d="M10 32h28"/></svg>
     </button>
     <button class="nav-item" data-goto="ajustes" aria-label="Ajustes">
-        <svg class="icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><path d="M38.8 30a3.3 3.3 0 00.66 3.64l.12.12a4 4 0 11-5.66 5.66l-.12-.12a3.3 3.3 0 00-3.64-.66 3.3 3.3 0 00-2 3.02V42a4 4 0 01-8 0v-.18a3.3 3.3 0 00-2.16-3.02 3.3 3.3 0 00-3.64.66l-.12.12a4 4 0 11-5.66-5.66l.12-.12a3.3 3.3 0 00.66-3.64 3.3 3.3 0 00-3.02-2H6a4 4 0 010-8h.18a3.3 3.3 0 003.02-2.16 3.3 3.3 0 00-.66-3.64l-.12-.12a4 4 0 115.66-5.66l.12.12a3.3 3.3 0 003.64.66H18a3.3 3.3 0 002-3.02V6a4 4 0 018 0v.18a3.3 3.3 0 002 3.02 3.3 3.3 0 003.64-.66l.12-.12a4 4 0 115.66 5.66l-.12.12a3.3 3.3 0 00-.66 3.64V18a3.3 3.3 0 003.02 2H42a4 4 0 010 8h-.18a3.3 3.3 0 00-3.02 2z"/></svg>
         <span class="nav-label">Ajustes</span>
+        <svg class="icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><path d="M38.8 30a3.3 3.3 0 00.66 3.64l.12.12a4 4 0 11-5.66 5.66l-.12-.12a3.3 3.3 0 00-3.64-.66 3.3 3.3 0 00-2 3.02V42a4 4 0 01-8 0v-.18a3.3 3.3 0 00-2.16-3.02 3.3 3.3 0 00-3.64.66l-.12.12a4 4 0 11-5.66-5.66l.12-.12a3.3 3.3 0 00.66-3.64 3.3 3.3 0 00-3.02-2H6a4 4 0 010-8h.18a3.3 3.3 0 003.02-2.16 3.3 3.3 0 00-.66-3.64l-.12-.12a4 4 0 115.66-5.66l.12.12a3.3 3.3 0 003.64.66H18a3.3 3.3 0 002-3.02V6a4 4 0 018 0v.18a3.3 3.3 0 002 3.02 3.3 3.3 0 003.64-.66l.12-.12a4 4 0 115.66 5.66l-.12.12a3.3 3.3 0 00-.66 3.64V18a3.3 3.3 0 003.02 2H42a4 4 0 010 8h-.18a3.3 3.3 0 00-3.02 2z"/></svg>
     </button>
 </nav>
 
@@ -1699,6 +1720,11 @@ async function cachedFetch(key, url, ttl = CACHE_TTL) {
 function hardRefresh() {
     ["fprix_calendar", "fprix_driverstd", "fprix_constructorstd", "fprix_drivers"]
         .forEach(k => localStorage.removeItem(k));
+    // Limpiar cache de fotos de pilotos
+    Object.keys(localStorage).forEach(k => {
+        if (k.startsWith("fprix_driver_photo_")) localStorage.removeItem(k);
+    });
+    driverPhotosCache = {};
     loadCalendar();
     loadStandings();
     loadDrivers();
@@ -2019,6 +2045,58 @@ function initTabs() {
 // ==========================
 // PILOTOS + FAVORITO
 // ==========================
+
+// Cache de fotos de pilotos (Wikipedia)
+let driverPhotosCache = {};
+
+function getDriverWikiTitle(driver) {
+    if (!driver.url) return null;
+    try {
+        const url = new URL(driver.url);
+        // URL like https://en.wikipedia.org/wiki/Lewis_Hamilton
+        return decodeURIComponent(url.pathname.split("/").pop());
+    } catch (e) {
+        return null;
+    }
+}
+
+async function fetchDriverPhoto(driverId) {
+    // Revisar cache en memoria primero
+    if (driverPhotosCache[driverId]) return driverPhotosCache[driverId];
+    // Revisar cache en localStorage
+    const lsKey = "fprix_driver_photo_" + driverId;
+    const lsCached = localStorage.getItem(lsKey);
+    if (lsCached) {
+        try {
+            const parsed = JSON.parse(lsCached);
+            if (Date.now() - parsed.ts < CACHE_TTL * 24) {
+                driverPhotosCache[driverId] = parsed.url;
+                return parsed.url;
+            }
+        } catch (e) {}
+    }
+    // Buscar el driver
+    const driver = driversData.find(d => d.driverId === driverId);
+    if (!driver) return null;
+    const title = getDriverWikiTitle(driver);
+    if (!title) return null;
+    try {
+        const resp = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=300&origin=*`);
+        const data = await resp.json();
+        const pages = data.query?.pages;
+        if (!pages) return null;
+        const page = Object.values(pages)[0];
+        const photoUrl = page?.thumbnail?.source || null;
+        if (photoUrl) {
+            driverPhotosCache[driverId] = photoUrl;
+            try { localStorage.setItem(lsKey, JSON.stringify({ url: photoUrl, ts: Date.now() })); } catch (e) {}
+        }
+        return photoUrl;
+    } catch (e) {
+        return null;
+    }
+}
+
 async function loadDrivers() {
     try {
         const data = await cachedFetch("fprix_drivers", `${JOLPICA}/current/drivers.json`);
@@ -2034,8 +2112,11 @@ function renderDrivers() {
     const fav = localStorage.getItem("fprix_fav_driver");
     document.getElementById("driversList").innerHTML = driversData.map(d => {
         const isFav = d.driverId === fav;
+        const cachedPhoto = driverPhotosCache[d.driverId] || null;
+        const photoHtml = cachedPhoto ? `<img class="driver-photo-bg" src="${cachedPhoto}" alt="" loading="lazy">` : '';
         return `<div class="driver-row ${isFav ? "fav" : ""}" data-driver="${d.driverId}" tabindex="0">
-            <div>${d.givenName} ${d.familyName}</div>
+            ${photoHtml}
+            <div class="driver-name">${d.givenName} ${d.familyName}</div>
             <div class="star">${isFav ? "★" : "☆"}</div>
         </div>`;
     }).join("") || `<div class="empty-state">Sin pilotos.</div>`;
@@ -2046,6 +2127,25 @@ function renderDrivers() {
             renderDrivers();
             applyFavDriver();
         });
+    });
+
+    // Cargar fotos de fondo que no estén en cache
+    driversData.forEach(d => {
+        if (!driverPhotosCache[d.driverId]) {
+            fetchDriverPhoto(d.driverId).then(url => {
+                if (url) {
+                    const row = document.querySelector(`.driver-row[data-driver="${d.driverId}"]`);
+                    if (row && !row.querySelector('.driver-photo-bg')) {
+                        const img = document.createElement('img');
+                        img.className = 'driver-photo-bg';
+                        img.src = url;
+                        img.alt = '';
+                        img.loading = 'lazy';
+                        row.insertBefore(img, row.firstChild);
+                    }
+                }
+            });
+        }
     });
 }
 
@@ -2063,6 +2163,39 @@ function applyFavDriver() {
     document.getElementById("favDriverName").textContent = `${standing.Driver.givenName} ${standing.Driver.familyName}`;
     document.getElementById("favDriverTeam").textContent = standing.Constructors?.[0]?.name || "";
     document.getElementById("favDriverPos").textContent = "P" + standing.position;
+
+    // Foto difuminada del piloto favorito en el bloque de inicio
+    const box = document.getElementById("favDriverBox");
+    let existingPhoto = box.querySelector('.fav-driver-photo');
+    const cachedPhoto = driverPhotosCache[favId];
+    if (cachedPhoto) {
+        if (!existingPhoto) {
+            const img = document.createElement('img');
+            img.className = 'fav-driver-photo';
+            img.src = cachedPhoto;
+            img.alt = '';
+            img.loading = 'lazy';
+            box.appendChild(img);
+        } else {
+            existingPhoto.src = cachedPhoto;
+        }
+    } else {
+        // Intentar cargar la foto
+        fetchDriverPhoto(favId).then(url => {
+            if (url) {
+                if (!existingPhoto) {
+                    const img = document.createElement('img');
+                    img.className = 'fav-driver-photo';
+                    img.src = url;
+                    img.alt = '';
+                    img.loading = 'lazy';
+                    box.appendChild(img);
+                } else {
+                    existingPhoto.src = url;
+                }
+            }
+        });
+    }
 }
 
 // ==========================================
