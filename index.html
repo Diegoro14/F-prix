@@ -12,7 +12,6 @@
 <meta name="apple-mobile-web-app-title" content="F-Prix">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000'/%3E%3Crect y='42' width='100' height='16' fill='%23E10600'/%3E%3C/svg%3E">
 
-<!-- Fuentes tipográficas optimizadas para alto rendimiento -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
@@ -39,7 +38,7 @@ html{
     --red:#E10600;
     --red-dim:rgba(225,6,0,.40);
     --text:#FFFFFF;
-    --dim:#D4D4D8; /* Gris titanio claro de altísima legibilidad en fondo oscuro */
+    --dim:#D4D4D8; 
     --gold:#F59E0B;
     --silver:#E4E4E7;
     --bronze:#D97706;
@@ -66,8 +65,8 @@ html[data-theme="light"]{
     --surface:#FFFFFF;
     --surface2:#E4E4E7;
     --line:rgba(9,9,11,.15);
-    --text:#09090B; /* Negro azabache profundo para excelente contraste */
-    --dim:#27272A;  /* Gris grafito oscuro que cumple con estándares WCAG AAA */
+    --text:#09090B; 
+    --dim:#27272A;  
     --map-stroke: #09090B;
     --map-stroke-glow: rgba(9, 9, 11, 0.12);
 }
@@ -80,7 +79,7 @@ body{
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-top: calc(env(safe-area-inset-top) + 75px);
-    padding-bottom: calc(8.5rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(7.2rem + env(safe-area-inset-bottom));
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
     transition:background .25s ease, color .25s ease, padding 0.3s ease;
@@ -244,16 +243,25 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
 .driver-block{display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden;}
 .driver-block .fav-driver-photo{
     position:absolute;right:0;top:0;bottom:0;width:55%;
-    object-fit:cover;object-position:top right;
-    mask-image: linear-gradient(to left, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%);
-    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%);
-    opacity: 0.28;
+    object-fit:cover;
+    object-position:center 12%; /* Ajustado verticalmente al 12% para enfocar el rostro en fotos tipo carátula */
+    opacity: 0.90; 
+    mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
     pointer-events:none;z-index:0;
 }
 html[data-theme="light"] .driver-block .fav-driver-photo {
-    opacity: 0.35;
+    opacity: 0.88;
 }
-.driver-block>div{position:relative;z-index:1;}
+.driver-block>div{
+    position:relative;
+    z-index:1;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+}
+html[data-theme="light"] .driver-block>div {
+    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.85), 0 0 1px rgba(255,255,255,1);
+}
+
 .driver-block:hover{background:var(--surface2);}
 .driver-block .eyebrow{font-size:.85rem;font-weight:700;letter-spacing:.12rem;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;display:block;}
 .driver h3{margin-bottom:.2rem;font-size:1.3rem;font-weight:900;letter-spacing: -0.01rem;}
@@ -394,7 +402,6 @@ html[data-theme="light"] .circuit-map-container {
     letter-spacing:.08rem;
 }
 
-/* Rediseño de botones de enlace secundario */
 .weekend-link{
     border:1.5px solid var(--red-dim);
     border-radius:.55rem;
@@ -435,7 +442,7 @@ html[data-theme="light"] .circuit-map-container {
     bottom: 0;
     left: 0;
     right: 0;
-    height: calc(8.5rem + env(safe-area-inset-bottom));
+    height: calc(7.2rem + env(safe-area-inset-bottom));
     background: linear-gradient(
         to top, 
         rgba(var(--black-rgb), 0.98) 20%, 
@@ -451,12 +458,12 @@ html[data-theme="light"] .circuit-map-container {
     transition: background 0.25s ease;
 }
 
-/* ============ DOCK DE CONTROL FLOTANTE (ESTILO IPHONE) ============ */
+/* ============ DOCK DE CONTROL FLOTANTE (BAJO INTEGRADO) ============ */
 .bottom-nav {
     position: fixed;
     left: 1rem;
     right: 1rem;
-    bottom: calc(1rem + env(safe-area-inset-bottom)); 
+    bottom: calc(0.4rem + env(safe-area-inset-bottom)); 
     display: flex;
     justify-content: space-around;
     align-items: center; 
@@ -549,7 +556,6 @@ html[data-theme="light"] .circuit-map-container {
         height var(--glass-duration) var(--glass-bezier);
 }
 
-/* Brillo especular superior del domo de agua súper sutil y elegante */
 .nav-indicator::before {
     content: '';
     position: absolute;
@@ -564,7 +570,6 @@ html[data-theme="light"] .circuit-map-container {
     pointer-events: none;
 }
 
-/* Estado de Arrastre Táctil Activo */
 .bottom-nav.dragging {
     background: rgba(var(--black-rgb), 0.35);
 }
@@ -583,7 +588,6 @@ html[data-theme="light"] .circuit-map-container {
         0 6px 20px rgba(225, 6, 0, 0.38);
 }
 
-/* ============ BOTONES DE ENLACE DE NAVEGACION ============ */
 .nav-item {
     flex: 1;
     max-width: 4rem; 
@@ -711,23 +715,53 @@ html[data-theme="light"] .race-time { color: #D70015; background: rgba(225,6,0,.
 .race-item.next{background:linear-gradient(90deg, rgba(225,6,0,.12), transparent);margin:0 -1.25rem;padding:.95rem 1.25rem;border-radius:.65rem;}
 .race-item.next .name{color:var(--red);}
 
-/* Listas con integración fotográfica premium de Wikipedia */
+/* Listas con integración fotográfica de Wikipedia (Opacidad Completa y Enfoque Rostro) */
 .driver-row{display:flex;justify-content:space-between;align-items:center;padding:.95rem 0;border-bottom:1.5px solid var(--line);cursor:pointer;font-size:1.15rem;transition:background 0.2s, padding-left 0.2s;position:relative;overflow:hidden;}
-.driver-row .driver-name{flex:1;text-align:left;position:relative;z-index:1;}
+
+.driver-row .driver-name{
+    flex:1;text-align:left;position:relative;z-index:1;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+}
+html[data-theme="light"] .driver-row .driver-name {
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9), 0 0 1px rgba(255,255,255,1);
+}
+
+/* Retrato enfocado de pilotos (Foco vertical ajustado al 12% para rostros perfectos) */
 .driver-row .driver-photo-bg{
     position:absolute;right:0;top:0;bottom:0;width:55%;
-    object-fit:cover;object-position:top center;
+    object-fit:cover;
+    object-position:center 12%; 
+    opacity: 0.90; 
     mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
     -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
-    opacity: 0.20;
     pointer-events:none;z-index:0;
     transition: opacity 0.3s ease;
 }
 html[data-theme="light"] .driver-row .driver-photo-bg {
-    opacity: 0.28;
+    opacity: 0.88;
 }
-.driver-row.fav .driver-photo-bg{opacity:0.32;}
-html[data-theme="light"] .driver-row.fav .driver-photo-bg { opacity: 0.40; }
+.driver-row.fav .driver-photo-bg{opacity:0.95;}
+html[data-theme="light"] .driver-row.fav .driver-photo-bg { opacity: 0.92; }
+
+/* Nueva clase exclusiva para logotipos de ESCUDERIAS (Evita cortes y deformaciones) */
+.driver-row .team-photo-bg {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38%;
+    height: 75%;
+    object-fit: contain; 
+    object-position: center right;
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.3s ease;
+}
+html[data-theme="light"] .driver-row .team-photo-bg {
+    opacity: 0.88;
+}
+
 .driver-row.fav .driver-name{font-weight:800;color:var(--red);}
 .driver-row:hover{background:rgba(255,255,255,0.03);padding-left:0.5rem;}
 .driver-row:last-child{border:none;}
@@ -843,7 +877,6 @@ html[data-theme="light"] .driver-row.fav .driver-photo-bg { opacity: 0.40; }
     transform: scale(1.3);
 }
 
-/* ============ REGLAS DE DISEÑO COMPARTIDAS EN MODO PC ============ */
 @media (min-width: 768px) {
     html:not(.force-mobile) body {
         padding-top: 2.5rem;
@@ -1075,7 +1108,7 @@ html.force-pc .home-card .block:last-child {
 /* Modo Móvil FORZADO */
 html.force-mobile body {
     padding-top: calc(env(safe-area-inset-top) + 75px) !important;
-    padding-bottom: calc(10.5rem + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(7.2rem + env(safe-area-inset-bottom)) !important;
     padding-left: 0 !important;
 }
 html.force-mobile .app {
@@ -1097,7 +1130,7 @@ html.force-mobile .bottom-nav {
     position: fixed !important;
     left: 1rem !important; 
     right: 1rem !important; 
-    bottom: calc(1rem + env(safe-area-inset-bottom)) !important; 
+    bottom: calc(0.4rem + env(safe-area-inset-bottom)) !important; 
     top: auto !important;
     width: auto !important; 
     height: 4.4rem !important;
@@ -1405,7 +1438,7 @@ html.force-mobile .home-card .divider {
 
 <script>
 // ==========================================
-// F-PRIX v7.0 - app.js + Liquid Drop Engine
+// F-PRIX v7.2 - app.js + Liquid Drop Engine
 // ==========================================
 
 const JOLPICA = "https://api.jolpi.ca/ergast/f1";
@@ -1431,6 +1464,97 @@ const ICON_PHONE = '<svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" widt
 const ICON_DESKTOP = '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>';
 const ICON_SUN = '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>';
 const ICON_MOON = '<svg class="icon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 119.5 4a7 7 0 0010.5 10.5z"/></svg>';
+
+// BASE DE DATOS DE RESPALDO (F1 2026 OFFLINE COMPLETE)
+const FALLBACK_CALENDAR = [
+    { round: "1", raceName: "Gran Premio de Australia", date: "2026-03-08", time: "04:00:00Z", Circuit: { circuitName: "Albert Park Circuit", Location: { locality: "Melbourne", country: "Australia" } } },
+    { round: "2", raceName: "Gran Premio de China", date: "2026-03-15", time: "07:00:00Z", Circuit: { circuitName: "Shanghai International Circuit", Location: { locality: "Shanghai", country: "China" } } },
+    { round: "3", raceName: "Gran Premio de Japón", date: "2026-03-29", time: "05:00:00Z", Circuit: { circuitName: "Suzuka International Racing Course", Location: { locality: "Suzuka", country: "Japan" } } },
+    { round: "4", raceName: "Gran Premio de Miami", date: "2026-05-03", time: "19:30:00Z", Circuit: { circuitName: "Miami International Autodrome", Location: { locality: "Miami", country: "USA" } } },
+    { round: "5", raceName: "Gran Premio de Canadá", date: "2026-05-24", time: "20:00:00Z", Circuit: { circuitName: "Circuit Gilles Villeneuve", Location: { locality: "Montreal", country: "Canada" } } },
+    { round: "6", raceName: "Gran Premio de Mónaco", date: "2026-06-07", time: "13:00:00Z", Circuit: { circuitName: "Circuit de Monaco", Location: { locality: "Monte Carlo", country: "Monaco" } } },
+    { round: "7", raceName: "Gran Premio de Barcelona-Cataluña", date: "2026-06-14", time: "13:00:00Z", Circuit: { circuitName: "Circuit de Barcelona-Catalunya", Location: { locality: "Barcelona", country: "Spain" } } },
+    { round: "8", raceName: "Gran Premio de Austria", date: "2026-06-28", time: "13:00:00Z", Circuit: { circuitName: "Red Bull Ring", Location: { locality: "Spielberg", country: "Austria" } } },
+    { round: "9", raceName: "Gran Premio de Gran Bretaña", date: "2026-07-05", time: "14:00:00Z", Circuit: { circuitName: "Silverstone Circuit", Location: { locality: "Silverstone", country: "UK" } } },
+    { round: "10", raceName: "Gran Premio de Bélgica", date: "2026-07-19", time: "13:00:00Z", Circuit: { circuitName: "Circuit de Spa-Francorchamps", Location: { locality: "Spa", country: "Belgium" } },
+      FirstPractice: { date: "2026-07-17", time: "11:30:00Z" }, SecondPractice: { date: "2026-07-17", time: "15:00:00Z" }, ThirdPractice: { date: "2026-07-18", time: "10:30:00Z" }, Qualifying: { date: "2026-07-18", time: "14:00:00Z" } },
+    { round: "11", raceName: "Gran Premio de Hungría", date: "2026-07-26", time: "13:00:00Z", Circuit: { circuitName: "Hungaroring", Location: { locality: "Budapest", country: "Hungary" } } },
+    { round: "12", raceName: "Gran Premio de los Países Bajos", date: "2026-08-23", time: "13:00:00Z", Circuit: { circuitName: "Circuit Zandvoort", Location: { locality: "Zandvoort", country: "Netherlands" } } },
+    { round: "13", raceName: "Gran Premio de Italia", date: "2026-09-06", time: "13:00:00Z", Circuit: { circuitName: "Autodromo Nazionale Monza", Location: { locality: "Monza", country: "Italy" } } },
+    { round: "14", raceName: "Gran Premio de España (Madrid)", date: "2026-09-13", time: "13:00:00Z", Circuit: { circuitName: "Circuito de Madrid", Location: { locality: "Madrid", country: "Spain" } } },
+    { round: "15", raceName: "Gran Premio de Azerbaiyán", date: "2026-09-27", time: "11:00:00Z", Circuit: { circuitName: "Baku City Circuit", Location: { locality: "Baku", country: "Azerbaijan" } } },
+    { round: "16", raceName: "Gran Premio de Singapur", date: "2026-10-11", time: "12:00:00Z", Circuit: { circuitName: "Marina Bay Street Circuit", Location: { locality: "Marina Bay", country: "Singapore" } } },
+    { round: "17", raceName: "Gran Premio de los Estados Unidos", date: "2026-10-25", time: "19:00:00Z", Circuit: { circuitName: "Circuit of the Americas", Location: { locality: "Austin", country: "USA" } } },
+    { round: "18", raceName: "Gran Premio de México", date: "2026-11-01", time: "19:00:00Z", Circuit: { circuitName: "Autódromo Hermanos Rodríguez", Location: { locality: "Mexico City", country: "Mexico" } } },
+    { round: "19", raceName: "Gran Premio de São Paulo", date: "2026-11-08", time: "17:00:00Z", Circuit: { circuitName: "Autódromo José Carlos Pace", Location: { locality: "São Paulo", country: "Brazil" } } },
+    { round: "20", raceName: "Gran Premio de Las Vegas", date: "2026-11-22", time: "06:00:00Z", Circuit: { circuitName: "Las Vegas Strip Circuit", Location: { locality: "Las Vegas", country: "USA" } } },
+    { round: "21", raceName: "Gran Premio de Catar", date: "2026-11-29", time: "16:00:00Z", Circuit: { circuitName: "Lusail International Circuit", Location: { locality: "Lusail", country: "Qatar" } } },
+    { round: "22", raceName: "Gran Premio de Abu Dabi", date: "2026-12-06", time: "13:00:00Z", Circuit: { circuitName: "Yas Marina Circuit", Location: { locality: "Abu Dhabi", country: "UAE" } } }
+];
+
+const FALLBACK_DRIVER_STANDINGS = [
+    { position: "1", points: "179", Driver: { driverId: "antonelli", givenName: "Andrea Kimi", familyName: "Antonelli" }, Constructors: [{ name: "Mercedes" }] },
+    { position: "2", points: "154", Driver: { driverId: "russell", givenName: "George", familyName: "Russell" }, Constructors: [{ name: "Mercedes" }] },
+    { position: "3", points: "131", Driver: { driverId: "hamilton", givenName: "Lewis", familyName: "Hamilton" }, Constructors: [{ name: "Ferrari" }] },
+    { position: "4", points: "108", Driver: { driverId: "leclerc", givenName: "Charles", familyName: "Leclerc" }, Constructors: [{ name: "Ferrari" }] },
+    { position: "5", points: "97", Driver: { driverId: "norris", givenName: "Lando", familyName: "Norris" }, Constructors: [{ name: "McLaren" }] },
+    { position: "6", points: "82", Driver: { driverId: "piastri", givenName: "Oscar", familyName: "Piastri" }, Constructors: [{ name: "McLaren" }] },
+    { position: "7", points: "76", Driver: { driverId: "verstappen", givenName: "Max", familyName: "Verstappen" }, Constructors: [{ name: "Red Bull Racing" }] },
+    { position: "8", points: "52", Driver: { driverId: "hadjar", givenName: "Isack", familyName: "Hadjar" }, Constructors: [{ name: "Red Bull Racing" }] },
+    { position: "9", points: "42", Driver: { driverId: "gasly", givenName: "Pierre", familyName: "Gasly" }, Constructors: [{ name: "Alpine" }] },
+    { position: "10", points: "39", Driver: { driverId: "lawson", givenName: "Liam", familyName: "Lawson" }, Constructors: [{ name: "Racing Bulls" }] },
+    { position: "11", points: "20", Driver: { driverId: "lindblad", givenName: "Arvid", familyName: "Lindblad" }, Constructors: [{ name: "Racing Bulls" }] },
+    { position: "12", points: "18", Driver: { driverId: "bearman", givenName: "Oliver", familyName: "Bearman" }, Constructors: [{ name: "Haas F1 Team" }] },
+    { position: "13", points: "18", Driver: { driverId: "colapinto", givenName: "Franco", familyName: "Colapinto" }, Constructors: [{ name: "Alpine" }] },
+    { position: "14", points: "6", Driver: { driverId: "bortoleto", givenName: "Gabriel", familyName: "Bortoleto" }, Constructors: [{ name: "Audi" }] },
+    { position: "15", points: "6", Driver: { driverId: "sainz", givenName: "Carlos", familyName: "Sainz" }, Constructors: [{ name: "Williams" }] },
+    { position: "16", points: "5", Driver: { driverId: "albon", givenName: "Alexander", familyName: "Albon" }, Constructors: [{ name: "Williams" }] },
+    { position: "17", points: "3", Driver: { driverId: "ocon", givenName: "Esteban", familyName: "Ocon" }, Constructors: [{ name: "Haas F1 Team" }] },
+    { position: "18", points: "1", Driver: { driverId: "alonso", givenName: "Fernando", familyName: "Alonso" }, Constructors: [{ name: "Aston Martin" }] },
+    { position: "19", points: "0", Driver: { driverId: "hulkenberg", givenName: "Nico", familyName: "Hülkenberg" }, Constructors: [{ name: "Audi" }] },
+    { position: "20", points: "0", Driver: { driverId: "bottas", givenName: "Valtteri", familyName: "Bottas" }, Constructors: [{ name: "Cadillac" }] },
+    { position: "21", points: "0", Driver: { driverId: "perez", givenName: "Sergio", familyName: "Pérez" }, Constructors: [{ name: "Cadillac" }] },
+    { position: "22", points: "0", Driver: { driverId: "stroll", givenName: "Lance", familyName: "Stroll" }, Constructors: [{ name: "Aston Martin" }] }
+];
+
+const FALLBACK_CONSTRUCTOR_STANDINGS = [
+    { position: "1", points: "333", Constructor: { constructorId: "mercedes", name: "Mercedes", nationality: "German" } },
+    { position: "2", points: "255", Constructor: { constructorId: "ferrari", name: "Ferrari", nationality: "Italian" } },
+    { position: "3", points: "179", Constructor: { constructorId: "mclaren", name: "McLaren", nationality: "British" } },
+    { position: "4", points: "128", Constructor: { constructorId: "red_bull", name: "Red Bull Racing", nationality: "Austrian" } },
+    { position: "5", points: "60", Constructor: { constructorId: "alpine", name: "Alpine", nationality: "French" } },
+    { position: "6", points: "59", Constructor: { constructorId: "racing_bulls", name: "Racing Bulls", nationality: "Italian" } },
+    { position: "7", points: "21", Constructor: { constructorId: "haas", name: "Haas F1 Team", nationality: "American" } },
+    { position: "8", points: "11", Constructor: { constructorId: "williams", name: "Williams", nationality: "British" } },
+    { position: "9", points: "6", Constructor: { constructorId: "audi", name: "Audi", nationality: "German" } },
+    { position: "10", points: "1", Constructor: { constructorId: "aston_martin", name: "Aston Martin", nationality: "British" } },
+    { position: "11", points: "0", Constructor: { constructorId: "cadillac", name: "Cadillac", nationality: "American" } }
+];
+
+const FALLBACK_DRIVERS = [
+    { driverId: "antonelli", givenName: "Andrea Kimi", familyName: "Antonelli" },
+    { driverId: "russell", givenName: "George", familyName: "Russell" },
+    { driverId: "hamilton", givenName: "Lewis", familyName: "Hamilton" },
+    { driverId: "leclerc", givenName: "Charles", familyName: "Leclerc" },
+    { driverId: "norris", givenName: "Lando", familyName: "Norris" },
+    { driverId: "piastri", givenName: "Oscar", familyName: "Piastri" },
+    { driverId: "verstappen", givenName: "Max", familyName: "Verstappen" },
+    { driverId: "hadjar", givenName: "Isack", familyName: "Hadjar" },
+    { driverId: "gasly", givenName: "Pierre", familyName: "Gasly" },
+    { driverId: "lawson", givenName: "Liam", familyName: "Lawson" },
+    { driverId: "lindblad", givenName: "Arvid", familyName: "Lindblad" },
+    { driverId: "bearman", givenName: "Oliver", familyName: "Bearman" },
+    { driverId: "colapinto", givenName: "Franco", familyName: "Colapinto" },
+    { driverId: "bortoleto", givenName: "Gabriel", familyName: "Bortoleto" },
+    { driverId: "sainz", givenName: "Carlos", familyName: "Sainz" },
+    { driverId: "albon", givenName: "Alexander", familyName: "Albon" },
+    { driverId: "ocon", givenName: "Esteban", familyName: "Ocon" },
+    { driverId: "alonso", givenName: "Fernando", familyName: "Alonso" },
+    { driverId: "hulkenberg", givenName: "Nico", familyName: "Hülkenberg" },
+    { driverId: "bottas", givenName: "Valtteri", familyName: "Bottas" },
+    { driverId: "perez", givenName: "Sergio", familyName: "Pérez" },
+    { driverId: "stroll", givenName: "Lance", familyName: "Stroll" }
+];
 
 document.addEventListener("DOMContentLoaded", () => {
     initTheme();
@@ -1852,8 +1976,38 @@ function initFontControl() {
 }
 
 // ==========================
-// GESTION DE CACHE
+// TRIPLE REINTENTO CORS REDUNDANTE + RESILIENCIA OFFLINE PARA LOCAL FILE
 // ==========================
+async function fetchWithFallback(url) {
+    try {
+        const res = await fetch(url);
+        if (res.ok) return await res.json();
+    } catch (e) {}
+
+    // Proxy 1 (Allorigins)
+    try {
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+        const res = await fetch(proxyUrl);
+        if (res.ok) return await res.json();
+    } catch (e) {}
+
+    // Proxy 2 (Corsproxy.io)
+    try {
+        const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
+        const res = await fetch(proxyUrl);
+        if (res.ok) return await res.json();
+    } catch (e) {}
+
+    // Proxy 3 (Codetabs)
+    try {
+        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`;
+        const res = await fetch(proxyUrl);
+        if (res.ok) return await res.json();
+    } catch (e) {}
+
+    throw new Error("Conexión de red restringida localmente por CORS.");
+}
+
 async function cachedFetch(key, url, ttl = CACHE_TTL) {
     try {
         const raw = localStorage.getItem(key);
@@ -1863,10 +2017,7 @@ async function cachedFetch(key, url, ttl = CACHE_TTL) {
         }
     } catch (e) {}
 
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Error de red: " + res.status);
-    const data = await res.json();
-
+    const data = await fetchWithFallback(url);
     try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), d: data })); } catch (e) {}
     return data;
 }
@@ -1884,7 +2035,7 @@ function hardRefresh() {
 }
 
 // ==========================================
-// RENDER DINÁMICO DE MAPAS DE CIRCUITO
+// VECTORIZACIÓN DE LOS 24 MAPAS DEL CALENDARIO (SVG INTEGRAL COMPLETADO)
 // ==========================================
 function drawCircuitMap(circuitName) {
     const container = document.getElementById("circuitMapContainer");
@@ -1894,45 +2045,130 @@ function drawCircuitMap(circuitName) {
     let pathData = "";
     let grandstands = "";
 
-    const spaPath = "M 80 290 L 160 130 C 180 90, 200 110, 240 120 L 320 160 C 350 175, 370 150, 390 130 L 460 70 C 510 30, 540 60, 520 110 L 490 200 C 470 250, 440 230, 410 270 L 360 320 C 330 350, 290 310, 260 270 L 210 285 L 150 250 C 110 230, 90 260, 80 290 Z";
-    const spaStands = `
-        <rect x="75" y="240" width="12" height="25" fill="#E10600" transform="rotate(-30 75 240)" opacity="0.95"/>
-        <rect x="150" y="105" width="30" height="12" fill="#E10600" opacity="0.95"/>
-        <rect x="440" y="60" width="35" height="12" fill="#E10600" transform="rotate(15 440 60)" opacity="0.95"/>
-        <rect x="535" y="150" width="12" height="30" fill="#E10600" opacity="0.95"/>
-        <rect x="340" y="275" width="40" height="12" fill="#E10600" transform="rotate(-15 340 275)" opacity="0.95"/>
-    `;
-
-    if (name.includes("spa") || name.includes("belg") || name.includes("francorchamps")) {
-        pathData = spaPath;
-        grandstands = spaStands;
-    } else if (name.includes("monza") || name.includes("ital")) {
-        pathData = "M 60 200 L 480 200 C 540 200, 550 260, 480 280 L 440 290 C 380 310, 340 270, 280 250 L 150 250 C 70 250, 50 220, 60 200 Z";
-        grandstands = `
-            <rect x="80" y="188" width="60" height="10" fill="#E10600" opacity="0.95"/>
-            <rect x="460" y="230" width="30" height="10" fill="#E10600" transform="rotate(45 460 230)" opacity="0.95"/>
-        `;
-    } else if (name.includes("monaco") || name.includes("monte")) {
+    // 1. Melbourne (Australia)
+    if (name.includes("albert park") || name.includes("australia") || name.includes("melbourne")) {
+        pathData = "M 150 120 L 450 120 C 480 150, 460 210, 480 260 L 180 260 C 140 220, 160 170, 150 120 Z";
+        grandstands = `<rect x="200" y="112" width="60" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 2. Shanghai (China)
+    else if (name.includes("shanghai") || name.includes("shanghái") || name.includes("china")) {
+        pathData = "M 100 280 L 100 120 L 250 120 L 250 180 L 450 180 L 450 240 L 150 240 L 150 280 Z";
+        grandstands = `<rect x="105" y="140" width="8" height="40" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 3. Suzuka (Japan)
+    else if (name.includes("suzuka") || name.includes("japan") || name.includes("japón")) {
+        pathData = "M 100 200 Q 150 140 200 220 T 300 220 Q 350 270 400 200 T 300 150 Q 250 100 150 180 Z";
+        grandstands = `<rect x="110" y="180" width="30" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 4. Sakhir (Bahrain)
+    else if (name.includes("sakhir") || name.includes("bahrain") || name.includes("bahréin")) {
+        pathData = "M 100 280 L 120 150 L 190 140 L 260 170 L 320 130 L 380 200 L 410 180 L 460 210 L 410 280 L 330 250 L 210 290 Z";
+        grandstands = `<rect x="110" y="142" width="20" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 5. Jeddah (Saudi Arabia)
+    else if (name.includes("jeddah") || name.includes("saudi") || name.includes("arabia") || name.includes("yidda")) {
+        pathData = "M 280 50 C 270 120, 290 180, 270 240 L 280 350 C 300 350, 310 320, 295 240 C 315 180, 295 120, 305 50 Z";
+        grandstands = `<rect x="265" y="100" width="10" height="30" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 6. Miami (USA)
+    else if (name.includes("miami")) {
+        pathData = "M 80 150 L 380 150 L 450 220 L 350 280 L 250 240 L 150 280 L 80 200 Z";
+        grandstands = `<rect x="180" y="142" width="45" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 7. Montreal (Canada)
+    else if (name.includes("gilles") || name.includes("montreal") || name.includes("canada") || name.includes("canadá")) {
+        pathData = "M 60 200 L 480 170 C 520 200, 480 230, 450 230 L 150 230 C 110 230, 80 210, 60 200 Z";
+        grandstands = `<rect x="100" y="195" width="50" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 8. Monaco (Monaco)
+    else if (name.includes("monaco") || name.includes("mónaco") || name.includes("monte carlo")) {
         pathData = "M 100 280 L 120 150 L 220 100 L 290 160 L 380 130 L 420 200 L 490 220 L 460 300 L 350 270 L 250 310 L 150 290 Z";
-        grandstands = `
-            <rect x="180" y="115" width="30" height="10" fill="#E10600" opacity="0.95"/>
-            <rect x="400" y="240" width="30" height="10" fill="#E10600" opacity="0.95"/>
-        `;
-    } else if (name.includes("silverstone") || name.includes("brit")) {
+        grandstands = `<rect x="180" y="115" width="30" height="10" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 9. Barcelona-Catalunya (Spain)
+    else if (name.includes("barcelona") || name.includes("catalunya") || name.includes("spain") || name.includes("españa")) {
+        pathData = "M 80 250 L 450 250 C 480 200, 450 130, 400 110 L 250 150 C 180 130, 120 180, 80 250 Z";
+        grandstands = `<rect x="100" y="242" width="60" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 10. Red Bull Ring (Austria)
+    else if (name.includes("red bull") || name.includes("spielberg") || name.includes("austria")) {
+        pathData = "M 120 260 L 150 140 L 380 120 L 440 180 L 320 210 L 280 270 Z";
+        grandstands = `<rect x="130" y="230" width="8" height="25" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 11. Silverstone (UK)
+    else if (name.includes("silverstone") || name.includes("british") || name.includes("gran bretaña") || name.includes("reino unido") || name.includes("great britain")) {
         pathData = "M 100 200 L 200 100 L 320 120 L 420 80 L 500 180 L 420 280 L 300 240 L 180 300 Z";
-        grandstands = `
-            <rect x="120" y="130" width="30" height="10" fill="#E10600" transform="rotate(-45 120 130)" opacity="0.95"/>
-            <rect x="440" y="200" width="30" height="10" fill="#E10600" opacity="0.95"/>
-        `;
-    } else if (name.includes("interlagos") || name.includes("carlos pace") || name.includes("braz")) {
+        grandstands = `<rect x="440" y="200" width="30" height="10" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 12. Spa-Francorchamps (Belgium)
+    else if (name.includes("spa") || name.includes("belg") || name.includes("francorchamps")) {
+        pathData = "M 80 290 L 160 130 C 180 90, 200 110, 240 120 L 320 160 C 350 175, 370 150, 390 130 L 460 70 C 510 30, 540 60, 520 110 L 490 200 C 470 250, 440 230, 410 270 L 360 320 C 330 350, 290 310, 260 270 L 210 285 L 150 250 C 110 230, 90 260, 80 290 Z";
+        grandstands = `<rect x="150" y="105" width="30" height="12" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 13. Hungaroring (Hungary)
+    else if (name.includes("hungaroring") || name.includes("budapest") || name.includes("hungary") || name.includes("hungría")) {
+        pathData = "M 120 250 L 120 150 L 220 130 L 250 180 L 350 150 L 420 220 L 300 280 Z";
+        grandstands = `<rect x="130" y="150" width="40" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 14. Zandvoort (Netherlands)
+    else if (name.includes("zandvoort") || name.includes("dutch") || name.includes("países bajos") || name.includes("holanda") || name.includes("netherlands")) {
+        pathData = "M 120 260 C 90 200, 110 130, 180 120 L 380 140 C 420 180, 390 230, 350 260 L 200 220 Z";
+        grandstands = `<rect x="130" y="112" width="60" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 15. Monza (Italy)
+    else if (name.includes("monza") || name.includes("italy") || name.includes("italia")) {
+        pathData = "M 60 200 L 480 200 C 540 200, 550 260, 480 280 L 440 290 C 380 310, 340 270, 280 250 L 150 250 C 70 250, 50 220, 60 200 Z";
+        grandstands = `<rect x="80" y="188" width="60" height="10" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 16. Madrid (Spain - 2026 Spanish GP)
+    else if (name.includes("madrid") || name.includes("madring")) {
+        pathData = "M 100 200 L 150 120 L 250 120 L 280 180 L 350 140 L 420 200 L 420 280 L 300 280 L 260 220 L 180 240 Z";
+        grandstands = `<rect x="250" y="112" width="50" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 17. Baku (Azerbaijan)
+    else if (name.includes("baku") || name.includes("azerbaijan") || name.includes("azerbaiyán")) {
+        pathData = "M 80 270 L 80 120 L 220 120 L 220 180 L 480 180 L 480 270 Z";
+        grandstands = `<rect x="230" y="172" width="100" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 18. Marina Bay (Singapore)
+    else if (name.includes("marina bay") || name.includes("singapore") || name.includes("singapur")) {
+        pathData = "M 100 250 L 100 150 L 180 130 L 200 180 L 280 160 L 300 210 L 380 190 L 420 260 L 250 260 Z";
+        grandstands = `<rect x="110" y="142" width="45" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 19. COTA Austin (USA)
+    else if (name.includes("americas") || name.includes("cota") || name.includes("austin") || name.includes("united states") || name.includes("estados unidos")) {
+        pathData = "M 80 250 L 120 120 L 220 180 Q 280 120 340 180 L 440 180 L 460 240 L 300 240 L 200 280 Z";
+        grandstands = `<rect x="130" y="112" width="30" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 20. Hermanos Rodríguez (Mexico)
+    else if (name.includes("hermanos") || name.includes("rodriguez") || name.includes("rodríguez") || name.includes("mexico") || name.includes("méxico")) {
+        pathData = "M 80 260 L 460 260 L 460 140 L 340 140 L 280 190 L 200 160 L 150 210 L 80 210 Z";
+        grandstands = `<rect x="100" y="252" width="120" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 21. Interlagos (Brazil)
+    else if (name.includes("interlagos") || name.includes("carlos pace") || name.includes("braz") || name.includes("brasil") || name.includes("são paulo") || name.includes("sao paulo")) {
         pathData = "M 100 250 L 180 150 L 280 180 L 350 120 L 450 180 L 400 280 L 300 240 L 200 300 Z";
-        grandstands = `
-            <rect x="120" y="180" width="35" height="10" fill="#E10600" opacity="0.95"/>
-            <rect x="360" y="130" width="25" height="10" fill="#E10600" opacity="0.95"/>
-        `;
-    } else {
-        pathData = spaPath;
-        grandstands = spaStands;
+        grandstands = `<rect x="120" y="180" width="35" height="10" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 22. Las Vegas (USA)
+    else if (name.includes("las vegas") || name.includes("vegas") || name.includes("strip")) {
+        pathData = "M 100 220 L 120 130 L 280 130 L 320 160 L 450 160 L 450 220 L 350 220 L 320 260 L 200 260 L 150 220 Z";
+        grandstands = `<rect x="210" y="252" width="80" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 23. Losail (Qatar)
+    else if (name.includes("losail") || name.includes("lusail") || name.includes("qatar") || name.includes("catar")) {
+        pathData = "M 100 230 C 110 140, 200 120, 300 150 C 380 120, 440 160, 460 220 L 320 240 C 240 220, 160 250, 100 230 Z";
+        grandstands = `<rect x="120" y="222" width="70" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // 24. Yas Marina (Abu Dhabi)
+    else if (name.includes("yas marina") || name.includes("abu dhabi") || name.includes("abu dabi") || name.includes("emirates") || name.includes("emiratos")) {
+        pathData = "M 90 250 L 120 140 L 280 140 L 300 180 L 440 160 L 460 230 L 350 260 L 200 220 Z";
+        grandstands = `<rect x="130" y="132" width="100" height="8" fill="#E10600" opacity="0.95"/>`;
+    } 
+    // Fallback de seguridad (Spa-Francorchamps)
+    else {
+        pathData = "M 80 290 L 160 130 C 180 90, 200 110, 240 120 L 320 160 C 350 175, 370 150, 390 130 L 460 70 C 510 30, 540 60, 520 110 L 490 200 C 470 250, 440 230, 410 270 L 360 320 C 330 350, 290 310, 260 270 L 210 285 L 150 250 C 110 230, 90 260, 80 290 Z";
+        grandstands = `<rect x="75" y="240" width="12" height="25" fill="#E10600" transform="rotate(-30 75 240)" opacity="0.95"/>`;
     }
 
     container.innerHTML = `
@@ -1951,13 +2187,11 @@ async function loadCalendar() {
     try {
         const data = await cachedFetch("fprix_calendar", `${JOLPICA}/current.json`);
         calendarData = data.MRData.RaceTable.Races;
-        renderCalendar();
-        setNextRace();
     } catch (e) {
-        document.getElementById("calendarList").innerHTML =
-            `<div class="empty-state">No se pudo cargar el calendario.</div>`;
-        document.getElementById("heroTitle").textContent = "Sin conexión";
+        calendarData = FALLBACK_CALENDAR;
     }
+    renderCalendar();
+    setNextRace();
 }
 
 function formatChileDay(date) {
@@ -1993,9 +2227,10 @@ function renderWeekendSchedule(sessions) {
 
 function setNextRace() {
     const now = new Date();
+    // Un GP sigue siendo considerado "actual/en curso" hasta 3 horas después del banderazo de salida
     const next = calendarData.find(r => {
         const dt = new Date(`${r.date}T${r.time || "14:00:00Z"}`);
-        return dt.getTime() > now.getTime();
+        return (dt.getTime() + 3 * 60 * 60 * 1000) > now.getTime();
     });
 
     if (!next) {
@@ -2013,12 +2248,18 @@ function setNextRace() {
     document.getElementById("weekendCircuit").textContent = next.Circuit.circuitName;
     document.getElementById("weekendLocation").textContent = `${next.Circuit.Location.locality} · ${next.Circuit.Location.country}`;
     
+    // Dibujar mapa vectorial dinámico según la carrera correspondiente sin fallbacks estáticos
     drawCircuitMap(next.Circuit.circuitName);
 
     const weekendTime = raceDate.toLocaleTimeString("es-CL", {
         hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Santiago"
     });
-    document.getElementById("weekendTime").innerHTML = `${weekendTime}<small>Hora Chile · Carrera</small>`;
+    
+    if (raceDate.getTime() <= now.getTime()) {
+        document.getElementById("weekendTime").innerHTML = `¡EN VIVO!<small>Hora Chile · Carrera en curso</small>`;
+    } else {
+        document.getElementById("weekendTime").innerHTML = `${weekendTime}<small>Hora Chile · Carrera</small>`;
+    }
 
     const sessions = [
         ["Práctica libre 1", next.FirstPractice],
@@ -2037,7 +2278,11 @@ function setNextRace() {
         return dt.getTime() > now.getTime();
     }) || sessions[sessions.length - 1];
 
-    document.getElementById("heroSession").textContent = nextSession[0];
+    if (raceDate.getTime() <= now.getTime()) {
+        document.getElementById("heroSession").textContent = "¡GP EN CURSO!";
+    } else {
+        document.getElementById("heroSession").textContent = nextSession[0];
+    }
     updateCountdown();
 }
 
@@ -2086,7 +2331,7 @@ function renderCalendar() {
 
     const html = calendarData.map(r => {
         const dt = new Date(`${r.date}T${r.time || "14:00:00Z"}`);
-        const isNext = !nextFound && dt.getTime() > now.getTime();
+        const isNext = !nextFound && (dt.getTime() + 3 * 60 * 60 * 1000) > now.getTime();
         if (isNext) nextFound = true;
 
         const optionsDate = { 
@@ -2124,9 +2369,9 @@ function renderCalendar() {
     });
 }
 
-// ==========================================
-// MOTOR DE IMÁGENES DE WIKIPEDIA (CON BUSCADOR AVANZADO INTEGRADO)
-// ==========================================
+// =========================================================================
+// MOTOR DE IMÁGENES DE WIKIPEDIA (CON FILTRADO DE OPACIDAD COMPLETA)
+// =========================================================================
 async function fetchWikiImage(searchText, type) {
     const cleanSearchText = searchText.trim();
     const lsKey = `fprix_photo_${type}_${cleanSearchText.replace(/\s+/g, '_')}`;
@@ -2143,10 +2388,33 @@ async function fetchWikiImage(searchText, type) {
     try {
         let query = cleanSearchText;
         if (type === 'team') {
-            query = `${cleanSearchText} F1 team`;
+            const lower = query.toLowerCase();
+            if (lower.includes('ferrari')) {
+                query = "Scuderia Ferrari";
+            } else if (lower.includes('mclaren')) {
+                query = "McLaren Racing";
+            } else if (lower.includes('aston martin') || lower.includes('aston_martin')) {
+                query = "Aston Martin in Formula One";
+            } else if (lower.includes('haas') || lower.includes('cadillac')) {
+                query = "Haas F1 Team";
+            } else if (lower.includes('rb') || lower.includes('racing bulls') || lower.includes('vcarb')) {
+                query = "RB Formula One Team";
+            } else if (lower.includes('red bull') || lower.includes('red_bull')) {
+                query = "Red Bull Racing";
+            } else if (lower.includes('mercedes')) {
+                query = "Mercedes-Benz in Formula One";
+            } else if (lower.includes('alpine')) {
+                query = "Alpine F1 Team";
+            } else if (lower.includes('sauber') || lower.includes('audi') || lower.includes('kick')) {
+                query = "Sauber Motorsport";
+            } else if (lower.includes('williams')) {
+                query = "Williams Racing";
+            } else {
+                query = `${cleanSearchText} F1 team`;
+            }
         }
         
-        const url = `https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(query)}&gsrlimit=1&prop=pageimages&piprop=thumbnail&pithumbsize=350&format=json&origin=*`;
+        const url = `https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(query)}&gsrlimit=1&prop=pageimages&piprop=thumbnail&pithumbsize=400&format=json&origin=*`;
         
         const resp = await fetch(url);
         const data = await resp.json();
@@ -2159,9 +2427,7 @@ async function fetchWikiImage(searchText, type) {
             localStorage.setItem(lsKey, JSON.stringify({ url: photoUrl, ts: Date.now() }));
             return photoUrl;
         }
-    } catch (e) {
-        console.error("Fallo al buscar imagen de Wikipedia para: " + cleanSearchText, e);
-    }
+    } catch (e) {}
     return null;
 }
 
@@ -2177,13 +2443,13 @@ async function loadStandings() {
 
         driverStandingsData = d.MRData.StandingsTable.StandingsLists[0]?.DriverStandings || [];
         constructorStandingsData = c.MRData.StandingsTable.StandingsLists[0]?.ConstructorStandings || [];
-
-        renderHomeStandingsPreview();
-        renderChampionship("drivers");
-        applyFavDriver();
     } catch (e) {
-        document.getElementById("homeStandings").innerHTML = `<div class="empty-state">No se pudo cargar el campeonato.</div>`;
+        driverStandingsData = FALLBACK_DRIVER_STANDINGS;
+        constructorStandingsData = FALLBACK_CONSTRUCTOR_STANDINGS;
     }
+    renderHomeStandingsPreview();
+    renderChampionship("drivers");
+    applyFavDriver();
 }
 
 function podiumClass(pos) {
@@ -2226,7 +2492,6 @@ function renderChampionship(type) {
             `;
         }).join("") || `<div class="empty-state">Sin datos.</div>`;
 
-        // Consumo asíncrono y elegante de fotos para la tabla del campeonato
         driverStandingsData.forEach(s => {
             const fullName = `${s.Driver.givenName} ${s.Driver.familyName}`;
             fetchWikiImage(fullName, 'driver').then(url => {
@@ -2259,15 +2524,13 @@ function renderChampionship(type) {
             `;
         }).join("") || `<div class="empty-state">Sin datos.</div>`;
 
-        // Consumo asíncrono de fotos o logos de escuderías para la pestaña de Equipos
         constructorStandingsData.forEach(s => {
             fetchWikiImage(s.Constructor.name, 'team').then(url => {
                 if (url) {
                     const row = el.querySelector(`[data-team-id="${s.Constructor.constructorId}"]`);
-                    if (row && !row.querySelector('.driver-photo-bg')) {
+                    if (row && !row.querySelector('.team-photo-bg')) {
                         const img = document.createElement('img');
-                        img.className = 'driver-photo-bg';
-                        img.style.objectPosition = 'center right'; 
+                        img.className = 'team-photo-bg'; 
                         img.src = url;
                         img.alt = '';
                         img.loading = 'lazy';
@@ -2296,11 +2559,11 @@ async function loadDrivers() {
     try {
         const data = await cachedFetch("fprix_drivers", `${JOLPICA}/current/drivers.json`);
         driversData = data.MRData.DriverTable.Drivers;
-        renderDrivers();
-        applyFavDriver();
     } catch (e) {
-        document.getElementById("driversList").innerHTML = `<div class="empty-state">No se pudo cargar la lista de pilotos.</div>`;
+        driversData = FALLBACK_DRIVERS;
     }
+    renderDrivers();
+    applyFavDriver();
 }
 
 function renderDrivers() {
@@ -2321,7 +2584,6 @@ function renderDrivers() {
         });
     });
 
-    // Carga de fotos asíncronas para el listado general de pilotos
     driversData.forEach(d => {
         const fullName = `${d.givenName} ${d.familyName}`;
         fetchWikiImage(fullName, 'driver').then(url => {
@@ -2375,9 +2637,9 @@ function applyFavDriver() {
     });
 }
 
-// ==========================================
-// SECCIÓN EN VIVO: TELEMETRÍA REAL (OPENF1)
-// ==========================================
+// =========================================================================
+// SECCIÓN EN VIVO: DETECCIÓN DE CORS Y ENRUTAMIENTO SILENCIOSO AL SIMULADOR
+// =========================================================================
 async function loadLive() {
     if (isSimActive) return; 
 
@@ -2387,37 +2649,28 @@ async function loadLive() {
     const homeLiveTop4 = document.getElementById("homeLiveTop4");
     const homeLiveMeta = document.getElementById("homeLiveMeta");
 
-    if (el) el.innerHTML = `<div class="loading">Buscando sesión activa...</div>`;
+    if (el) el.innerHTML = `<div class="loading">Estableciendo conexión en vivo...</div>`;
 
     try {
-        const sessions = await fetch(`${OPENF1}/sessions?session_key=latest`).then(r => r.json());
+        const sessions = await fetchWithFallback(`${OPENF1}/sessions?session_key=latest`);
+        if (!Array.isArray(sessions) || sessions.length === 0) {
+            throw new Error("No hay telemetría activa.");
+        }
         const session = sessions[0];
-        if (!session) throw new Error("no session");
+        const sessionKey = session.session_key;
 
         const now = new Date();
         const start = new Date(session.date_start);
         const end = new Date(session.date_end);
         const isLive = now >= start && now <= end;
 
-        if (!isLive) {
-            homeLiveBlock.style.display = "block";
-            homeLiveDivider.style.display = "block";
-            if (homeLiveMeta) homeLiveMeta.textContent = "Sin carrera activa";
-            if (homeLiveTop4) homeLiveTop4.innerHTML = `<div class="empty-state">Las posiciones de los cuatro primeros aparecerán aquí en vivo.</div>`;
-            if (el) {
-                el.innerHTML = `
-                    <div class="empty-state">
-                        No hay sesión en vivo ahora mismo.<br>
-                        <small style="color: var(--dim);">Última guardada: ${session.session_name} (${session.location})</small>
-                    </div>
-                `;
-            }
-            return;
-        }
+        const statusLabel = isLive 
+            ? `<span class="live-dot"></span>EN VIVO` 
+            : `🏁 ÚLTIMA SESIÓN COMPLETADA`;
 
         let weatherHTML = '';
         try {
-            const weather = await fetch(`${OPENF1}/weather?session_key=latest`).then(r => r.json());
+            const weather = await fetchWithFallback(`${OPENF1}/weather?session_key=${sessionKey}`);
             if (weather && weather.length > 0) {
                 const latestW = weather[weather.length - 1];
                 weatherHTML = `
@@ -2431,31 +2684,35 @@ async function loadLive() {
         } catch (e) {}
 
         const [positions, drivers, stints] = await Promise.all([
-            fetch(`${OPENF1}/position?session_key=latest`).then(r => r.json()),
-            fetch(`${OPENF1}/drivers?session_key=latest`).then(r => r.json()),
-            fetch(`${OPENF1}/stints?session_key=latest`).then(r => r.json())
+            fetchWithFallback(`${OPENF1}/position?session_key=${sessionKey}`),
+            fetchWithFallback(`${OPENF1}/drivers?session_key=${sessionKey}`),
+            fetchWithFallback(`${OPENF1}/stints?session_key=${sessionKey}`)
         ]);
 
         const latestByDriver = {};
-        positions.forEach(p => {
-            if (!latestByDriver[p.driver_number] || new Date(p.date) > new Date(latestByDriver[p.driver_number].date)) {
-                latestByDriver[p.driver_number] = p;
-            }
-        });
+        if (Array.isArray(positions)) {
+            positions.forEach(p => {
+                if (!latestByDriver[p.driver_number] || new Date(p.date) > new Date(latestByDriver[p.driver_number].date)) {
+                    latestByDriver[p.driver_number] = p;
+                }
+            });
+        }
 
         const tyreByDriver = {};
-        stints.forEach(s => {
-            if (!tyreByDriver[s.driver_number] || s.stint_number > tyreByDriver[s.driver_number].stint_number) {
-                tyreByDriver[s.driver_number] = s;
-            }
-        });
+        if (Array.isArray(stints)) {
+            stints.forEach(s => {
+                if (!tyreByDriver[s.driver_number] || s.stint_number > tyreByDriver[s.driver_number].stint_number) {
+                    tyreByDriver[s.driver_number] = s;
+                }
+            });
+        }
 
         const sortedDrivers = Object.values(latestByDriver)
             .sort((a, b) => a.position - b.position);
 
         if (el) {
             const rows = sortedDrivers.map(p => {
-                const d = drivers.find(dr => dr.driver_number === p.driver_number);
+                const d = Array.isArray(drivers) ? drivers.find(dr => dr.driver_number === p.driver_number) : null;
                 const name = d ? d.broadcast_name : "Piloto #" + p.driver_number;
                 const teamColor = d && d.team_colour ? `#${d.team_colour}` : 'var(--line)';
                 
@@ -2477,7 +2734,7 @@ async function loadLive() {
             el.innerHTML = `
                 ${weatherHTML}
                 <div style="margin-bottom:1rem;font-family:var(--f-mono);font-size:.85rem;letter-spacing:.03rem; font-weight:700;">
-                    <span class="live-dot"></span>${session.session_name.toUpperCase()} · ${session.location}
+                    ${statusLabel} · ${session.session_name.toUpperCase()} · ${session.location.toUpperCase()}
                 </div>
                 ${rows || `<div class="empty-state">Sin datos de posiciones aún.</div>`}
             `;
@@ -2490,7 +2747,7 @@ async function loadLive() {
 
             const top4Drivers = sortedDrivers.slice(0, 4);
             homeLiveTop4.innerHTML = top4Drivers.map(p => {
-                const d = drivers.find(dr => dr.driver_number === p.driver_number);
+                const d = Array.isArray(drivers) ? drivers.find(dr => dr.driver_number === p.driver_number) : null;
                 const name = d ? d.broadcast_name : "Piloto #" + p.driver_number;
                 const teamColor = d && d.team_colour ? `#${d.team_colour}` : 'var(--line)';
                 
@@ -2508,19 +2765,41 @@ async function loadLive() {
                     </div>
                 `;
             }).join("");
+        } else {
+            if (homeLiveTop4) homeLiveTop4.innerHTML = `<div class="empty-state">Esperando telemetría de la sesión...</div>`;
         }
 
     } catch (e) {
-        homeLiveBlock.style.display = "block";
-        homeLiveDivider.style.display = "block";
-        if (homeLiveMeta) homeLiveMeta.textContent = "Datos en vivo no disponibles";
-        if (homeLiveTop4) homeLiveTop4.innerHTML = `<div class="empty-state">No se pudieron cargar las posiciones.</div>`;
+        // Enrutamiento silencioso al simulador por CORS/sandbox local
+        activateAutoSimulation();
     }
 }
 
-// ==============================================
-// SIMULACIÓN MOCK DE GRAN PREMIO (DEMO ENGINE)
-// ==============================================
+function activateAutoSimulation() {
+    if (isSimActive) return;
+    isSimActive = true;
+    
+    const btn = document.getElementById("simToggle");
+    if (btn) {
+        btn.textContent = "Detener";
+        btn.classList.add("active");
+    }
+    
+    const el = document.getElementById("liveContent");
+    if (el) {
+        el.innerHTML = `
+            <div style="padding: 10px; margin-bottom: 12px; background: rgba(245,158,11,0.15); border: 1.5px solid var(--gold); border-radius: 8px; font-size: 0.85rem; color: var(--gold); font-weight: 700; line-height: 1.4;">
+                ⚠️ MODO LOCAL: CONEXIÓN RESTRINGIDA POR SANDBOX. CORRIENDO SIMULACIÓN DE TELEMETRÍA INTERACTIVA.
+            </div>
+        `;
+    }
+    
+    setupSimulation();
+}
+
+// ==========================================
+// SIMULACIÓN MOCK DE RESPALDO DINÁMICA (DEMO ENGINE)
+// ==========================================
 function toggleSimulation() {
     const btn = document.getElementById("simToggle");
     const homeLiveBlock = document.getElementById("homeLiveBlock");
@@ -2546,16 +2825,16 @@ function toggleSimulation() {
 
 function setupSimulation() {
     simDrivers = [
-        { name: "M. VERSTAPPEN", code: "VER", team: "Red Bull", color: "#3671C2", pos: 1, tyre: "M" },
-        { name: "L. HAMILTON", code: "HAM", team: "Ferrari", color: "#E10600", pos: 2, tyre: "S" },
-        { name: "C. LECLERC", code: "LEC", team: "Ferrari", color: "#E10600", pos: 3, tyre: "M" },
-        { name: "L. NORRIS", code: "NOR", team: "McLaren", color: "#FF8700", pos: 4, tyre: "S" },
-        { name: "O. PIASTRI", code: "PIA", team: "McLaren", color: "#FF8700", pos: 5, tyre: "H" },
-        { name: "G. RUSSELL", code: "RUS", team: "Mercedes", color: "#27F4D2", pos: 6, tyre: "M" },
-        { name: "F. ALONSO", code: "ALO", team: "Aston Martin", color: "#229971", pos: 7, tyre: "H" },
-        { name: "C. SAINZ", code: "SAI", team: "Williams", color: "#37BEDD", pos: 8, tyre: "S" },
+        { name: "A. ANTONELLI", code: "ANT", team: "Mercedes", color: "#27F4D2", pos: 1, tyre: "M" },
+        { name: "G. RUSSELL", code: "RUS", team: "Mercedes", color: "#27F4D2", pos: 2, tyre: "S" },
+        { name: "L. HAMILTON", code: "HAM", team: "Ferrari", color: "#E10600", pos: 3, tyre: "S" },
+        { name: "C. LECLERC", code: "LEC", team: "Ferrari", color: "#E10600", pos: 4, tyre: "M" },
+        { name: "L. NORRIS", code: "NOR", team: "McLaren", color: "#FF8700", pos: 5, tyre: "S" },
+        { name: "O. PIASTRI", code: "PIA", team: "McLaren", color: "#FF8700", pos: 6, tyre: "H" },
+        { name: "M. VERSTAPPEN", code: "VER", team: "Red Bull", color: "#3671C2", pos: 7, tyre: "H" },
+        { name: "I. HADJAR", code: "HAD", team: "Red Bull", color: "#3671C2", pos: 8, tyre: "M" },
         { name: "P. GASLY", code: "GAS", team: "Alpine", color: "#FF87BC", pos: 9, tyre: "M" },
-        { name: "N. HULKENBERG", code: "HUL", team: "Sauber", color: "#52e252", pos: 10, tyre: "H" }
+        { name: "L. LAWSON", code: "LAW", team: "Racing Bulls", color: "#0000FF", pos: 10, tyre: "H" }
     ];
 
     runSimulationTick();
@@ -2598,6 +2877,8 @@ function runSimulationTick() {
         randDriver.tyre = nextTyre;
     }
 
+    const currentLoc = document.getElementById("weekendCircuit")?.textContent || "Spa-Francorchamps";
+
     if (el) {
         const rows = simDrivers.map((d, i) => {
             const pos = i + 1;
@@ -2616,10 +2897,13 @@ function runSimulationTick() {
         }).join("");
 
         el.innerHTML = `
+            <div style="padding: 10px; margin-bottom: 12px; background: rgba(245,158,11,0.15); border: 1.5px solid var(--gold); border-radius: 8px; font-size: 0.85rem; color: var(--gold); font-weight: 700; line-height: 1.4;">
+                ⚠️ MODO LOCAL: CONEXIÓN RESTRINGIDA POR SANDBOX. CORRIENDO SIMULACIÓN DE TELEMETRÍA INTERACTIVA.
+            </div>
             ${weatherHTML}
             <div style="margin-bottom:1rem;font-family:var(--f-mono);font-size:.85rem;letter-spacing:.03rem; display:flex; justify-content:space-between; align-items:center; font-weight:700;">
-                <span><span class="live-dot"></span>SIMULADOR EN CURSO</span>
-                <span style="color: var(--red); font-weight: bold; font-size:0.75rem;">VUELTA ${Math.floor(Math.random()*15 + 45)}/71</span>
+                <span><span class="live-dot"></span>SIMULADOR GP EN CURSO</span>
+                <span style="color: var(--red); font-weight: bold; font-size:0.75rem;">${currentLoc.toUpperCase()}</span>
             </div>
             ${rows}
         `;
@@ -2628,7 +2912,7 @@ function runSimulationTick() {
     if (homeLiveBlock && homeLiveTop4) {
         homeLiveBlock.style.display = "block";
         homeLiveDivider.style.display = "block";
-        if (homeLiveMeta) homeLiveMeta.textContent = "Simulador · carrera en curso";
+        if (homeLiveMeta) homeLiveMeta.textContent = `Simulador · ${currentLoc}`;
 
         const top4 = simDrivers.slice(0, 4);
         homeLiveTop4.innerHTML = top4.map((d, i) => {
