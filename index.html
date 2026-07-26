@@ -370,6 +370,16 @@ html[data-theme="light"] .next-gp-glass{background:rgba(255,255,255,.55);border-
 .view.ios-bounce-right{animation:iosBounceRight .46s var(--glass-bezier);}
 .app.ios-edge-bounce{animation:iosEdgeBounce .4s var(--glass-bezier);}
 
+/* FOTOS DE PILOTOS Y DEGRADADOS DE LEGIBILIDAD EN FILAS */
+.driver-row-photo{
+    position:absolute;top:0;right:-0.6rem;bottom:0;width:6.2rem;
+    object-fit:cover;object-position:top center;opacity:.95;z-index:0;pointer-events:none;
+}
+.driver-row-fade{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.driver-row-fade.photo-fade{background:linear-gradient(90deg, var(--surface) 40%, rgba(var(--black-rgb),0) 90%);}
+.driver-row-fade.team-fade{background:linear-gradient(120deg, var(--team-color, transparent) 0%, transparent 65%);opacity:.30;}
+.driver-row > .driver-name, .driver-row > .star-btn{position:relative;z-index:2;}
+
 @media (min-width: 768px) {
     html:not(.force-mobile) body { padding-top: 2.5rem; padding-bottom: 2.5rem; padding-left: 17.5rem; }
     html:not(.force-mobile) .app { max-width: 64rem; margin: 0; padding: 2.5rem 2rem 0; }
@@ -471,7 +481,7 @@ html.force-desktop .home-card .block:last-child { grid-column: 1 / span 2; grid-
                 <div class="weekend-footer">
                     <div class="weekend-time" id="weekendTime">--:--<small>Hora Chile</small></div>
                     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end;">
-                        <a href="https://www.disneyplus.com" target="_blank" rel="noopener noreferrer" class="weekend-link" style="background: linear-gradient(135deg, #0219A9, #010E65); border-color: #0219A9; color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
+                        <a href="https://www.disneyplus.com" target="_blank" rel="noopener noreferrer" class="weekend-link" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
                             <svg viewBox="0 0 24 24" fill="currentColor" style="width: 1.1rem; height: 1.1rem;"><path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
                             Ver en Disney+
                         </a>
@@ -603,14 +613,16 @@ const STAR_ICON = '<svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2.4l3
 // COLORES REALES DE ESCUDERÍAS
 // ==========================================
 const TEAM_COLORS = {
-    red_bull: "#3671C6",
-    ferrari: "#E8002D",
-    mercedes: "#27F4D2",
-    mclaren: "#FF8000",
+    red_bull: "#4781D7",
+    ferrari: "#ED1131",
+    mercedes: "#00D7B6",
+    mclaren: "#F47600",
     aston_martin: "#229971",
-    alpine: "#FF87BC",
-    williams: "#64C4FF",
+    alpine: "#00A1E8",
+    williams: "#00A0DE",
     rb: "#6692FF",
+    audi: "#F50537",
+    cadillac: "#909090",
     alphatauri: "#6692FF",
     toro_rosso: "#469BFF",
     sauber: "#52E252",
@@ -640,6 +652,64 @@ function constructorInitials(name) {
 function avatarHtml(initialsText, constructorId) {
     const color = teamColor(constructorId);
     return `<div class="team-avatar" style="background:${color}26;border:1.5px solid ${color};color:${color};">${initialsText}</div>`;
+}
+
+// ==========================================
+// FOTOS REALES DE PILOTOS (DATOS OFICIALES 2026)
+// ==========================================
+let driverMediaMap = {};
+
+function normalizeName(str) {
+    return (str || "")
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z]/g, "");
+}
+
+function getDriverMedia(givenName, familyName) {
+    const key = normalizeName(familyName);
+    return driverMediaMap[key] || null;
+}
+
+async function loadDriverMedia() {
+    try {
+        const data = await cachedFetch(
+            "fprix_driver_media",
+            "https://raw.githubusercontent.com/TracingInsights/2026/main/Pre-Season%20Testing%202/Practice%203/drivers.json"
+        );
+        const list = data?.drivers || [];
+        const map = {};
+        list.forEach(d => {
+            const key = normalizeName(d.ln);
+            if (!key) return;
+            map[key] = { photo: d.url, color: d.tc ? `#${d.tc}` : null, team: d.team };
+        });
+        driverMediaMap = map;
+
+        // Refrescar vistas ya renderizadas para mostrar las fotos reales
+        if (driversData.length) renderDrivers();
+        if (driverStandingsData.length) {
+            renderChampionship(document.querySelector(".tab-btn.active")?.dataset.tab || "drivers");
+        }
+        renderFavoritesSection();
+    } catch (e) {
+        console.warn("No se pudieron cargar fotos oficiales de pilotos:", e);
+    }
+}
+
+function driverRowBackground(givenName, familyName, constructorId) {
+    const media = getDriverMedia(givenName, familyName);
+    const color = media?.color || teamColor(constructorId);
+    if (media?.photo) {
+        return `<img class="driver-row-photo" src="${media.photo}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+                <div class="driver-row-fade photo-fade"></div>`;
+    }
+    return `<div class="driver-row-fade team-fade" style="--team-color:${color};"></div>`;
+}
+
+function constructorRowBackground(constructorId) {
+    const color = teamColor(constructorId);
+    return `<div class="driver-row-fade team-fade" style="--team-color:${color};"></div>`;
 }
 
 // ==========================================
@@ -753,6 +823,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initNavigation();
     initTabs();
     initSwipeGestures();
+    initNavSwipeGestures();
     
     document.getElementById("homeLiveBlock").addEventListener("click", () => goto("envivo"));
 
@@ -760,6 +831,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadStandings();
     loadDrivers();
     loadLiveRealData();
+    loadDriverMedia();
 
     setInterval(updateCountdown, 1000);
     setInterval(loadLiveRealData, 60000); // Refresco en tiempo real cada 60s
@@ -838,11 +910,12 @@ async function cachedFetch(key, url) {
 }
 
 function hardRefresh() {
-    ["fprix_calendar", "fprix_driverstd", "fprix_constructorstd", "fprix_drivers", "fprix_live_results"].forEach(k => localStorage.removeItem(k));
+    ["fprix_calendar", "fprix_driverstd", "fprix_constructorstd", "fprix_drivers", "fprix_live_results", "fprix_driver_media"].forEach(k => localStorage.removeItem(k));
     loadCalendar();
     loadStandings();
     loadDrivers();
     loadLiveRealData();
+    loadDriverMedia();
 }
 
 function drawCircuitMap(circuitName) {
@@ -1038,6 +1111,7 @@ function renderChampionship(type) {
             const cId = s.Constructors[0]?.constructorId || "";
             return `
             <div class="driver-row ${podiumClass(s.position)}">
+                ${driverRowBackground(s.Driver.givenName, s.Driver.familyName, cId)}
                 <div class="driver-name" style="display: flex; align-items: center; gap: 0.65rem; width: 100%;">
                     <span class="pos" style="width: 1.6rem; font-family: var(--f-mono); font-weight: 900;">${s.position}</span>
                     ${avatarHtml(driverInitials(s.Driver.givenName, s.Driver.familyName), cId)}
@@ -1054,6 +1128,7 @@ function renderChampionship(type) {
     } else {
         el.innerHTML = constructorStandingsData.map(s => `
             <div class="driver-row ${podiumClass(s.position)}">
+                ${constructorRowBackground(s.Constructor.constructorId)}
                 <div class="driver-name" style="display: flex; align-items: center; gap: 0.65rem; width: 100%;">
                     <span class="pos" style="width: 1.6rem; font-family: var(--f-mono); font-weight: 900;">${s.position}</span>
                     ${avatarHtml(constructorInitials(s.Constructor.name), s.Constructor.constructorId)}
@@ -1092,9 +1167,11 @@ function renderDrivers() {
     const el = document.getElementById("driversList");
     el.innerHTML = driversData.map(d => {
         const constructor = getDriverConstructor(d.driverId);
+        const cId = constructor?.constructorId || "";
         return `<div class="driver-row" data-driver="${d.driverId}">
+            ${driverRowBackground(d.givenName, d.familyName, cId)}
             <div class="driver-name" style="display:flex;align-items:center;gap:.85rem;font-size:1rem;">
-                ${avatarHtml(driverInitials(d.givenName, d.familyName), constructor?.constructorId || "")}
+                ${avatarHtml(driverInitials(d.givenName, d.familyName), cId)}
                 <div>
                     <div style="font-weight: 800; font-size: 1.1rem;">${d.givenName} ${d.familyName}</div>
                     ${constructor ? `<div style="font-size:.78rem;color:var(--dim);text-transform:uppercase;">${constructor.name}</div>` : ""}
@@ -1253,6 +1330,87 @@ function initSwipeGestures() {
             else triggerEdgeBounce(1);
         }
     }, { passive: true });
+}
+
+// ==========================================
+// SWIPE SOBRE LA BARRA DE NAVEGACIÓN (ARRASTRAR LA PASTILLA LÍQUIDA)
+// ==========================================
+function initNavSwipeGestures() {
+    const nav = document.getElementById("liquidNav");
+    const indicator = document.getElementById("navIndicator");
+    if (!nav || !indicator) return;
+
+    let dragging = false;
+    let startX = 0, startY = 0;
+    let startIndex = 0, baseLeft = 0, baseTop = 0, itemSize = 0;
+    let isDesktopNav = false;
+
+    function items() {
+        return Array.from(nav.querySelectorAll(".nav-item"));
+    }
+
+    nav.addEventListener("touchstart", (e) => {
+        if (e.touches.length !== 1) return;
+        const navItems = items();
+        if (!navItems.length) return;
+
+        dragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        startIndex = VIEW_ORDER.indexOf(currentView());
+
+        const navRect = nav.getBoundingClientRect();
+        isDesktopNav = navRect.height > navRect.width;
+
+        const activeRect = navItems[startIndex].getBoundingClientRect();
+        baseLeft = activeRect.left - navRect.left;
+        baseTop = activeRect.top - navRect.top;
+        itemSize = isDesktopNav ? activeRect.height : activeRect.width;
+
+        indicator.style.transition = "none";
+    }, { passive: true });
+
+    nav.addEventListener("touchmove", (e) => {
+        if (!dragging) return;
+        const touch = e.touches[0];
+        const navRect = nav.getBoundingClientRect();
+
+        if (isDesktopNav) {
+            const dy = touch.clientY - startY;
+            const maxTop = navRect.height - itemSize;
+            const newTop = Math.max(0, Math.min(baseTop + dy, maxTop));
+            indicator.style.transform = `translate3d(1rem, ${newTop}px, 0)`;
+        } else {
+            const dx = touch.clientX - startX;
+            const maxLeft = navRect.width - itemSize - 4;
+            const newLeft = Math.max(4, Math.min(baseLeft + dx, maxLeft));
+            indicator.style.transform = `translate3d(${newLeft}px, 0.4rem, 0)`;
+        }
+    }, { passive: true });
+
+    function endDrag(e) {
+        if (!dragging) return;
+        dragging = false;
+
+        const touch = e.changedTouches[0];
+        const dx = touch.clientX - startX;
+        const dy = touch.clientY - startY;
+
+        const steps = Math.round((isDesktopNav ? dy : dx) / itemSize);
+        const targetIndex = Math.max(0, Math.min(startIndex + steps, VIEW_ORDER.length - 1));
+
+        indicator.style.removeProperty("transition");
+
+        if (targetIndex !== startIndex) {
+            const direction = targetIndex > startIndex ? "left" : "right";
+            goto(VIEW_ORDER[targetIndex], direction);
+        } else {
+            updateNavIndicator(currentView(), true);
+        }
+    }
+
+    nav.addEventListener("touchend", endDrag, { passive: true });
+    nav.addEventListener("touchcancel", endDrag, { passive: true });
 }
 
 function initLayoutMode() {
