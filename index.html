@@ -6,7 +6,6 @@
 <title>F-Prix - Real Telemetry Edition</title>
 <meta name="theme-color" content="#000000">
 
-<!-- Soporte nativo para Web App en iOS (PWA) -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="F-Prix">
@@ -19,10 +18,6 @@
 <style>
 /* ==========================================
    TIPOGRAFÍAS OFICIALES F1 (opcionales)
-   Si tienes los archivos con licencia, colócalos en una carpeta
-   "fonts/" junto a este HTML con estos nombres exactos.
-   Si no existen, el navegador cae automáticamente a la fuente
-   de respaldo (Titillium Web / Space Mono) sin romper nada.
    ========================================== */
 @font-face{
     font-family:'F1 Regular';
@@ -80,7 +75,7 @@ html {
     --glass-blur: 24px;
     --glass-saturate: 200%;
     --glass-duration: 0.55s;
-    --glass-bezier: cubic-bezier(0.34, 1.56, 0.64, 1); /* Física elástica para el líquido */
+    --glass-bezier: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 html[data-theme="light"]{
@@ -244,7 +239,7 @@ button:focus-visible, .driver-row:focus-visible{outline:2px solid var(--red);out
 .standing span:nth-child(2){flex:1;font-size:1.15rem;font-weight:700;}
 .standing .pts{color:var(--red);font-weight:900;font-family:var(--f-mono);font-size:1.05rem;}
 
-/* GUARDIA INFERIOR (PROTECCIÓN CONTRA FR ANJA GRIS) */
+/* GUARDIA INFERIOR */
 .bottom-blur-guard {
     position: fixed;
     bottom: 0;
@@ -327,7 +322,24 @@ html[data-theme="light"] .nav-item { color: rgba(9, 9, 11, 0.65); }
 .race-date{color:var(--text);font-size:1.05rem;font-weight:800;}
 .race-time{display:inline-flex;align-items:center;gap:.35rem;margin-top:.38rem;padding:.32rem .5rem;border:1.5px solid var(--red-dim);border-radius:.45rem;background:rgba(225,6,0,.15);color:#FF453A;font-family:var(--f-mono);font-size:.95rem;font-weight:900;}
 
-.driver-row{display:flex;justify-content:space-between;align-items:center;padding:.95rem 0;border-bottom:1.5px solid var(--line);cursor:pointer;font-size:1.15rem;position:relative;overflow:hidden;}
+.driver-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding: .85rem 0.2rem; /* Reducido el padding horizontal para ganar espacio */
+    border-bottom:1.5px solid var(--line);
+    cursor:pointer;
+    font-size:1.15rem;
+    position:relative;
+    overflow:hidden;
+}
+
+.driver-name {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem; /* Reducido el gap entre elementos */
+    width: 100%;
+}
 
 .live-dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--green);display:inline-block;margin-right:.45rem;box-shadow:0 0 8px var(--green);animation:pulse 1.4s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
@@ -342,21 +354,31 @@ html[data-theme="light"] .nav-item { color: rgba(9, 9, 11, 0.65); }
 
 /* AVATARES DE EQUIPO CON COLORES REALES */
 .team-avatar{
-    width:2.35rem;height:2.35rem;border-radius:50%;flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--f-mono);font-weight:900;font-size:.82rem;letter-spacing:.02rem;
+    width:2.2rem; /* Ligeramente más pequeño */
+    height:2.2rem;
+    border-radius:50%;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--f-mono);
+    font-weight:900;
+    font-size:.75rem;
+    letter-spacing:.02rem;
 }
 
-/* BOTONES DE FAVORITOS (ESTRELLA) */
-.star-btn{
-    background:none;border:none;padding:.35rem;margin-left:.35rem;flex-shrink:0;
+/* BOTONES DE FAVORITOS Y ESTADÍSTICAS */
+.star-btn, .stats-icon-btn {
+    background:none;border:none;padding:.2rem;flex-shrink:0; /* Menos padding */
     color:var(--dim);display:flex;align-items:center;justify-content:center;
     -webkit-tap-highlight-color:transparent;transition:transform .2s var(--glass-bezier), color .2s ease;
 }
-.star-btn .star-icon{width:1.35rem;height:1.35rem;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linejoin:round;}
+.star-btn .star-icon{width:1.25rem;height:1.25rem;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linejoin:round;}
 .star-btn.active{color:var(--gold);}
 .star-btn.active .star-icon{fill:var(--gold);stroke:var(--gold);}
-.star-btn:active{transform:scale(1.25);}
+.star-btn:active, .stats-icon-btn:active{transform:scale(1.25);}
+.stats-icon-btn .icon{width:1.1rem;height:1.1rem;}
+.stats-icon-btn.active{color:var(--red);}
 
 #favSection .driver-row{cursor:default;}
 
@@ -402,20 +424,10 @@ html[data-theme="light"] .next-gp-glass{background:rgba(255,255,255,.55);border-
 
 /* DEGRADADOS DE COLOR DE ESCUDERÍA EN FILAS (PILOTOS Y EQUIPOS) */
 .driver-row-fade{position:absolute;inset:0;z-index:1;pointer-events:none;}
-.driver-row-fade.team-fade{background:linear-gradient(120deg, var(--team-color, transparent) 0%, transparent 65%);opacity:.30;}
+.driver-row-fade.team-fade{background:linear-gradient(90deg, var(--team-color, transparent) 0%, transparent 80%);opacity:.35;} /* Ajustado gradiente para más visibilidad */
 .driver-row > .driver-name, .driver-row > .star-btn{position:relative;z-index:2;}
 
-/* ESTADÍSTICAS DE PILOTOS */
 /* ESTADÍSTICAS EXPANDIBLES DENTRO DE LA FILA DEL PILOTO */
-.stats-icon-btn{
-    background:none;border:none;padding:.35rem;flex-shrink:0;
-    color:var(--dim);display:flex;align-items:center;justify-content:center;
-    -webkit-tap-highlight-color:transparent;transition:color .2s ease, transform .2s var(--glass-bezier);
-}
-.stats-icon-btn .icon{width:1.15rem;height:1.15rem;}
-.stats-icon-btn.active{color:var(--red);}
-.stats-icon-btn:active{transform:scale(1.2);}
-
 .stats-panel{max-height:0;overflow:hidden;padding:0 .1rem;transition:max-height .35s ease;position:relative;z-index:2;}
 .stats-panel.open{max-height:28rem;padding-top:.3rem;padding-bottom:1.1rem;border-bottom:1.5px solid var(--line);}
 
@@ -588,8 +600,8 @@ html.force-desktop .home-card .block:last-child { grid-column: 1 / span 2; grid-
 
     <!-- VISTA: CAMPEONATO -->
     <section class="view" id="view-campeonato" data-view="campeonato">
-        <section class="glass-card">
-            <div class="tabs">
+        <section class="glass-card" style="padding: 1.4rem 0.5rem;"> <!-- Reducido padding horizontal del panel de campeonato -->
+            <div class="tabs" style="padding: 0 0.5rem;"> <!-- Mantener padding interno en tabs -->
                 <button class="tab-btn active" data-tab="drivers">Pilotos</button>
                 <button class="tab-btn" data-tab="constructors">Equipos</button>
             </div>
@@ -676,17 +688,17 @@ const STAR_ICON = '<svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2.4l3
 // COLORES REALES DE ESCUDERÍAS
 // ==========================================
 const TEAM_COLORS = {
-    red_bull: "#4781D7",
-    ferrari: "#ED1131",
-    mercedes: "#00D7B6",
-    mclaren: "#F47600",
+    red_bull: "#3671C6",
+    ferrari: "#E8002D",
+    mercedes: "#27F4D2",
+    mclaren: "#FF8000",
     aston_martin: "#229971",
-    alpine: "#00A1E8",
+    alpine: "#0093CC",
     williams: "#00A0DE",
     rb: "#6692FF",
     audi: "#F50537",
     cadillac: "#909090",
-    alphatauri: "#6692FF",
+    alphatauri: "#5E8FAA",
     toro_rosso: "#469BFF",
     sauber: "#52E252",
     kick_sauber: "#52E252",
@@ -808,28 +820,28 @@ function renderFavoritesSection() {
         const constructor = getDriverConstructor(d.driverId);
         return `<div class="driver-row" data-driver="${d.driverId}">
             ${driverRowBackground(d.givenName, d.familyName, constructor?.constructorId || "")}
-            <div class="driver-name" style="display:flex;align-items:center;gap:.85rem;">
+            <div class="driver-name">
                 ${avatarHtml(driverInitials(d.givenName, d.familyName), constructor?.constructorId || "")}
-                <div>
-                    <div style="font-weight:800;">${d.givenName} ${d.familyName}</div>
-                    ${constructor ? `<div style="font-size:.78rem;color:var(--dim);text-transform:uppercase;">${constructor.name}</div>` : ""}
+                <div style="flex: 1; min-width: 0;">
+                    <div style="font-weight:800; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${d.givenName} ${d.familyName}</div>
+                    ${constructor ? `<div style="font-size:.78rem;color:var(--dim);text-transform:uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${constructor.name}</div>` : ""}
                 </div>
+                <button class="star-btn active" data-fav-type="driver" data-fav-id="${d.driverId}" aria-label="Quitar de favoritos">${STAR_ICON}</button>
             </div>
-            <button class="star-btn active" data-fav-type="driver" data-fav-id="${d.driverId}" aria-label="Quitar de favoritos">${STAR_ICON}</button>
         </div>`;
     }).join("");
 
     const constructorRows = favConstructors.map(c => `
         <div class="driver-row">
             ${constructorRowBackground(c.constructorId)}
-            <div class="driver-name" style="display:flex;align-items:center;gap:.85rem;">
+            <div class="driver-name">
                 ${avatarHtml(constructorInitials(c.name), c.constructorId)}
-                <div>
-                    <div style="font-weight:800;">${c.name}</div>
-                    <div style="font-size:.78rem;color:var(--dim);text-transform:uppercase;">${c.nationality || ""}</div>
+                <div style="flex: 1; min-width: 0;">
+                    <div style="font-weight:800; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${c.name}</div>
+                    <div style="font-size:.78rem;color:var(--dim);text-transform:uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${c.nationality || ""}</div>
                 </div>
+                <button class="star-btn active" data-fav-type="constructor" data-fav-id="${c.constructorId}" aria-label="Quitar de favoritos">${STAR_ICON}</button>
             </div>
-            <button class="star-btn active" data-fav-type="constructor" data-fav-id="${c.constructorId}" aria-label="Quitar de favoritos">${STAR_ICON}</button>
         </div>
     `).join("");
 
@@ -1135,18 +1147,20 @@ function renderChampionship(type) {
             <div class="driver-row-wrap" data-driver-wrap="${driverId}">
                 <div class="driver-row ${podiumClass(s.position)}">
                     ${driverRowBackground(s.Driver.givenName, s.Driver.familyName, cId)}
-                    <div class="driver-name" style="display: flex; align-items: center; gap: 0.55rem; width: 100%;">
-                        <span class="pos" style="width: 1.5rem; font-family: var(--f-mono); font-weight: 900;">${s.position}</span>
+                    <div class="driver-name">
+                        <span class="pos" style="width: 1.2rem; font-family: var(--f-mono); font-weight: 900; font-size: 1.05rem;">${s.position}</span>
                         ${avatarHtml(driverInitials(s.Driver.givenName, s.Driver.familyName), cId)}
-                        <div style="display: flex; flex-direction: column; flex: 1; min-width: 0; overflow: hidden;">
-                            <span style="font-weight: 800; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${s.Driver.givenName} ${s.Driver.familyName}</span>
+                        <div style="display: flex; flex-direction: column; flex: 1; min-width: 0; padding-right: 0.2rem;">
+                            <span style="font-weight: 800; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; line-height: 1.1;">${s.Driver.givenName} ${s.Driver.familyName}</span>
                             <span style="font-size: 0.72rem; color: var(--dim); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${s.Constructors[0]?.name || ''}</span>
                         </div>
-                        <button class="stats-icon-btn" data-stats-driver="${driverId}" aria-label="Ver estadísticas">
-                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 20V12M12 20V6M19 20v-8"/></svg>
-                        </button>
-                        <span class="pts" style="margin-left: auto; color: var(--red); font-weight: 900; font-size: 0.9rem;">${s.points} PTS</span>
-                        <button class="star-btn ${isFavorite("driver", driverId) ? "active" : ""}" data-fav-type="driver" data-fav-id="${driverId}" aria-label="Favorito">${STAR_ICON}</button>
+                        <div style="display: flex; align-items: center; gap: 0.2rem; flex-shrink: 0;">
+                            <button class="stats-icon-btn" data-stats-driver="${driverId}" aria-label="Ver estadísticas">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 20V12M12 20V6M19 20v-8"/></svg>
+                            </button>
+                            <span class="pts" style="color: var(--red); font-weight: 900; font-size: 0.9rem; font-family: var(--f-mono); min-width: 4.2rem; text-align: right;">${s.points} PTS</span>
+                            <button class="star-btn ${isFavorite("driver", driverId) ? "active" : ""}" data-fav-type="driver" data-fav-id="${driverId}" aria-label="Favorito">${STAR_ICON}</button>
+                        </div>
                     </div>
                 </div>
                 <div class="stats-panel" id="statsPanel-${driverId}"></div>
@@ -1165,15 +1179,17 @@ function renderChampionship(type) {
         el.innerHTML = constructorStandingsData.map(s => `
             <div class="driver-row ${podiumClass(s.position)}">
                 ${constructorRowBackground(s.Constructor.constructorId)}
-                <div class="driver-name" style="display: flex; align-items: center; gap: 0.65rem; width: 100%;">
-                    <span class="pos" style="width: 1.6rem; font-family: var(--f-mono); font-weight: 900;">${s.position}</span>
+                <div class="driver-name">
+                    <span class="pos" style="width: 1.4rem; font-family: var(--f-mono); font-weight: 900; font-size: 1.05rem;">${s.position}</span>
                     ${avatarHtml(constructorInitials(s.Constructor.name), s.Constructor.constructorId)}
-                    <div style="display: flex; flex-direction: column;">
-                        <span style="font-weight: 800;">${s.Constructor.name}</span>
-                        <span style="font-size: 0.82rem; color: var(--dim); text-transform: uppercase;">${s.Constructor.nationality}</span>
+                    <div style="display: flex; flex-direction: column; flex: 1; min-width: 0;">
+                        <span style="font-weight: 800; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${s.Constructor.name}</span>
+                        <span style="font-size: 0.75rem; color: var(--dim); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${s.Constructor.nationality}</span>
                     </div>
-                    <span class="pts" style="margin-left: auto; color: var(--red); font-weight: 900;">${s.points} PTS</span>
-                    <button class="star-btn ${isFavorite("constructor", s.Constructor.constructorId) ? "active" : ""}" data-fav-type="constructor" data-fav-id="${s.Constructor.constructorId}" aria-label="Favorito">${STAR_ICON}</button>
+                    <div style="display: flex; align-items: center; gap: 0.2rem; flex-shrink: 0;">
+                        <span class="pts" style="color: var(--red); font-weight: 900; font-size: 0.9rem; font-family: var(--f-mono); min-width: 4.2rem; text-align: right;">${s.points} PTS</span>
+                        <button class="star-btn ${isFavorite("constructor", s.Constructor.constructorId) ? "active" : ""}" data-fav-type="constructor" data-fav-id="${s.Constructor.constructorId}" aria-label="Favorito">${STAR_ICON}</button>
+                    </div>
                 </div>
             </div>
         `).join("");
