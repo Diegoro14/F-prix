@@ -10,6 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="F-Prix">
 <link rel="apple-touch-icon" href="f1.png">
+<link rel="manifest" href="manifest.webmanifest">
 
 <style>
 /* ==========================================================
@@ -842,13 +843,7 @@ html[data-layout="desktop"] #standingsCard{grid-area:standings;}
         <p class="section-title">Ajustes y personalización</p>
         <section class="card">
             <div class="list">
-                <div class="setting-row">
-                    <div>
-                        <div class="label">Notificaciones</div>
-                        <div class="desc" id="notifStatus">Avisa antes de Clasificación y Carrera</div>
-                    </div>
-                    <button class="btn" id="btnNotifToggle">Activar</button>
-                </div>
+                <div id="push-box" style="display:contents"></div>
 
                 <div class="setting-row">
                     <div>
@@ -1830,6 +1825,7 @@ function initNotifications() {
 }
 
 function scheduleSessionNotifications() {
+    return; // reemplazado por notificaciones push (Worker de Cloudflare)
     if (!("Notification" in window) || Notification.permission !== "granted") return;
     if (!calendarData.length) return;
 
@@ -2698,7 +2694,70 @@ function applyLayoutMode(mode) {
         try { window.lgSetTab(currentView()); } catch (e) {}
         setTimeout(function () { measure(); try { window.lgSetTab(currentView()); } catch (e) {} render(); }, 250);
     })();
-    </script>
+    
+/* ===== Avisos push (PushKit) ===== */
+const PUSH_CFG = { worker: 'https://avisos-diego.diegoro22.workers.dev', app: 'fprix', defaults: { lead: 10, sessions: true, results: true } };
+const PushKit = (() => {
+  const LS = 'push-prefs-' + PUSH_CFG.app;
+  const prefs = () => { try { return Object.assign({}, PUSH_CFG.defaults, JSON.parse(localStorage.getItem(LS) || '{}')); } catch (e) { return { ...PUSH_CFG.defaults }; } };
+  const savePrefs = (p) => { try { localStorage.setItem(LS, JSON.stringify(p)); } catch (e) {} };
+  const u8 = (b64) => { const p = '='.repeat((4 - b64.length % 4) % 4); const r = atob((b64 + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(r, (c) => c.charCodeAt(0)); };
+  const post = (path, body) => fetch(PUSH_CFG.worker + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then((r) => r.json());
+  const standalone = () => window.navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+  const supported = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+  let msg = '';
+  async function reg() { return navigator.serviceWorker.register('./sw.js').then(() => navigator.serviceWorker.ready); }
+  async function current() { if (!supported()) return null; try { return await (await navigator.serviceWorker.getRegistration())?.pushManager.getSubscription() || null; } catch (e) { return null; } }
+  async function sync() { // reenvía preferencias al Worker
+    const sub = await current(); if (!sub) return;
+    await post('/subscribe', { app: PUSH_CFG.app, subscription: sub.toJSON(), prefs: prefs() });
+  }
+  function ui(html) { const b = document.getElementById('push-box'); if (b) b.innerHTML = html; }
+  async function render() {
+    const box = document.getElementById('push-box'); if (!box) return;
+    if (PUSH_CFG.worker.includes('PEGA_AQUI')) { ui('<div class="setting-row"><div class="desc">Falta configurar la URL del Worker.</div></div>'); return; }
+    if (!supported() || !standalone()) { ui('<div class="setting-row"><div><div class="label">Notificaciones</div><div class="desc">Para recibir avisos, instala la app en la pantalla de inicio (Compartir → Agregar a inicio) y ábrela desde ahí.</div></div></div>'); return; }
+    const sub = await current(), p = prefs(), on = !!sub && Notification.permission === 'granted';
+    const row = (l, d, ctl) => `<div class="setting-row"><div><div class="label">${l}</div>${d ? `<div class="desc">${d}</div>` : ''}</div>${ctl}</div>`;
+    const sel = (k, opts) => `<select class="select" onchange="PushKit.set('${k}',this.value)">${opts.map(([v, l]) => `<option value="${v}" ${String(p[k]) === String(v) ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
+    const chk = (k) => `<input type="checkbox" ${p[k] !== false ? 'checked' : ''} onchange="PushKit.set('${k}',this.checked)" style="width:24px;height:24px">`;
+    const st = on ? 'Activadas en este iPhone' : (Notification.permission === 'denied' ? 'Bloqueadas en Ajustes de iOS' : 'Desactivadas');
+    ui(row('Notificaciones', st, on ? '<button class="btn" onclick="PushKit.off()">Desactivar</button>' : '<button class="btn" onclick="PushKit.on()">Activar</button>')
+      + (on ? row('Avisar antes de cada sesión', '', sel('lead', [[0,'No'],[5,'5 min'],[10,'10 min'],[30,'30 min'],[60,'1 hora']]))
+          + row('Inicio de sesiones', 'Prácticas, clasificación, sprint y carrera', chk('sessions'))
+          + row('Resultados', 'Pole position y ganador de carrera/sprint', chk('results'))
+          + row('Aviso de prueba', '', '<button class="btn" onclick="PushKit.test()">Enviar</button>') : '')
+      + (msg ? `<div class="setting-row"><div class="desc">${msg}</div></div>` : ''));
+  }
+  return {
+    render,
+    async on() {
+      try {
+        msg = 'Activando…'; render();
+        const perm = await Notification.requestPermission(); if (perm !== 'granted') { msg = 'Permiso denegado.'; return render(); }
+        const caches_ = await caches.open('push-cfg'); await caches_.put('/cfg', new Response(JSON.stringify({ worker: PUSH_CFG.worker })));
+        const r = await reg();
+        const key = (await (await fetch(PUSH_CFG.worker + '/vapid')).json()).key;
+        let sub = await r.pushManager.getSubscription();
+        if (!sub) sub = await r.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: u8(key) });
+        await post('/subscribe', { app: PUSH_CFG.app, subscription: sub.toJSON(), prefs: prefs() });
+        msg = 'Listo. Prueba con el botón de abajo.';
+      } catch (e) { msg = 'Error: ' + (e.message || e); }
+      render();
+    },
+    async off() { const s = await current(); if (s) { try { await post('/unsubscribe', { endpoint: s.endpoint }); } catch (e) {} await s.unsubscribe(); } msg = 'Desactivadas.'; render(); },
+    async test() { const s = await current(); if (!s) return; msg = 'Enviando…'; render(); try { const r = await post('/test', { subscription: s.toJSON() }); msg = r.ok ? 'Enviado: debería llegar en segundos.' : 'No se pudo enviar (' + (r.error || r.status) + ').'; } catch (e) { msg = 'Error de red.'; } render(); },
+    async set(k, v) { const p = prefs(); p[k] = (v === 'true' || v === 'false') ? v === 'true' : (isNaN(v) ? v : Number(v)); savePrefs(p); try { await sync(); } catch (e) {} },
+    init() {
+      new MutationObserver(() => { if (document.getElementById('push-box') && !document.getElementById('push-box').dataset.r) { document.getElementById('push-box').dataset.r = 1; render(); } }).observe(document.body, { childList: true, subtree: true });
+      if (supported() && !PUSH_CFG.worker.includes('PEGA_AQUI')) { caches.open('push-cfg').then((c) => c.put('/cfg', new Response(JSON.stringify({ worker: PUSH_CFG.worker })))).catch(() => {}); current().then((s) => s && reg().then(sync)).catch(() => {}); }
+    },
+  };
+})();
+PushKit.init();
+PushKit.render();
+
+</script>
 
 </body>
 </html>
